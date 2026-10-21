@@ -39,6 +39,8 @@ internal sealed partial class MainForm : Form
     private readonly ToolStripMenuItem _trayExit = new("關閉程式");
     private readonly ToolTip _toolTip = new();
     private readonly TableLayoutPanel _content = new();
+    private readonly TableLayoutPanel _shell = new();
+    private readonly ThemedTabControl _pages = new();
     private readonly Icon? _ownedIcon;
     private readonly Bitmap _headerImage;
     private readonly List<object> _diagnosticSamples = new();
@@ -86,18 +88,27 @@ internal sealed partial class MainForm : Form
 
     private void BuildLayout()
     {
+        _shell.Dock = DockStyle.Fill;
+        _shell.Padding = new Padding(24);
+        _shell.ColumnCount = 1;
+        _shell.RowCount = 3;
+        _shell.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        _shell.RowStyles.Add(new RowStyle(SizeType.Absolute, 64));
+        _shell.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        _shell.RowStyles.Add(new RowStyle(SizeType.Absolute, 44));
         _content.Dock = DockStyle.Fill;
-        _content.Padding = new Padding(24);
+        _content.Padding = Padding.Empty;
+        _content.Margin = Padding.Empty;
+        _content.MinimumSize = new Size(0, 566);
         _content.BackColor = UiTheme.Background;
         _content.ColumnCount = 1;
-        _content.RowCount = 7;
+        _content.RowCount = 5;
         _content.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        foreach (var height in new[] { 70, 136, 192, 104, 92 })
+        foreach (var height in new[] { 128, 192, 104, 88 })
             _content.RowStyles.Add(new RowStyle(SizeType.Absolute, height));
         _content.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-        _content.RowStyles.Add(new RowStyle(SizeType.Absolute, 44));
 
-        var header = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 2, Margin = new Padding(0, 0, 0, 12) };
+        var header = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 2, Margin = new Padding(0, 0, 0, 6) };
         header.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 52));
         header.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
         header.RowStyles.Add(new RowStyle(SizeType.Absolute, 38));
@@ -107,7 +118,7 @@ internal sealed partial class MainForm : Form
         header.SetRowSpan(image, 2);
         header.Controls.Add(Label(Program.DisplayName, _headingFont, UiTheme.Accent, UiTheme.Background), 1, 0);
         header.Controls.Add(Label("電腦播放音訊 · 8 顆 LED", _smallFont, UiTheme.Muted, UiTheme.Background), 1, 1);
-        _content.Controls.Add(header, 0, 0);
+        _shell.Controls.Add(header, 0, 0);
 
         var meter = new SurfacePanel { Dock = DockStyle.Fill, Padding = new Padding(18, 12, 18, 12), Margin = new Padding(0, 0, 0, 12) };
         var meterLayout = new TableLayoutPanel { Dock = DockStyle.Fill, BackColor = UiTheme.Surface, ColumnCount = 2, RowCount = 3 };
@@ -129,8 +140,8 @@ internal sealed partial class MainForm : Form
         _tempoLabel.TextAlign = ContentAlignment.MiddleRight;
         meterLayout.Controls.Add(_tempoLabel, 1, 2);
         meter.Controls.Add(meterLayout);
-        _content.Controls.Add(meter, 0, 1);
-        _content.Controls.Add(BuildEffectsPanel(), 0, 2);
+        _content.Controls.Add(meter, 0, 0);
+        _content.Controls.Add(BuildEffectsPanel(), 0, 1);
 
         var parameters = new SurfacePanel { Dock = DockStyle.Fill, Padding = new Padding(18, 10, 18, 10), Margin = new Padding(0, 0, 0, 12) };
         var sliderLayout = new TableLayoutPanel { Dock = DockStyle.Fill, BackColor = UiTheme.Surface, ColumnCount = 3, RowCount = 2 };
@@ -150,7 +161,7 @@ internal sealed partial class MainForm : Form
         _brightnessValue.TextAlign = ContentAlignment.MiddleRight;
         sliderLayout.Controls.Add(_brightnessValue, 2, 1);
         parameters.Controls.Add(sliderLayout);
-        _content.Controls.Add(parameters, 0, 3);
+        _content.Controls.Add(parameters, 0, 2);
 
         var devices = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1, Margin = new Padding(0, 0, 0, 12) };
         devices.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
@@ -158,14 +169,27 @@ internal sealed partial class MainForm : Form
         devices.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
         devices.Controls.Add(StatusCard("播放音訊", _audio, "尚未開始", new Padding(0, 0, 6, 0)), 0, 0);
         devices.Controls.Add(StatusCard("USB 燈條", _lighting, "尚未開始", new Padding(6, 0, 0, 0)), 1, 0);
-        _content.Controls.Add(devices, 0, 4);
+        _content.Controls.Add(devices, 0, 3);
 
-        var help = new TableLayoutPanel { Dock = DockStyle.Fill, RowCount = 2, ColumnCount = 1, Margin = new Padding(0, 0, 0, 10) };
-        var settings = new LinkLabel { Text = "Windows 動態光效設定 ↗", Font = _smallFont, Dock = DockStyle.Top, AutoSize = true, LinkColor = UiTheme.Accent, ActiveLinkColor = UiTheme.AccentHover, VisitedLinkColor = UiTheme.Accent, LinkBehavior = LinkBehavior.HoverUnderline, Margin = new Padding(0, 0, 0, 6) };
+        var help = new TableLayoutPanel { Dock = DockStyle.Fill, RowCount = 2, ColumnCount = 1, Margin = Padding.Empty };
+        help.RowStyles.Add(new RowStyle(SizeType.Absolute, 22));
+        help.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        var settings = new LinkLabel { Text = "Windows 動態光效設定 ↗", Font = _smallFont, Dock = DockStyle.Fill, AutoSize = false, LinkColor = UiTheme.Accent, ActiveLinkColor = UiTheme.AccentHover, VisitedLinkColor = UiTheme.Accent, LinkBehavior = LinkBehavior.HoverUnderline, Margin = Padding.Empty };
         settings.LinkClicked += (_, _) => OpenLightingSettings();
         help.Controls.Add(settings, 0, 0);
         help.Controls.Add(Label("僅在記憶體分析播放音訊，不錄音、不上傳。\n暫停後燈光漸暗；首次使用請在 Windows 設定調整背景控制優先順序。", _smallFont, UiTheme.Muted, UiTheme.Background), 0, 1);
-        _content.Controls.Add(help, 0, 5);
+        _content.Controls.Add(help, 0, 4);
+
+        _pages.Dock = DockStyle.Fill;
+        _pages.Margin = new Padding(0, 0, 0, 8);
+        var lightingPage = new TabPage("燈光設置") { BackColor = UiTheme.Background, Padding = new Padding(0, 8, 0, 0), AutoScroll = true, AutoScrollMinSize = new Size(0, 574) };
+        lightingPage.Controls.Add(_content);
+        var aboutPage = new TabPage("關於與版本") { BackColor = UiTheme.Background, Padding = new Padding(0, 14, 0, 0), AutoScroll = true };
+        aboutPage.Controls.Add(BuildAboutPage());
+        _pages.TabPages.Add(lightingPage);
+        _pages.TabPages.Add(aboutPage);
+        _pages.SelectedIndex = _options.ShowAbout ? 1 : 0;
+        _shell.Controls.Add(_pages, 0, 1);
 
         var footer = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1, Margin = Padding.Empty };
         footer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
@@ -181,8 +205,8 @@ internal sealed partial class MainForm : Form
         actions.Controls.AddRange(new Control[] { _start, _stop, _minimize });
         footer.Controls.Add(actions, 0, 0);
         footer.Controls.Add(_exit, 1, 0);
-        _content.Controls.Add(footer, 0, 6);
-        Controls.Add(_content);
+        _shell.Controls.Add(footer, 0, 2);
+        Controls.Add(_shell);
         _toolTip.SetToolTip(_gain, "提高靈敏度可讓較小的音量產生更明顯的光效。可用方向鍵調整。");
         _toolTip.SetToolTip(_minimize, "隱藏至通知區，繼續在背景同步。");
         _toolTip.SetToolTip(_exit, "停止音訊與燈光工作，釋放資源並結束程式。");
@@ -207,6 +231,7 @@ internal sealed partial class MainForm : Form
         _tray.ContextMenuStrip = _trayMenu;
         _tray.DoubleClick += (_, _) => RestoreWindow();
         _uiTimer.Tick += (_, _) => UpdateStatus();
+        _pages.SelectedIndexChanged += (_, _) => UpdateStatus();
         _closeTestTimer.Tick += (_, _) => { _closeTestTimer.Stop(); InvokeDiagnosticClose(); };
         Shown += async (_, _) =>
         {
@@ -372,7 +397,7 @@ internal sealed partial class MainForm : Form
                     HasControl = _engine.HasLightingControl, SentFrames = _engine.SentFrames });
             }
         }
-        if (Visible && WindowState != FormWindowState.Minimized)
+        if (Visible && WindowState != FormWindowState.Minimized && _pages.SelectedIndex == 0)
         {
             _state.Text = _busy ? _stoppingSync ? "正在停止並釋放資源…" : "正在連接…" :
                 _stopFailed ? "停止未完成，請關閉程式" :
@@ -451,8 +476,8 @@ internal sealed partial class MainForm : Form
             if (_options.ScreenshotPath != null)
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(_options.ScreenshotPath)!);
-                using var bitmap = new Bitmap(_content.Width, _content.Height);
-                _content.DrawToBitmap(bitmap, new Rectangle(Point.Empty, _content.Size));
+                using var bitmap = new Bitmap(_shell.Width, _shell.Height);
+                _shell.DrawToBitmap(bitmap, new Rectangle(Point.Empty, _shell.Size));
                 bitmap.Save(_options.ScreenshotPath, System.Drawing.Imaging.ImageFormat.Png);
             }
             if (_options.ReportPath == null) return;
@@ -480,6 +505,9 @@ internal sealed partial class MainForm : Form
                 ["Theme"] = "Tiffany blue / graphite", ["CloseRequestedBy"] = _closeRoute
             };
             _report["EffectSettings"] = _engine.Settings;
+            _report["SelectedPage"] = _pages.SelectedTab?.Text;
+            _report["DisplayedVersion"] = AboutVersion;
+            _report["HardwareRequirement"] = HardwareRequirement;
             _report["EffectControlChecks"] = _effectControlChecks;
             _report["SettingsLoaded"] = _preferencesLoaded;
             _report["PreferenceSaveSucceeded"] = _preferenceSaveSucceeded;

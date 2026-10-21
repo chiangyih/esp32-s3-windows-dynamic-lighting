@@ -394,3 +394,13 @@ SyncEngine.StopAsync／DisposeAsync共用背景清理工作；停止不再在UI�
 0.2.2.0已重新建置、MakePri／MakeAppx正常驗證及開發註冊。實際啟動讀回MainWindowTitle、EXE ProductName及manifest三處顯示名稱皆為新名稱；截圖確認主標題完整。短時診斷正常結束，FormDisposed=true、清理錯誤陣列為空；ExitCode欄位未取得數值，不宣稱退出碼0。首次標題讀取早於視窗建立而為空，等待視窗出現後重新讀回正確，沒有視為程式標題錯誤。
 
 目前註冊來源為 `02-windows-music-sync/artifacts/package-development-20261021-150146-915/layout`，須保留。unsigned MSIX 58,189,966 bytes，SHA-256 `C13BE997324B7A04A6B0B9D9773879F12C07DCAF9100632C844C28586C3BCF10`。本次為低影響文字修改，未重跑音訊／燈效全套測試；Store送審狀態不變。新名稱版本已重新開啟供檢視，未自動開始同步。證據見 `docs/verification/2026-10-21/name/0.2.2/`；依既有授權自動commit／push。
+
+## 2026-10-21 0.2.3.0 關於與版本分頁
+
+依使用者要求，新增「燈光設置」與「關於與版本」兩個分頁，沿用蒂芬妮藍／深色風格。版本號從組件中繼資料讀取，目前顯示0.2.3.0。硬體提醒為「必須搭配支援 Windows『動態光效』的硬體，才能控制實體燈光」，並註明目前僅支援本專案ESP32-S3 USB Light Strip／8顆WS2812；燈條需相容控制板及韌體，預覽變化不代表實體燈光已受控制。另提示Windows設定中確認燈具及背景控制優先順序。
+
+底部開始／停止／縮至通知區／關閉按鈕改為兩頁共用，關於頁也能直接退出；主頁在較小視窗可捲動。使用原生TabControl互動與靜態自繪，沒有新增動畫計時器；關於頁不更新隱藏的音量預覽。沒有修改音訊、燈效或韌體。
+
+Release建置0 warnings／0 errors；MakePri／MakeAppx正常驗證及本機開發註冊通過。兩頁實際截圖檢查，版本／硬體提醒與主頁控制項完整可見；封裝診斷讀回SelectedPage正確、DisplayedVersion=0.2.3.0，兩頁關閉皆FormDisposed=true、音訊／繪製／搜尋／清理工作全false、清理錯誤為空。僅UI變更，未重跑音樂全套測試或宣稱新實體驗收。
+
+目前註冊來源 `02-windows-music-sync/artifacts/package-development-20261021-151121-614/layout` 須保留。unsigned MSIX 58,192,018 bytes，SHA-256 `30A51DF7AD6AC0C41A81527A09CFA2AA317FC14C488B8286CDF1F957B9388838`。已開啟正常版本的關於頁供使用者查看，未自動開始同步。證據位於 `docs/verification/2026-10-21/about/0.2.3/`；Store送審狀態未變，依既有授權自動commit／push。

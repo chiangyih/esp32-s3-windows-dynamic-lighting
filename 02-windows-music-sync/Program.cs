@@ -40,6 +40,7 @@ internal sealed class LaunchOptions
     public int CloseAfterMilliseconds { get; private set; }
     public bool ExerciseEffects { get; private set; }
     public bool ExerciseLifecycle { get; private set; }
+    public bool ShowAbout { get; private set; }
 
     public static LaunchOptions Parse(string[] args)
     {
@@ -53,6 +54,7 @@ internal sealed class LaunchOptions
                 case "--close-via-tray": result.CloseViaTray = true; break;
                 case "--exercise-effects": result.ExerciseEffects = true; break;
                 case "--exercise-lifecycle": result.ExerciseLifecycle = true; break;
+                case "--about": result.ShowAbout = true; break;
                 case "--close-after-ms" when i + 1 < args.Length:
                     if (int.TryParse(args[++i], out var closeMs))
                     {
