@@ -1,0 +1,50 @@
+
+  - heading "音樂動態燈光設置" [level=1]
+  - paragraph: MSIX 或 PWA 應用程式
+  - generic: 認證中
+  - generic: 需要協助?
+  - link "連絡支援人員":
+    - /url: https://aka.ms/storedevsupport
+  - text: 產品版本
+  - paragraph: 使用此區段來提交您的產品。
+  - generic: 認證狀態
+  - text: 認證步驟通常需要數小時，但在某些情況下最多可能需要三個工作天。
+  - link "深入了解":
+    - /url: http://go.microsoft.com/fwlink/?LinkId=528698
+  - button "取消認證":
+    - generic: 取消認證
+  - progressbar "Publishing Status": 步驟 2 / 4
+  - list:
+    - alert:
+      - img "完成":
+      - generic: 提交
+    - alert:
+      - img "進行中":
+      - generic: 預先處理
+    - alert:
+      - img "未啟動":
+      - generic: 認證
+    - alert:
+      - img "未啟動":
+      - generic: 發佈中
+  - generic: 您的產品通過認證後就會立即開始發佈。
+  - text: Modify publishing time
+  - text: "產品提交: 認證中"
+  - generic: "(Submission 1: 上次修改於 2026/10/21)"
+  - text: 請遵循下列步驟，以將您的產品提交至 Store。請參閱提交所需的
+  - link "Documentation for Product submission":
+    - /url: https://go.microsoft.com/fwlink/?linkid=2247663
+    - text: 文件
+  - text: 。
+  - button "切換產品更新" [expanded]:
+    - generic: 
+  - generic: 一般
+  - generic: 檢視產品識別資訊
+  - generic: 您可以分享 Store 深層連結，以協助客戶在 Store 上找到您的產品。
+  - button "切換產品識別":
+    - generic: 
+- progressbar "Progress bar"
+- generic: 收益
+- generic: 深入解析
+- generic: 應用程式與遊戲
+- generic: 說明 + 支援

@@ -10,7 +10,7 @@
       "Height": 300,
       "Bytes": 27885,
       "Sha256": "E493BE0C3B35CFFFDCEB7E59CF9F3B9C98A65C0BE51A935A55513D8A8B055B61",
-      "Status": "DimensionsReadyCandidate"
+      "Status": "UploadedToPartnerCenter"
     },
     {
       "Kind": "DesignMaster",
@@ -56,7 +56,7 @@
       "Height": 900,
       "Bytes": 27878,
       "Sha256": "67641132ADEBC80B5B2BEC43264210C91A5891192E6A88DC6F07EBC6E798CABC",
-      "Caption": "關於與版本：查看版本及相容硬體需求；需搭配支援 Windows 動態光效的本專案裝置。",
+      "Caption": "關於與版本：查看版本編號、Windows 動態光效相容硬體需求及燈數限制。",
       "VisualReview": "Passed"
     },
     {
@@ -70,7 +70,7 @@
     }
   ],
   "StoreScreenshotDirectory": "Screenshots",
-  "StoreScreenshotStatus": "VisualReviewedCandidatesNotUploaded",
+  "StoreScreenshotStatus": "UploadedToPartnerCenterAndSubmitted",
   "Wack": {
     "HelpInvoked": true,
     "Status": "NotRun",
@@ -79,12 +79,14 @@
     "Executable": "C:\\Program Files (x86)\\Windows Kits\\10\\App Certification Kit\\appcert.exe",
     "FileVersion": "10.0.26100.8249"
   },
-  "PartnerCenterUploaded": false,
-  "StoreSubmitted": false,
+  "PartnerCenterUploaded": true,
+  "StoreSubmitted": true,
   "StoreCertified": false,
   "StorePublished": false,
   "OfficialReferences": [
     "https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/screenshots-and-images",
     "https://learn.microsoft.com/en-us/windows/uwp/debug-test-perf/windows-app-certification-kit"
-  ]
+  ],
+  "SubmissionId": "1152921505702190045",
+  "UploadReadbackAtUtc": "2026-10-21T09:32:51.416Z"
 }

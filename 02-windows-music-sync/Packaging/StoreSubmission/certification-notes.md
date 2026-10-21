@@ -1,6 +1,6 @@
-# 認證測試說明草稿
+# 認證測試說明
 
-本次候選版本為0.3.1.0，加入內建隱私政策，已建置並本機註冊；PFN與使用者提供值相符。產品身分記錄於 [partner-center-identity.json](partner-center-identity.json)，Source=UserProvided、BackendVerified=false，尚未讀回Partner Center後台。此文件不是WACK或Store認證通過報告。
+0.3.1.0 正式產品身分已在 Partner Center 讀回相符，產品 `9NKRN1KCR738`、Submission 1 `1152921505702190045`。套件由使用者手動上傳後顯示 Validated；商品頁及下述用途／測試備註已儲存，備註重新載入後文字完全相符。2026-10-21 已提交，後台為認證中／預先處理，通過後自動發布；尚未認證通過或公開發布。此文件不是 WACK 或硬體電氣測試通過報告。
 
 ## runFullTrust 用途（可供能力審查欄位）
 
@@ -17,7 +17,7 @@ This is a C# / .NET WinForms desktop lighting utility. It requires the desktop p
 
 開發診斷可用 `--privacy` 直接選取隱私政策頁；這個選項本身不會開始同步。只有另指定自動開始／診斷參數才啟動分析，截圖與診斷報告仍需明確指定。
 
-政策與 App 一起封裝，可離線閱讀；同一份來源也由公開 GitHub 專案提供：[隱私政策](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)。使用者最新授權並自行將儲存庫改為 public，本輪匿名 HTTP 200 與文字一致性檢查通過；此 URL 應填入 Partner Center，App 內建頁另外保留。目前尚未操作後台，網址未儲存，也不代表 Store 審查已接受。[Microsoft Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
+政策與 App 一起封裝，可離線閱讀；同一份來源也由公開 GitHub 專案提供：[隱私政策](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)。此 URL 與 Issues 支援網址已在 Partner Center 儲存並讀回；App 內建頁另外保留。屬性中選擇會存取個人資訊，因系統播放混音可能含可識別個人的內容；分析仍僅在本機記憶體進行，不表示 App 會上傳資料。[Microsoft Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
 
 ## 實體燈條驗證前提
 
@@ -37,7 +37,8 @@ This is a C# / .NET WinForms desktop lighting utility. It requires the desktop p
 - 0.3.0.0 封裝 API 讀回 8 顆；設定 1／64 顆拒絕送色。設定 8 顆當次仍等待 Windows 仲裁、0 幀，未新增此版本實體音樂驗收。
 - 舊版 8 顆三種效果及暫停漸暗由使用者目視確認；0.2.1 另有實際送色與正常退出證據。不能直接改寫為 0.3.0 新驗收。
 - WACK因目前非管理員尚未執行；MakeAppx正常驗證、本機註冊、Partner Center套件驗證、提交、認證及發布各自分開記錄。
-- 公開政策網址的阻擋已解除；未另建 Pages，App 與候選 MSIX 不變。瀏覽器及 node_repl 工具重設後仍在 kernel assets 初始化時發生路徑錯誤，未操作後台，未上傳、送審、認證或發布。
+- 本輪 Edge 瀏覽器工具恢復，正式身分、政策／支援網址、zh-TW 商品頁、三圖／圖示與備註皆完成後台讀回。兩次自動套件上傳 Error 後，使用者手動上傳成功，後台 Validated。本輪已提交並進入預先處理，尚未認證通過或公開發布。
+- 既存 IARC 結果為 3+（PEGI 3+、ESRB Everyone），本輪只讀回，未重新作答或代替使用者接受條款；有效分級與目前應用程式功能無明顯衝突。
 
 精簡證據：[0.3.0 驗證摘要](../../../docs/verification/2026-10-21/lamp-counts/0.3.0/verification-summary.json)；完整歷史：[handoff.md](../../../handoff.md)。
 

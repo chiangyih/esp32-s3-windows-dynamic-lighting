@@ -1,11 +1,11 @@
 {
-  "PreparedAtUtc": "2026-10-21T08:02:05.5377769+00:00",
+  "PreparedAtUtc": "2026-10-21T16:02:05.5377769+08:00",
   "Version": "0.3.1.0",
   "LaunchMode": "PackageAumid",
   "IdentityName": "20249Tseng.492594FB8837",
-  "BackendVerified": false,
+  "BackendVerified": true,
   "VisualReview": "Passed",
-  "UploadedToStore": false,
+  "UploadedToStore": true,
   "Screenshots": [
     {
       "File": "01-lighting-settings.png",
@@ -15,7 +15,7 @@
       "Sha256": "14AFE321BC8C9BE608F8AE82C86A26D0F6B8B1984BCE736496110768C849F00D",
       "Caption": "音樂燈光設定：選擇音訊依據、配色、動態與速度，停止同步後可設定燈數。",
       "VisualReview": "Passed",
-      "Status": "CandidateNotUploaded"
+      "Status": "UploadedToPartnerCenter"
     },
     {
       "File": "02-about-and-hardware.png",
@@ -23,9 +23,9 @@
       "Height": 900,
       "Bytes": 27878,
       "Sha256": "67641132ADEBC80B5B2BEC43264210C91A5891192E6A88DC6F07EBC6E798CABC",
-      "Caption": "關於與版本：查看版本及相容硬體需求；需搭配支援 Windows 動態光效的本專案裝置。",
+      "Caption": "關於與版本：查看版本編號、Windows 動態光效相容硬體需求及燈數限制。",
       "VisualReview": "Passed",
-      "Status": "CandidateNotUploaded"
+      "Status": "UploadedToPartnerCenter"
     },
     {
       "File": "03-privacy-policy.png",
@@ -35,7 +35,9 @@
       "Sha256": "02755E61AA8126A50A627747503BC0835986269CFF820F8B784F8E5C04DD24B4",
       "Caption": "內建隱私政策：查看音訊處理、本機設定及診斷資料說明，不需開啟外部網頁。",
       "VisualReview": "Passed",
-      "Status": "CandidateNotUploaded"
+      "Status": "UploadedToPartnerCenter"
     }
-  ]
+  ],
+  "SubmissionId": "1152921505702190045",
+  "UploadReadbackAtUtc": "2026-10-21T09:32:51.416Z"
 }

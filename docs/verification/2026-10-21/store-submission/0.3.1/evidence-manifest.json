@@ -1,0 +1,37 @@
+{
+  "CreatedAt": "2026-10-21T17:38:06.9927778+08:00",
+  "StoreId": "9NKRN1KCR738",
+  "SubmissionId": "1152921505702190045",
+  "Files": [
+    {
+      "File": "certification-notes-submitted.txt",
+      "Bytes": 1790,
+      "Sha256": "E50B3F84E2D846FB0FFEC0D6668882545EA2A2DD3A05A1C9E775F02C3B877E49"
+    },
+    {
+      "File": "store-readback.json",
+      "Bytes": 8385,
+      "Sha256": "6A61B282E781039E8495952AAD41D196EB4CF2F176E3D1BD6D91C0F9C9685D61"
+    },
+    {
+      "File": "submission-in-certification.jpg",
+      "Bytes": 72184,
+      "Sha256": "0B7EF399F84549D75A79B2FAC2B7AA08798D4D53D73E752C62D4A2E202D76371"
+    },
+    {
+      "File": "submission-overview.txt",
+      "Bytes": 1710,
+      "Sha256": "5D87442A954837A5C108A71EE5BDBA7EB709EC7355B8A8251F2EBDCD5E9744A9"
+    },
+    {
+      "File": "submission-status.json",
+      "Bytes": 993,
+      "Sha256": "8013B040F3BA0558495E1A0237251B9868F7B5C48E09DFFCABA57708A18C9A7B"
+    },
+    {
+      "File": "submitted-listing-description.zh-TW.txt",
+      "Bytes": 1867,
+      "Sha256": "7B10429B7074B09472AA63425F110BF2B7E057D96D89760D6DEA56F9EABDD7B9"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "ObservedAtUtc": "2026-10-21T09:32:51.416Z",
+  "Source": "LivePartnerCenterBrowserReadback",
+  "StoreId": "9NKRN1KCR738",
+  "SubmissionId": "1152921505702190045",
+  "Version": "0.3.1.0",
+  "PackageValidated": true,
+  "PackageUploaded": true,
+  "UploadCompletedBy": "UserManualUpload",
+  "StoreListingSaved": true,
+  "PrivacyPolicyUrlSaved": true,
+  "SupportUrlSaved": true,
+  "CertificationNotesSaved": true,
+  "Iarc": "ExistingRatingsVerifiedNoQuestionnaireChanges",
+  "Submitted": true,
+  "SubmissionStatus": "認證中",
+  "PublishingProgressStep": "2/4",
+  "Steps": {
+    "Submission": "Completed",
+    "PreProcessing": "InProgress",
+    "Certification": "NotStarted",
+    "Publishing": "NotStarted"
+  },
+  "Certified": false,
+  "Published": false,
+  "AutomaticPublishingAfterCertification": true,
+  "BackendReleaseMessage": "您的產品通過認證後就會立即開始發佈。",
+  "Wack": "NotRun",
+  "Physical64LedTest": "NotPerformed",
+  "NoFirmwareOrAppChangesInThisRun": true
+}

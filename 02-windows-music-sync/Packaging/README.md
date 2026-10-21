@@ -1,10 +1,10 @@
 # MSIX 與 Microsoft Store 準備
 
-商品頁、runFullTrust 說明、認證測試步驟與素材準備狀態見 [StoreSubmission 索引](StoreSubmission/README.md)。使用者提供的正式身分已用於候選套件，本機註冊 PFN 相符，尚未後台讀回。三張 1366×900 真實截圖已備；使用者最新授權使用現有 GitHub 並自行改為 public，[政策頁](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md) 已備妥，App 同時保留離線閱讀。網址尚未填入 Partner Center；WACK 尚未執行。候選資料不代表已上傳或認證。
+商品頁、runFullTrust 說明、認證測試步驟與提交狀態見 [StoreSubmission 索引](StoreSubmission/README.md)。正式產品身分已與 Partner Center 後台核對；0.3.1.0 X64 套件顯示 `Validated`，Submission 1 已成功提交，目前預先處理中。三張 1366×900 截圖、圖示、[政策頁](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)、支援網址及商品頁已保存，App 同時保留離線政策。已設定通過認證後立即發布；尚未認證通過或公開發布，WACK 尚未執行。
 
 本程式使用 C# **10.0 語言版本**與受支援的 **.NET 10** 執行階段。C# 10 不代表必須使用已停止支援的 .NET 6。桌面介面為 WinForms，不使用 Windows App SDK、WebView 或瀏覽器框架。MSIX 將 .NET runtime 一起封裝，使用者不需另裝 .NET；這增加磁碟大小，但避免依賴未宣告的外部執行階段。
 
-目前候選版本 **0.3.1.0**，顯示名稱為「音樂動態燈光設置」，新增內建離線隱私政策分頁，並保留0.3.0.0的 **1～64 顆、預設 8 顆**燈數設定。停止同步並完成清理後才能修改燈數，正常關閉後保存。只控制唯一符合本專案識別的 ESP32-S3 裝置；App 設定必須與韌體回報的 `LampCount` 相同，不符時顯示兩個數值且不送色。現有 8 顆實體裝置本輪沒有重刷。限制與供電設定見 [自訂燈數與 USB 供電](../../docs/自訂燈數與USB供電.md)。
+目前送審版本 **0.3.1.0**，顯示名稱為「音樂動態燈光設置」，新增內建離線隱私政策分頁，並保留0.3.0.0的 **1～64 顆、預設 8 顆**燈數設定。停止同步並完成清理後才能修改燈數，正常關閉後保存。只控制唯一符合本專案識別的 ESP32-S3 裝置；App 設定必須與韌體回報的 `LampCount` 相同，不符時顯示兩個數值且不送色。現有 8 顆實體裝置本輪沒有重刷。限制與供電設定見 [自訂燈數與 USB 供電](../../docs/自訂燈數與USB供電.md)。
 
 保留0.2.0.0加入的蒂芬妮藍／深藍介面、連續光條預覽、明確關閉按鈕及音樂燈效選項，維持C#10／.NET10，不新增音訊或繪圖執行時套件。可選音量、粗低／中／高頻能量分布與高低音比例；Windows輔色、彩虹或2～4種自訂色；呼吸、流動、單顆依序；節奏估測、手動曲風快慢或每秒0.1～4循環的自訂速度。節奏不足以估測時使用每秒0.5循環；曲風快慢不是自動分類。商品頁應依這些實際功能描述，勿宣稱精確音高／FFT頻譜、精準BPM或自動辨識曲風。
 
@@ -14,7 +14,7 @@
 
 0.3.0.0 已通過 148 項純程式檢查及 6 項預覽檢查；韌體 8 顆／50 mA 預設與 64 顆／80 mA 設定的 Arduino 全量建置均為 0 warnings。64 顆目前只有編譯、純程式及預覽驗證，尚未完成 64 顆實體燈條或 USB 供電驗證，商品頁不可宣稱 64 顆 USB 實測通過。
 
-0.2.0.0開發註冊後，使用者已確認三種效果有反應、暫停後漸暗；早期未取得控制權的零送色報告屬調整前歷史。0.2.0.0曾通過115項整合檢查、四種退出路徑及六項UI選擇診斷，但退出檢查未涵蓋取得控制權後的原生回呼互鎖，實機後來發現停止／關閉卡住。0.2.1.0針對此問題調整原生呼叫鎖定與非同步停止／釋放，已重新封裝及開發註冊，並通過115項檢查、四種退出及持續送色時的停止／重啟／關閉；詳見 [handoff.md](../../handoff.md)；不能把舊版檢查列為修正版已驗證。0.1.2.0的使用者實物觀察另保留。Partner Center身分後台讀回、WACK、乾淨機安裝與Store認證／發布仍待完成。
+0.2.0.0開發註冊後，使用者已確認三種效果有反應、暫停後漸暗；早期未取得控制權的零送色報告屬調整前歷史。0.2.0.0曾通過115項整合檢查、四種退出路徑及六項UI選擇診斷，但退出檢查未涵蓋取得控制權後的原生回呼互鎖，實機後來發現停止／關閉卡住。0.2.1.0針對此問題調整原生呼叫鎖定與非同步停止／釋放，已重新封裝及開發註冊，並通過115項檢查、四種退出及持續送色時的停止／重啟／關閉；詳見 [handoff.md](../../handoff.md)；不能把舊版檢查列為修正版已驗證。0.1.2.0的使用者實物觀察另保留。Partner Center 身分現已讀回、套件驗證及提交已完成；WACK、乾淨機安裝與 Store 認證通過／公開發布仍待完成。
 
 `AppxManifest.template.xml` 宣告 `com.microsoft.windows.lighting` AppExtension，讓 Windows 動態光效能將程式列為背景控制者；只宣告桌面程式需要的 `runFullTrust`，不要求網路或麥克風能力。WASAPI loopback 讀的是播放裝置混音，不是麥克風。最低安裝版本為 Windows 11 23H2（10.0.22631.0）；現場實機為 24H2。背景控制是否成功仍須在已安裝套件和實際硬體上驗證，不能只由 manifest 判定。
 
@@ -77,7 +77,7 @@
 
 ## 建置 Store 候選套件
 
-本次使用者提供的身分已記錄於 [partner-center-identity.json](StoreSubmission/partner-center-identity.json)，Source=UserProvided、BackendVerified=false。以下為已建置候選使用的參數，不代表後台已讀回或接受：
+本次正式身分已記錄於 [partner-center-identity.json](StoreSubmission/partner-center-identity.json)，使用者提供值已與 Partner Center 後台核對。以下為已建置並提交的 0.3.1.0 套件參數：
 
 ```powershell
 & .\02-windows-music-sync\scripts\build-package.ps1 -PackageKind Store `
@@ -89,17 +89,17 @@
 
 Store 模式拒絕預設開發身份，並要求四項身分參數全部明確提供。輸出為未經開發憑證簽署的 x64、自包含 MSIX，可作 Partner Center 套件候選；Store 產品身分、架構需求與最新提交規則仍須實際核對。無需為 Store 候選套件匯出或保存本機開發私鑰。
 
-## 上架前待辦
+## Store 提交狀態與後續驗證
 
-1. 本機候選已依使用者提供身分建置、註冊PFN相符；仍須Partner Center後台讀回及實際套件驗證。
+1. 正式身分後台核對及套件 `Validated` 已完成。使用者手動上傳後，後台讀回 0.3.1.0、X64、Windows.Desktop、最低 10.0.22631.0；已取消未來裝置系列，只發行桌面版。
 2. 在已安裝的封裝版本測試：瀏覽器前景時音樂同步、暫停漸暗、各種依據／配色／動畫／速度組合、Windows輔色變更、設定還原、USB重插、音訊輸出裝置切換、控制權競爭、關閉App釋放裝置，以及沒有硬體時的訊息。`scripts/test-shutdown.ps1`可檢查四種退出路徑，執行前須沒有其他本App程序；腳本不強制終止現有程序。軟體退出檢查與實體燈條觀察分別記錄。
 3. 以實際版本執行 Windows App Certification Kit（WACK），另做無開發環境／無預裝 .NET 的乾淨機安裝測試。本輪目前非管理員，因此WACK未執行；MakeAppx通過不等於WACK通過。
 4. 量測閒置／播放時 CPU、記憶體與封裝大小，不以「原生 WinForms」當作低資源消耗已驗證。
-5. 真實 App 截圖、功能／硬體限制說明與繁中商品頁已備，公開且已啟用的 GitHub Issues 作為支援網址。`privacy-policy.zh-TW.md` 是內建政策來源，發行者 Tseng。公開 GitHub 政策頁已通過匿名存取及文字一致性檢查，接續須填入 Partner Center；不以 App 內建頁代替政策網址。[Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
-6. 為 `runFullTrust` 提供具體說明：桌面WASAPI loopback擷取播放混音，在記憶體分析音量、粗頻帶能量與節奏估測，透過Windows LampArray控制外接燈條；不讀取麥克風、不存音訊、不傳輸音訊。本機設定JSON只保存使用者的燈效選擇，不保存音訊內容。
-7. 完成 Partner Center 分級、發行市場與價格等真實資料後，依使用者既有自動上架授權接續提交；若實際 IARC／法律聲明要求本人回答，須先取得該項真實回答，不能捏造。套件 `Validated`、提交、認證與公開發布是不同狀態。
+5. 真實 App 截圖、功能／硬體限制說明與繁中商品頁已保存至 Partner Center，公開 GitHub 政策與 Issues 支援網址也已保存。`privacy-policy.zh-TW.md` 同時是 App 內建政策來源，發行者 Tseng；後台個人資訊問題選「是」，因播放混音可能含個人資訊，即使僅在本機記憶體處理。[Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
+6. `runFullTrust` 理由及認證測試備註已保存，重新載入文字相符：桌面 WASAPI loopback 在記憶體分析播放混音，透過 Windows LampArray 控制外接燈條；不讀麥克風、不存或傳輸音訊。備註含無硬體預覽步驟、實物 8 顆／64 顆未測與退出方式。
+7. 後台沿用既存 IARC 10.3 分級（IARC／PEGI 3+、ESRB Everyone），本輪未重新答題或新增同意。發行設定讀回為 240 個市場、TWD 0、公開可搜尋、盡快發行、從不停止；分類為公用程式與工具，次類空白。已提交並設定通過認證後立即發布。套件 `Validated`、提交、認證通過與公開發布各自記錄。
 
-目前未上傳、送審、認證或發布。政策公開存取的阻擋已解除，未另建網站或 Pages。瀏覽器與 node_repl 工具本輪重設後仍在 kernel assets 初始化時發生路徑錯誤，無法操作 Partner Center；因此政策網址、商品頁、套件與最終聲明尚未在後台儲存或提交。
+產品 `9NKRN1KCR738` 的 Submission 1（`1152921505702190045`）已成功提交。概觀顯示認證中；Publishing Status 步驟 2/4 顯示提交完成、預先處理進行中，認證及發布尚未啟動，並明示通過認證後立即開始發布。**目前尚未認證通過或公開發布。** 證據見[提交狀態](../../docs/verification/2026-10-21/store-submission/0.3.1/submission-status.json)及[後台畫面](../../docs/verification/2026-10-21/store-submission/0.3.1/submission-in-certification.jpg)。先前工具初始化與自動上傳錯誤保留於 [handoff.md](../../handoff.md) 作為歷史，並非目前阻擋；WACK、乾淨機及 64 顆實體 USB 測試仍未完成。
 
 ## 官方參考
 

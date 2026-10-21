@@ -2,7 +2,7 @@
 
 分析電腦播放音訊，控制本專案 ESP32-S3／WS2812 燈條，可自訂 **1～64 顆、預設 8 顆**。精簡 WinForms 視窗採蒂芬妮藍搭配深藍底，可縮至通知區，音訊及燈光均使用 Windows 系統 API；沒有 WebView、Windows App SDK、NAudio、FFT 或雲端服務。
 
-目前候選版本為 **0.3.1.0**，新增內建離線「隱私政策」第三分頁，發行者 Tseng，文字與套件共用同一份嵌入資源，不開啟外部連結。已以使用者提供的正式產品身分建置並本機註冊，PFN 相符；Partner Center 後台未讀回，尚未上傳。
+目前送審版本為 **0.3.1.0**，新增內建離線「隱私政策」第三分頁，發行者 Tseng，文字與套件共用同一份嵌入資源，不開啟外部連結。正式產品身分已與 Partner Center 後台讀回核對，套件為 `Validated` 並已成功提交；目前預先處理中，通過認證後將立即發布，尚未認證通過或公開發布。
 
 保留0.3.0.0加入的燈數設定，僅在停止同步並完成清理後可修改，正常關閉後會保存。App 設定必須與韌體回報的 `LampCount` 相同；不符時顯示兩個數值並停止送色。現有實體裝置仍為 8 顆，本輪沒有重刷韌體。設定、韌體與 USB 供電限制見 [自訂燈數與 USB 供電](../docs/自訂燈數與USB供電.md)。64 顆目前只有編譯、純程式及預覽測試，尚未完成 64 顆實體燈條或 USB 供電驗證。
 
@@ -95,9 +95,11 @@ dotnet run --project .\02-windows-music-sync\tests\TestRunner.csproj -c Release
 
 ## Microsoft Store
 
-MSIX manifest、圖示、封裝腳本、內建政策與提交待辦見 [封裝文件](Packaging/README.md)及[上架資料索引](Packaging/StoreSubmission/README.md)。正式身分由使用者提供，候選套件本機註冊PFN相符，但BackendVerified=false；`LocalDev.Esp32MusicSync`仍僅為開發測試身分。
+MSIX manifest、圖示、封裝腳本、內建政策與提交狀態見 [封裝文件](Packaging/README.md)及[上架資料索引](Packaging/StoreSubmission/README.md)。正式產品身分已在 Partner Center 核對相符；`LocalDev.Esp32MusicSync`仍僅為開發測試身分。
 
-目前未上傳、送審、認證或發布。使用者已授權使用現有 GitHub 並自行改為 public；[公開隱私政策](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md) 已經匿名 HTTP 200 與內容一致性檢查，App 仍可離線閱讀同一政策，無需重建套件。網址已備妥但尚未寫入 Partner Center；瀏覽器／node_repl 工具重設後仍在 kernel assets 初始化時發生路徑錯誤。WACK 因目前非管理員未執行。[Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
+2026-10-21，產品 `9NKRN1KCR738` 的 Submission 1（`1152921505702190045`）已提交。使用者手動上傳的 0.3.1.0 X64 套件在後台顯示 `Validated`，裝置系列限定 Windows.Desktop，最低版本 10.0.22631.0。繁中商品頁、三張截圖與圖示、[公開隱私政策](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)、支援網址及認證備註均已保存。App 仍可離線閱讀同一政策。
+
+後台概觀顯示認證中；Publishing Status 的細部進度為步驟 2/4、提交完成及預先處理進行中，認證和發布尚未啟動。已設定通過認證後立即發布；目前尚未認證通過或公開發布。證據見[提交狀態](../docs/verification/2026-10-21/store-submission/0.3.1/submission-status.json)及[後台畫面](../docs/verification/2026-10-21/store-submission/0.3.1/submission-in-certification.jpg)。先前工具與自動上傳錯誤保留於交接歷史；WACK、乾淨機安裝及 64 顆實體 USB 測試仍未完成。
 
 最新實測狀態見 [handoff.md](../handoff.md)；前一輪設計文件中的「尚未實作」是當時歷史。
 

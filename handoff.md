@@ -492,3 +492,27 @@ https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/issues
 正式候選仍為 `02-windows-music-sync/artifacts/package-store-20261021-155702-548/Esp32MusicSync_0.3.1.0_x64_store.msix`，本輪重新核對58,198,227 bytes及SHA-256 `412629BE9587F16D6CB4D5D52742D715A99D60C13497FDC111189E35F0977CB9` 相符；三張Store截圖SHA亦與索引全部相符。僅文件及上架中繼資料變動，沒有重跑音訊或硬體測試；WACK仍未執行。最終已註冊layout仍須保留。
 
 **未讀回Partner Center、未儲存政策／支援網址或商品頁、未上傳套件、未完成IARC、未提交認證、未認證或發布。** 本輪證據在 `docs/verification/2026-10-21/store-github-policy/0.3.1/publication-status.json`，舊preparation-status.json是前次狀態，不應作最新政策偏好。未操作COM、未燒錄、實體仍8顆，64顆USB實測狀態不變。依既有授權自動commit／push；最新同步SHA以Git讀回為準。
+
+## 2026-10-21 Microsoft Store 已提交認證，通過後自動發布
+
+使用者再次要求開始自動上架。本輪瀏覽器工具已恢復，透過既有 Edge 登入工作階段操作，沒有重複建立產品或提交。Partner Center 實際讀回產品「音樂動態燈光設置」、Store ID `9NKRN1KCR738`、Submission 1 `1152921505702190045`；產品識別頁的 Identity Name、Publisher、PublisherDisplayName、PFN 與使用者提供及現有正式 MSIX 全部相符，BackendVerified 更新為 true。沒有保存 Package SID、登入憑證或帳戶私人資料。
+
+### 套件與商品資料
+
+自動選檔上傳兩次均顯示 Error；重新整理後看到處理時間過長及已暫停，移除失敗的上傳項並重新上傳仍未完成。向使用者提供正式 MSIX 路徑及 Edge 檔案存取設定說明後，使用者選擇自行上傳並回覆「已上傳」。其後**本輪後台實際讀回**套件 `Esp32MusicSync_0.3.1.0_x64_store.msix` 為 **Validated**、v0.3.1.0、X64、Windows.Desktop 最低10.0.22631.0；並非只依使用者回覆推定成功。套件維持原58,198,227 bytes，SHA-256 `412629BE9587F16D6CB4D5D52742D715A99D60C13497FDC111189E35F0977CB9`，沒有重建或修改App。裝置系列只保留Desktop，取消future-family選項；不勾Mobile／Xbox／Team／Mixed Reality。
+
+屬性改為「公用程式 + 工具」，無子／次要類別；填入公開GitHub網站、政策blob URL與Issues支援頁，儲存後重新讀回相符。個資問題選「是」，因WASAPI系統播放混音可能含可識別個人的內容；這是存取行為的揭露，並不表示有上傳或保存原始音訊。未捏造電話、地址或email，未宣告未驗證的協助工具測試；移除不適用的遊戲錄影／廣播宣告。
+
+中文（台灣）清單languageid=88／zh-TW已完成說明、簡短描述、七項功能、七個關鍵字及開發者Tseng；首次提交的「此版本新增功能」依後台提示留白。三張1366×900真實App截圖、各自標題與300×300 Store圖示已上傳並儲存。截圖新增／標題使用自訂按鈕，定位期間發生選檔等待逾時及一度誤刪本輪新增的第一張截圖，已重新上傳、逐張修正標題；最終儲存後重新讀回數量3、主頁／關於／政策的順序與標題全部正確，圖示300欄位亦顯示影像。商品頁文案已同步為實際已保存內容，不保留「未寫入後台」的目前式敘述。
+
+Additional Testing Info 已儲存英文runFullTrust理由、無硬體預覽測試、相容ESP32-S3／WS2812與燈數比對條件、退出方式、Windows版本及8顆原型／未測64顆界線。重新載入後整段文字與輸入內容完全一致；不提供遠端裝置或虛構測試帳號。
+
+### 既存分級、定價與提交結果
+
+年齡分級頁已有有效IARC v10.3結果，識別碼 `a7bbf963-65b2-8f8f-83b0-3faf5ad86025`；IARC／PEGI 3+、ESRB Everyone等讀回，沒有互動元素描述。本輪只沿用並讀回既存結果，沒有重新作答、代替使用者宣告成年或接受新IARC條款。價格／供應頁既存為TWD 0免費、全球240市場、公用對象且可搜尋、盡快發行、永不停止取得；未新增付費、試用、促銷或通知接收者。
+
+提交選項讀回通過認證後立即發布；依使用者多次自動上架授權按「提交以進行認證」。**2026-10-21 17:32:51（台北）讀回產品及Submission均為「認證中」**，Publishing Status步驟2/4：提交完成、預先處理進行中、認證未啟動、發佈中未啟動。後台明文：「您的產品通過認證後就會立即開始發佈。」因此已提交，但尚未認證通過或公開發布；不把Validated當成認證通過，也不把預先處理當成已上架。沒有額外需本人接受的新條款對話框。
+
+證據在 `docs/verification/2026-10-21/store-submission/0.3.1/`：公開欄位／套件／既存分級讀回JSON、實際提交文案及審查備註、submission-status.json、概觀文字及submission-in-certification.jpg。截圖顯示認證中／預先處理與自動發布設定，未擷取身分頁SID。舊工具故障與失敗上傳保留為歷史，不再列為目前阻擋。
+
+本輪只操作Store與文件，沒有改App程式、重新建置套件、操作COM或燒錄；已註冊layout繼續保留。WACK未執行、乾淨機測試及64顆實體USB電氣驗證仍未完成，不能隨Store提交改為通過。依既有授權自動commit／push；本機與遠端最終SHA以Git讀回為準。Microsoft認證／發布為外部後續流程，目前沒有另建排程或輪詢自動化。

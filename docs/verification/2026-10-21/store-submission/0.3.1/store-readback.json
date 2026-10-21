@@ -1,0 +1,65 @@
+{
+  "ObservedAtUtc": "2026-10-21T09:31:28.482Z",
+  "StoreId": "9NKRN1KCR738",
+  "SubmissionId": "1152921505702190045",
+  "BackendIdentityVerified": true,
+  "PackageStatus": "Validated",
+  "PackageVersion": "0.3.1.0",
+  "Architecture": "X64",
+  "MinDesktopVersion": "10.0.22631.0",
+  "UploadCompletedBy": "UserManualUploadAfterTwoAutomatedErrors",
+  "Properties": {
+    "policy": "https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md",
+    "support": "https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/issues",
+    "website": "https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting"
+  },
+  "ListingLanguage": "zh-TW",
+  "ListingLanguageId": 88,
+  "ListingDescription": "讓桌面燈條隨電腦播放的音樂變化。選擇音量、低／中／高頻能量分布或高低音比例，搭配呼吸、流動及單顆依序效果，建立自己的燈光氣氛。\n\n本程式分析 Windows 預設多媒體播放裝置的系統混音，再透過 Windows 動態光效控制相容燈條。音訊可來自 YouTube 或其他正在播放聲音的應用程式，不需登入 YouTube。\n\n使用前必須備妥相容硬體。此版本只控制本專案 ESP32-S3 USB Light Strip 識別的裝置，需搭配正確的 USB HID LampArray 韌體與 WS2812 燈條。App 可設定 1～64 顆、預設 8 顆，設定須與韌體回報一致；App 不會自動偵測實體顆數或改寫韌體。目前實體原型為 8 顆；64 顆只有程式、預覽與編譯驗證，實體運作及 USB 供電能力仍需依硬體量測確認。\n\n請在 Windows「設定 → 個人化 → 動態光效」啟用裝置，並在背景光源控制項調整本程式的優先順序。開啟 App、確認燈數後，播放音樂並按「開始同步」。不必將 Windows 內建效果切換成「音效」。暫停播放後燈光會漸暗。\n\n配色包含 Windows 佈景主題輔色、彩虹及 2～4 種自訂顏色；速度可使用節奏估測、手動快／中／慢或自訂循環速度。聲頻為粗頻帶分析，節奏估測可能出現半拍／倍拍。\n\n程式可縮至通知區繼續同步。音訊只在記憶體分析，不開啟麥克風、不保存錄音、不上傳音訊，沒有廣告、追蹤器、雲端帳號或遙測服務。正常關閉會保存本機燈數與燈效偏好；關閉程式會停止分析並釋放資源。App 內建可離線閱讀的隱私政策。\n\n系統需求：Windows 11 x64，套件最低 23H2；執行時另檢查所需 LampArray API，目前以 24H2 測試。未連接相容硬體時可觀察預覽，但無法控制實體燈光。",
+  "Features": [
+    "自訂 1～64 顆燈數，與相容韌體回報比對。",
+    "音量、粗低／中／高頻能量或高低音比例變色。",
+    "Windows 輔色、彩虹與 2～4 色自訂配色。",
+    "呼吸、流動及單顆依序效果。",
+    "節奏估測、手動快慢及自訂速度。",
+    "連續色條預覽、通知區執行與明確關閉按鈕。",
+    "在記憶體分析播放音訊，不錄音、不上傳。"
+  ],
+  "Screenshots": 3,
+  "DesktopScreenshotsReadback": "heading 螢幕擷取畫面 (至少需要一個) *, Value: 5\n\t\t\t\t\t\t144 text 螢幕擷取畫面 (至少需要一個) *\n\t\t\t\t\t145 container\n\t\t\t\t\t\t146 text 請只針對您產品支援之裝置系列提供螢幕擷取畫面。建議每個裝置系列至少 4 個螢幕擷取畫面。\n\t\t\t\t\t\t147 link Description:  深入了解, Value: go.microsoft.com/fwlink/?LinkId=861819\n\t\t\t\t\t148 container\n\t\t\t\t\t\t149 tab group\n\t\t\t\t\t\t\t150 tab (selected, settable, boolean) 桌面  (3), Value: 1, ID: tab-0\n\t\t\t\t\t\t\t151 tab (selectable, settable, boolean) Xbox  (0), Value: 0, ID: tab-1\n\t\t\t\t\t\t152 container Description: 桌面  (3), ID: panel-2\n\t\t\t\t\t\t\t153 container\n\t\t\t\t\t\t\t\t154 container\n\t\t\t\t\t\t\t\t\t155 button\n\t\t\t\t\t\t\t\t\t156 button listing-screenshot-image\n\t\t\t\t\t\t\t\t\t\t157 image listing-screenshot-image\n\t\t\t\t\t\t\t\t\t158 button 音樂燈光設定：選擇音訊依據、配色、動態與速度，停止同步後可設定燈數。\n\t\t\t\t\t\t\t\t\t\t159 text 音樂燈光設定：選擇音訊依據、配色、動態與速度，停止同步後可設定燈數。\n\t\t\t\t\t\t\t\t160 container\n\t\t\t\t\t\t\t\t\t161 button\n\t\t\t\t\t\t\t\t\t162 button listing-screenshot-image\n\t\t\t\t\t\t\t\t\t\t163 image listing-screenshot-image\n\t\t\t\t\t\t\t\t\t164 button 關於與版本：查看版本編號、Windows 動態光效相容硬體需求及燈數限制。\n\t\t\t\t\t\t\t\t\t\t165 text 關於與版本：查看版本編號、Windows 動態光效相容硬體需求及燈數限制。\n\t\t\t\t\t\t\t\t166 container\n\t\t\t\t\t\t\t\t\t167 button\n\t\t\t\t\t\t\t\t\t168 button listing-screenshot-image\n\t\t\t\t\t\t\t\t\t\t169 image listing-screenshot-image\n\t\t\t\t\t\t\t\t\t170 button 內建隱私政策：查看音訊處理、本機設定及診斷資料說明，不需開啟外部網頁。\n\t\t\t\t\t\t\t\t\t\t171 text 內建隱私政策：查看音訊處理、本機設定及診斷資料說明，不需開啟外部網頁。\n\t\t\t\t\t\t\t\t172 button\n\t\t\t\t\t\t\t173 content list\n\t\t\t\t\t\t\t\t174 container\n\t\t\t\t\t\t\t\t\t175 AXListMarker • \n\t\t\t\t\t\t\t\t\t176 text 1366 x 768 像素或更大尺寸 (建議)\n\t\t\t\t\t\t\t\t177 container\n\t\t\t\t\t\t\t\t\t178 AXListMarker • \n\t\t\t\t\t\t\t\t\t179 text 支援 4K 影像 (3840 x 2160)\n\t\t\t\t\t\t\t\t180 container\n\t\t\t\t\t\t\t\t\t181 AXListMarker • \n\t\t\t\t\t\t\t\t\t182 text 最多上傳 30 個檔案\n\t\t\t\t\t\t\t\t183 container\n\t\t\t\t\t\t\t\t\t184 AXListMarker • \n\t\t\t\t\t\t\t\t\t185 text 橫向或直向\n\t\t\t\t\t\t\t\t186 container\n\t\t\t\t\t\t\t\t\t187 AXListMarker • \n\t\t\t\t\t\t\t\t\t188 text 接受的檔案類型: .png\n\t\t\t\t\t\t\t\t189 container\n\t\t\t\t\t\t\t\t\t190 AXListMarker • \n\t\t\t\t\t\t\t\t\t191 text 小於 50 MB\n\t\t\t\t\t192 container\n\t\t\t\t\t\t193 ",
+  "StoreLogo300Readback": "container overrideStoreLogos\n\t\t\t\t\t\t\t\t227 text Microsoft Store 顯示影像\n\t\t\t\t\t\t\t\t228 container\n\t\t\t\t\t\t\t\t\t229 container\n\t\t\t\t\t\t\t\t\t\t230 text 1:1 應用程式磚圖示\n\t\t\t\t\t\t\t\t\t\t231 text 300 x 300\n\t\t\t\t\t\t\t\t\t\t232 button\n\t\t\t\t\t\t\t\t\t\t233 button listing-screenshot-image\n\t\t\t\t\t\t\t\t\t\t\t234 image listing-screenshot-image\n\t\t\t\t\t\t\t\t\t\t235 text 已顯示在適用於 Windows 10/11 客戶的 Microsoft Store 中\n\t\t\t\t\t\t\t\t\t236 container\n\t\t\t\t\t\t\t\t\t\t237 text 1:1 150 x 150\n\t\t\t\t\t\t\t\t\t\t238 button\n\t\t\t\t\t\t\t\t\t239 container\n\t\t\t\t\t\t\t\t\t\t240 text 1:1 71 x 71\n\t\t\t\t\t\t\t\t\t\t241 button\n\t\t\t\t\t\t\t\t\t242 content list\n\t\t\t\t\t\t\t\t\t\t243 container\n\t\t\t\t\t\t\t\t\t\t\t244 AXListMarker • \n\t\t\t\t\t\t\t\t\t\t\t245 text 接受的檔案類型: .png\n\t\t\t\t\t\t\t\t\t\t246 container\n\t\t\t\t\t\t\t\t\t\t\t247 AXListMarker • \n\t\t\t\t\t\t\t\t\t\t\t248 text 小於 5 MB\n\t\t\t\t\t249 container\n\t\t\t\t\t\t250 ",
+  "IarcStatus": "ExistingRatingsReadBackNoQuestionnaireChanged",
+  "IarcRatingId": "a7bbf963-65b2-8f8f-83b0-3faf5ad86025",
+  "IarcVersion": "10.3",
+  "Ratings": {
+    "IARC": "3+",
+    "PEGI": "3+",
+    "ESRB": "Everyone"
+  },
+  "Price": {
+    "Currency": "TWD",
+    "Amount": 0
+  },
+  "Markets": "AllWorldwide240",
+  "Visibility": "PublicDiscoverable",
+  "Schedule": "AsSoonAsPossibleNeverStopAcquisition",
+  "ReleaseAfterCertification": "Automatic",
+  "CertificationNotesSavedAndReloadMatched": true,
+  "Wack": "NotRun",
+  "Hardware64": "NotPhysicallyTested",
+  "BackendIdentity": {
+    "Name": "20249Tseng.492594FB8837",
+    "Publisher": "CN=6C3EB95B-3829-4DE0-AD7C-CD31021C08A5",
+    "PublisherDisplayName": "Tseng",
+    "PackageFamilyName": "20249Tseng.492594FB8837_da8gn0c7d0k5y",
+    "Source": "PartnerCenterProductIdentityPage",
+    "Url": "https://partner.microsoft.com/zh-tw/dashboard/products/9NKRN1KCR738/identity"
+  },
+  "LocalUploadedCandidate": {
+    "RelativePath": "02-windows-music-sync/artifacts/package-store-20261021-155702-548/Esp32MusicSync_0.3.1.0_x64_store.msix",
+    "Bytes": 58198227,
+    "Sha256": "412629BE9587F16D6CB4D5D52742D715A99D60C13497FDC111189E35F0977CB9",
+    "HashRecheckedBeforeUpload": true,
+    "RemotePackageSha256ReadBack": false
+  }
+}
