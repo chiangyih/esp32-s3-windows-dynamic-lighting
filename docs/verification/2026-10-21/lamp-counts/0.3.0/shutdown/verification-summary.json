@@ -1,0 +1,66 @@
+{
+  "ObservedAtUtc": "2026-10-21T07:30:48.1746042+00:00",
+  "ExecutableFileVersion": "0.3.0.0",
+  "ExitTimeoutSeconds": 15,
+  "Status": "Passed",
+  "ExpectedCases": 4,
+  "CompletedCases": 4,
+  "Cases": [
+    {
+      "Case": "button",
+      "ExpectedCloseRoute": "button",
+      "ProcessId": 25076,
+      "ExitCode": 0,
+      "ProcessExitVerifiedExternally": true,
+      "CloseRequestedBy": "button",
+      "ShutdownElapsedMilliseconds": 156.6617,
+      "ElapsedSeconds": 5.7086142,
+      "ReportFile": "button.json",
+      "Status": "Passed",
+      "Failure": null
+    },
+    {
+      "Case": "startup",
+      "ExpectedCloseRoute": "button",
+      "ProcessId": 4952,
+      "ExitCode": 0,
+      "ProcessExitVerifiedExternally": true,
+      "CloseRequestedBy": "button",
+      "ShutdownElapsedMilliseconds": 128.3226,
+      "ElapsedSeconds": 1.5085878,
+      "ReportFile": "startup.json",
+      "Status": "Passed",
+      "Failure": null
+    },
+    {
+      "Case": "tray",
+      "ExpectedCloseRoute": "tray",
+      "ProcessId": 23392,
+      "ExitCode": 0,
+      "ProcessExitVerifiedExternally": true,
+      "CloseRequestedBy": "tray",
+      "ShutdownElapsedMilliseconds": 103.67,
+      "ElapsedSeconds": 3.7794854,
+      "ReportFile": "tray.json",
+      "Status": "Passed",
+      "Failure": null
+    },
+    {
+      "Case": "window",
+      "ExpectedCloseRoute": "window",
+      "ProcessId": 4448,
+      "ExitCode": 0,
+      "ProcessExitVerifiedExternally": true,
+      "CloseRequestedBy": "window",
+      "ShutdownElapsedMilliseconds": 114.8854,
+      "ElapsedSeconds": 1.4285533,
+      "ReportFile": "window.json",
+      "Status": "Passed",
+      "Failure": null
+    }
+  ],
+  "TestSignalPlayed": false,
+  "WindowsLightingPolicyChanged": false,
+  "ProcessForceTerminated": false,
+  "PhysicalLedVerification": "Not performed; these are UI, lifecycle, and process-exit checks."
+}

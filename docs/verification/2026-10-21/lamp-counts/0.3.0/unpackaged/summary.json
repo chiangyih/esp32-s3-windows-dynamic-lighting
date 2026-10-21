@@ -1,0 +1,53 @@
+[
+  {
+    "Count": 1,
+    "ExitCode": 0,
+    "Reported": 0,
+    "Status": "找不到 ESP32-S3 燈光裝置，請檢查 USB 資料線。",
+    "Checks": [],
+    "Lifecycle": null,
+    "SentFrames": 0,
+    "EditingEnabled": false
+  },
+  {
+    "Count": 64,
+    "ExitCode": 0,
+    "Reported": 0,
+    "Status": "找不到 ESP32-S3 燈光裝置，請檢查 USB 資料線。",
+    "Checks": [],
+    "Lifecycle": null,
+    "SentFrames": 0,
+    "EditingEnabled": false
+  },
+  {
+    "Count": 8,
+    "ExitCode": 0,
+    "Reported": 0,
+    "Status": "找不到 ESP32-S3 燈光裝置，請檢查 USB 資料線。",
+    "Checks": [
+      {
+        "Requested": 1,
+        "Actual": 1,
+        "Passed": true
+      },
+      {
+        "Requested": 64,
+        "Actual": 64,
+        "Passed": true
+      },
+      {
+        "Requested": 8,
+        "Actual": 8,
+        "Passed": true
+      },
+      {
+        "Requested": 8,
+        "Actual": 8,
+        "Passed": true
+      }
+    ],
+    "Lifecycle": null,
+    "SentFrames": 0,
+    "EditingEnabled": false
+  }
+]

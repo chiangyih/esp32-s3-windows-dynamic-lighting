@@ -15,6 +15,9 @@ internal sealed partial class MainForm
     private readonly AccentSlider _customSpeed = new() { Minimum = 1, Maximum = 40, Value = 10, AccessibleName = "自訂速度，每秒循環次數的十分之一" };
     private readonly Label _speedValue = new();
     private readonly Label _tempoLabel = new();
+    private readonly NumericUpDown _lampCount = new() { Minimum = LampCountLimits.Minimum, Maximum = LampCountLimits.Maximum,
+        Value = LampCountLimits.Default, Width = 64, BackColor = UiTheme.Background, ForeColor = UiTheme.Text,
+        BorderStyle = BorderStyle.FixedSingle, AccessibleName = "燈數，1 到 64 顆，停止同步後可修改", Margin = new Padding(0, 0, 4, 0) };
     private readonly Label _modeHint = new();
     private readonly Label _automaticSpeedHint = new();
     private readonly Panel _speedDetails = new() { Dock = DockStyle.Fill, Margin = Padding.Empty };
@@ -29,6 +32,7 @@ internal sealed partial class MainForm
     private bool? _preferenceSaveSucceeded;
     private readonly List<object> _effectControlChecks = new();
     private int _diagnosticEffectStep = -1;
+    private readonly List<object> _lampCountControlChecks = new();
 
     private static ComboBox Choice(string name, params string[] values)
     {
@@ -90,12 +94,25 @@ internal sealed partial class MainForm
         grid.Controls.Add(_speedDetails, 2, 2);
         grid.SetColumnSpan(_speedDetails, 2);
         ConfigureLabel(_modeHint, "", _smallFont, UiTheme.Muted);
-        grid.Controls.Add(_modeHint, 0, 3);
-        grid.SetColumnSpan(_modeHint, 4);
+        var detail = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1, BackColor = UiTheme.Surface, Margin = Padding.Empty };
+        detail.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+        detail.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 176));
+        detail.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+        _modeHint.TextAlign = ContentAlignment.TopLeft;
+        _modeHint.Padding = new Padding(0, 4, 0, 0);
+        detail.Controls.Add(_modeHint, 0, 0);
+        var countControls = new FlowLayoutPanel { Dock = DockStyle.Fill, WrapContents = false, Padding = new Padding(0, 9, 0, 0), Margin = Padding.Empty };
+        countControls.Controls.Add(new Label { Text = "燈數", AutoSize = true, Font = _smallFont, ForeColor = UiTheme.Muted, Margin = new Padding(0, 3, 8, 0) });
+        countControls.Controls.Add(_lampCount);
+        countControls.Controls.Add(new Label { Text = "顆", AutoSize = true, Font = _smallFont, ForeColor = UiTheme.Muted, Margin = new Padding(0, 3, 0, 0) });
+        detail.Controls.Add(countControls, 1, 0);
+        grid.Controls.Add(detail, 0, 3);
+        grid.SetColumnSpan(detail, 4);
         _effectsPanel.Controls.Add(grid);
         _toolTip.SetToolTip(_signalMode, "音量控制明暗；聲頻使用寬頻帶能量分布，高低音使用低音與高音的相對比例決定配色位置。");
         _toolTip.SetToolTip(_paletteMode, "Windows 佈景主題讀取系統輔色，並衍生深淺配色；App 介面維持蒂芬妮藍。");
         _toolTip.SetToolTip(_speedMode, "自動節奏是音訊起音間隔的估測，可能出現半拍／倍拍；曲風快慢為手動預設。");
+        _toolTip.SetToolTip(_lampCount, "停止同步後可修改 1～64 顆；必須與 ESP32 韌體回報的燈數一致。增加燈數前請確認 USB 供電能力。");
         return _effectsPanel;
     }
 
@@ -103,6 +120,8 @@ internal sealed partial class MainForm
     {
         _loadingEffects = true;
         var preferences = PreferenceStore.Load();
+        _lampCount.Value = _options.LampCountOverride ?? preferences.LampCount;
+        _engine.ConfigureLampCount((int)_lampCount.Value);
         var value = preferences.Effect;
         _gain.Value = preferences.GainDb;
         _brightness.Value = preferences.BrightnessPercent;
@@ -137,6 +156,25 @@ internal sealed partial class MainForm
         foreach (var box in new[] { _signalMode, _paletteMode, _animationMode, _speedMode, _colorCount, _styleSpeed })
             box.SelectedIndexChanged += (_, _) => ApplyEffects();
         _customSpeed.ValueChanged += (_, _) => ApplyEffects();
+        _lampCount.ValueChanged += (_, _) =>
+        {
+            if (_loadingEffects || _closing) return;
+            try
+            {
+                _engine.ConfigureLampCount((int)_lampCount.Value);
+                Span<LedColor> colors = stackalloc LedColor[LampCountLimits.Maximum];
+                var count = _engine.CopyPreview(colors);
+                _preview.UpdateFrame(colors[..count]);
+                UpdateStatus();
+            }
+            catch (InvalidOperationException)
+            {
+                _loadingEffects = true;
+                try { _lampCount.Value = _engine.LampCount; }
+                finally { _loadingEffects = false; }
+                _modeHint.Text = "請先停止同步，再修改燈數；設定需與韌體一致。";
+            }
+        };
         for (var index = 0; index < _colorButtons.Length; index++)
         {
             var colorIndex = index;
@@ -185,10 +223,10 @@ internal sealed partial class MainForm
         _speedValue.Text = $"{value.CustomCyclesPerSecond:F1} 次／秒";
         _modeHint.Text = value.Signal switch
         {
-            SignalMode.Frequency => "依低／中／高頻能量變色，音量控制明暗；非精確音高辨識。",
-            SignalMode.BassTreble => "低音與高音的相對比例決定色彩，音量控制明暗。",
-            _ => "音量決定色彩與明暗；暫停音樂後，各種效果皆會漸暗。"
-        };
+            SignalMode.Frequency => "依低／中／高頻能量變色，非精確音高。",
+            SignalMode.BassTreble => "依低音與高音的相對比例變色。",
+            _ => "音量控制配色與明暗，暫停後漸暗。"
+        } + "\n停止後可改燈數，需與韌體回報一致。";
     }
 
     private void WindowsThemeChanged(UISettings sender, object args)
@@ -216,7 +254,18 @@ internal sealed partial class MainForm
     }
 
     private void SavePreferences() => _preferenceSaveSucceeded = PreferenceStore.Save(new UserPreferences
-        { GainDb = _gain.Value, BrightnessPercent = _brightness.Value, Effect = _engine.Settings });
+        { GainDb = _gain.Value, BrightnessPercent = _brightness.Value, LampCount = _engine.LampCount, Effect = _engine.Settings });
+
+    private void ExerciseLampCountControls()
+    {
+        var original = _engine.LampCount;
+        foreach (var count in new[] { 1, 64, 8, original })
+        {
+            _lampCount.Value = count;
+            _lampCountControlChecks.Add(new { Requested = count, Actual = _engine.LampCount,
+                Passed = _engine.LampCount == count });
+        }
+    }
 
     // Opt-in diagnostics drive the actual dropdown events, without saving test choices.
     private void ExerciseEffectControls()

@@ -1,0 +1,79 @@
+[
+  {
+    "Case": "count64-restored",
+    "Count": 64,
+    "PackageIdentity": true,
+    "PreferenceSaved": null,
+    "Reported": 8,
+    "SentFrames": 0,
+    "LightingStatus": "設定 64 顆、裝置回報 8 顆，請確認燈數與韌體；目前不送色。",
+    "Controls": [],
+    "StopRestart": false,
+    "EditingEnabled": false,
+    "CleanupMilliseconds": 170.968,
+    "ProcessExited": true
+  },
+  {
+    "Case": "count8-save",
+    "Count": 8,
+    "PackageIdentity": true,
+    "PreferenceSaved": true,
+    "Reported": 0,
+    "SentFrames": 0,
+    "LightingStatus": "尚未開始",
+    "Controls": [],
+    "StopRestart": false,
+    "EditingEnabled": true,
+    "CleanupMilliseconds": 511.3093,
+    "ProcessExited": true
+  },
+  {
+    "Case": "count8-controls",
+    "Count": 8,
+    "PackageIdentity": true,
+    "PreferenceSaved": null,
+    "Reported": 8,
+    "SentFrames": 0,
+    "LightingStatus": "等待燈光控制權；請在「背景光源控制項」將此 App 排到前面。",
+    "Controls": [
+      {
+        "Requested": 1,
+        "Actual": 1,
+        "Passed": true
+      },
+      {
+        "Requested": 64,
+        "Actual": 64,
+        "Passed": true
+      },
+      {
+        "Requested": 8,
+        "Actual": 8,
+        "Passed": true
+      },
+      {
+        "Requested": 8,
+        "Actual": 8,
+        "Passed": true
+      }
+    ],
+    "StopRestart": true,
+    "EditingEnabled": false,
+    "CleanupMilliseconds": 108.8045,
+    "ProcessExited": true
+  },
+  {
+    "Case": "about",
+    "Count": 8,
+    "PackageIdentity": true,
+    "PreferenceSaved": null,
+    "Reported": 8,
+    "SentFrames": 0,
+    "LightingStatus": "等待燈光控制權；請在「背景光源控制項」將此 App 排到前面。",
+    "Controls": [],
+    "StopRestart": false,
+    "EditingEnabled": false,
+    "CleanupMilliseconds": 108.8065,
+    "ProcessExited": true
+  }
+]

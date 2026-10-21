@@ -1,0 +1,44 @@
+{
+  "ObservedAtUtc": "2026-10-21T07:28:03.3946064+00:00",
+  "Status": "Passed",
+  "CheckCount": 6,
+  "AssemblyVersion": "0.3.0.0",
+  "Cases": [
+    {
+      "Step": 1,
+      "LampCount": 1,
+      "Image": "preview-1-1-lamps.png",
+      "InteriorLit": true,
+      "DistinctSampleColors": 1
+    },
+    {
+      "Step": 2,
+      "LampCount": 64,
+      "Image": "preview-2-64-lamps.png",
+      "InteriorLit": true,
+      "DistinctSampleColors": 68
+    },
+    {
+      "Step": 3,
+      "LampCount": 8,
+      "Image": "preview-3-8-lamps.png",
+      "InteriorLit": true,
+      "DistinctSampleColors": 68
+    },
+    {
+      "Step": 4,
+      "LampCount": 1,
+      "Image": "preview-4-1-lamps.png",
+      "InteriorLit": true,
+      "DistinctSampleColors": 1
+    }
+  ],
+  "ResizeSequence": "1 -\u003E 64 -\u003E 8 -\u003E 1",
+  "NativeWinFormsDrawToBitmap": true,
+  "ControlDisposed": true,
+  "BitmapsDisposed": true,
+  "MainFormCreated": false,
+  "HardwareAccessed": false,
+  "AudioPlayed": false,
+  "Interpretation": "Synthetic preview rendering only; not hardware LED observation or full app screenshot."
+}

@@ -1,0 +1,5 @@
+Sketch uses 376008 bytes (7%) of program storage space. Maximum is 4718592 bytes.
+Global variables use 41920 bytes (12%) of dynamic memory, leaving 285760 bytes for local variables. Maximum is 327680 bytes.
+Build completed: D:\00_Codex_project\esp32-s3-windows動態光效\build\custom-count-20261021-152227-243\default-8-budget-50
+Lamp count: 8; LED branch estimate: 50 mA. No upload or USB-current measurement was performed.
+N32R16 OPI memory settings are based on the board-family documentation; verify the real board before upload.

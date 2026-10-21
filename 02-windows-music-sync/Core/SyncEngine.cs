@@ -14,8 +14,9 @@ public sealed class SyncEngine : IDisposable
     private readonly MusicEffectRenderer _effects = new();
     private EffectSettings _settings = new();
     private readonly object _previewGate = new();
-    private readonly LedColor[] _previewFrame = new LedColor[FrameMapper.LampCount];
-    private readonly LedColor[] _frame = new LedColor[FrameMapper.LampCount];
+    private readonly LedColor[] _previewFrame = new LedColor[LampCountLimits.Maximum];
+    private readonly LedColor[] _frame = new LedColor[LampCountLimits.Maximum];
+    private int _lampCount = LampCountLimits.Default;
     private readonly object _lifecycleGate = new();
     private CancellationTokenSource? _cancellation;
     private Task? _renderTask;
@@ -67,7 +68,37 @@ public sealed class SyncEngine : IDisposable
         }
     }
     public EffectSettings Settings { get => Volatile.Read(ref _settings); set => Volatile.Write(ref _settings, value ?? new()); }
-    public void CopyPreview(Span<LedColor> destination) { lock (_previewGate) _previewFrame.AsSpan().CopyTo(destination); }
+    public int LampCount => Volatile.Read(ref _lampCount);
+    public int ReportedLampCount => _lamps.ReportedLampCount;
+    public int CopyPreview(Span<LedColor> destination)
+    {
+        lock (_previewGate)
+        {
+            var count = LampCount;
+            _previewFrame.AsSpan(0, count).CopyTo(destination);
+            return count;
+        }
+    }
+
+    public void ConfigureLampCount(int count)
+    {
+        LampCountLimits.Validate(count);
+        lock (_lifecycleGate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_cancellation != null || _stopping || _stopTask is { IsCompleted: false } ||
+                _renderTask is { IsCompleted: false })
+                throw new InvalidOperationException("請先停止同步，再修改燈數。");
+            _lamps.ConfigureLampCount(count);
+            lock (_previewGate)
+            {
+                Array.Clear(_previewFrame);
+                Array.Clear(_frame);
+                Volatile.Write(ref _lampCount, count);
+            }
+            _effects.Reset();
+        }
+    }
     public double MaximumRms => Volatile.Read(ref _maximumRms);
     public long AudioPackets => Interlocked.Read(ref _audioPackets);
     public long SentFrames => Interlocked.Read(ref _sentFrames);
@@ -165,9 +196,9 @@ public sealed class SyncEngine : IDisposable
                 var balance = bass + treble > 0.00001 ? bass / (bass + treble) : 0.5;
                 _effects.Fill(level, Volatile.Read(ref _spectralPosition), balance,
                     fresh ? Volatile.Read(ref _beat) : 0, fresh ? TempoBpm : 0,
-                    elapsed, Brightness, Settings, _frame);
-                lock (_previewGate) _frame.CopyTo(_previewFrame, 0);
-                if (_lamps.TrySendFrame(_frame))
+                    elapsed, Brightness, Settings, _frame.AsSpan(0, LampCount));
+                lock (_previewGate) _frame.AsSpan(0, LampCount).CopyTo(_previewFrame);
+                if (_lamps.TrySendFrame(_frame.AsSpan(0, LampCount)))
                 {
                     Interlocked.Increment(ref _sentFrames);
                     if (level == 0) Interlocked.Increment(ref _blackFramesSent);

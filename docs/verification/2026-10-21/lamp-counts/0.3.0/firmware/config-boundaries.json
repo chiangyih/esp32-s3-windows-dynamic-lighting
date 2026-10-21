@@ -1,0 +1,66 @@
+[
+  {
+    "LampCount": 1,
+    "BudgetMa": 50,
+    "ExpectedCompileSuccess": true,
+    "CompilerExitCode": 0,
+    "TestPassed": true,
+    "Log": "config-1-budget-50.log"
+  },
+  {
+    "LampCount": 8,
+    "BudgetMa": 50,
+    "ExpectedCompileSuccess": true,
+    "CompilerExitCode": 0,
+    "TestPassed": true,
+    "Log": "config-8-budget-50.log"
+  },
+  {
+    "LampCount": 49,
+    "BudgetMa": 50,
+    "ExpectedCompileSuccess": true,
+    "CompilerExitCode": 0,
+    "TestPassed": true,
+    "Log": "config-49-budget-50.log"
+  },
+  {
+    "LampCount": 50,
+    "BudgetMa": 50,
+    "ExpectedCompileSuccess": false,
+    "CompilerExitCode": 1,
+    "TestPassed": true,
+    "Log": "config-50-budget-50.log"
+  },
+  {
+    "LampCount": 64,
+    "BudgetMa": 50,
+    "ExpectedCompileSuccess": false,
+    "CompilerExitCode": 1,
+    "TestPassed": true,
+    "Log": "config-64-budget-50.log"
+  },
+  {
+    "LampCount": 64,
+    "BudgetMa": 80,
+    "ExpectedCompileSuccess": true,
+    "CompilerExitCode": 0,
+    "TestPassed": true,
+    "Log": "config-64-budget-80.log"
+  },
+  {
+    "LampCount": 65,
+    "BudgetMa": 80,
+    "ExpectedCompileSuccess": false,
+    "CompilerExitCode": 1,
+    "TestPassed": true,
+    "Log": "config-65-budget-80.log"
+  },
+  {
+    "LampCount": 8,
+    "BudgetMa": 101,
+    "ExpectedCompileSuccess": false,
+    "CompilerExitCode": 1,
+    "TestPassed": true,
+    "Log": "config-8-budget-101.log"
+  }
+]

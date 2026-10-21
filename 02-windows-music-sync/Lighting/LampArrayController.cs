@@ -10,22 +10,21 @@ using LampColor = Windows.UI.Color;
 namespace MusicSync.Lighting;
 
 /// <summary>
-/// Controls only this project's unique eight-lamp device through Windows lighting arbitration.
+/// Controls this project's unique device with a matching configured lamp count.
 /// The state gate protects managed fields only: no Windows lighting calls or event accessors
 /// may run while it is held, because those calls can synchronously dispatch native callbacks.
 /// </summary>
 public sealed class LampArrayController : IDisposable
 {
     public const string TargetName = "ESP32-S3 USB Light Strip";
-    public const int TargetLampCount = 8;
     private const int TargetVendorId = 0x303A;
     private const int TargetProductId = 0x1001;
     private readonly object _gate = new();
     private readonly SemaphoreSlim _refreshGate = new(1, 1);
     private readonly Dictionary<string, string> _devices = new(StringComparer.Ordinal);
-    private readonly LampColor[] _colors = new LampColor[TargetLampCount];
-    private readonly LedColor[] _lastColors = new LedColor[TargetLampCount];
-    private readonly int[] _indices = { 0, 1, 2, 3, 4, 5, 6, 7 };
+    private FrameBuffers _buffers = new(LampCountLimits.Default);
+    private int _expectedLampCount = LampCountLimits.Default;
+    private int _reportedLampCount;
     private readonly bool _supportsControlAvailability;
     private DeviceWatcher? _watcher;
     private System.Threading.Timer? _refreshTimer;
@@ -52,6 +51,7 @@ public sealed class LampArrayController : IDisposable
     private readonly List<CancellationTokenSource> _retiredCancellations = new();
     private readonly ConcurrentQueue<string> _cleanupErrors = new();
     private int _refreshOperations;
+    private int _stopOperations;
     private bool _refreshGateDisposed;
 
     public LampArrayController()
@@ -70,10 +70,34 @@ public sealed class LampArrayController : IDisposable
     public string Status => Volatile.Read(ref _status);
     public bool IsAvailable => Volatile.Read(ref _available);
     public int ConnectedCount => Volatile.Read(ref _connectedCount);
+    public int ExpectedLampCount => Volatile.Read(ref _expectedLampCount);
+    public int ReportedLampCount => Volatile.Read(ref _reportedLampCount);
     public string DeviceSummary => Volatile.Read(ref _deviceSummary);
     public bool IsDiscoveryRunning => Volatile.Read(ref _started) ||
-        Volatile.Read(ref _refreshOperations) > 0 || Volatile.Read(ref _sendInProgress) != 0;
+        Volatile.Read(ref _refreshOperations) > 0 || Volatile.Read(ref _sendInProgress) != 0 ||
+        Volatile.Read(ref _stopOperations) > 0;
     public string[] CleanupErrors => _cleanupErrors.ToArray();
+
+    /// <summary>Changes exact-size buffers only after all work from the previous run has stopped.</summary>
+    public void ConfigureLampCount(int count)
+    {
+        LampCountLimits.Validate(count);
+        lock (_gate)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_started || _refreshOperations != 0 || _sendInProgress != 0 || _stopOperations != 0)
+                throw new InvalidOperationException("請先停止同步並等待清理完成，再修改燈數。");
+            if (_expectedLampCount == count) return;
+            _buffers = new FrameBuffers(count);
+            _expectedLampCount = count;
+            _reportedLampCount = 0;
+            _deviceSummary = "尚未搜尋燈條";
+            _status = "尚未開始";
+            _forceSend = true;
+            _lastSentTicks = 0;
+            ++_generation;
+        }
+    }
 
     public async Task StartAsync()
     {
@@ -84,6 +108,8 @@ public sealed class LampArrayController : IDisposable
         {
             ObjectDisposedException.ThrowIf(_disposed, this);
             if (_started) return;
+            if (_stopOperations != 0 || _sendInProgress != 0)
+                throw new InvalidOperationException("前一次燈光工作尚未清理完成，請稍候再開始。");
             if (!SupportsControlAvailability)
             {
                 PublishUnsupportedStatus();
@@ -91,6 +117,7 @@ public sealed class LampArrayController : IDisposable
             }
             _started = true;
             _enumerated = false;
+            _reportedLampCount = 0;
             generation = ++_generation;
             _discoveryCancellation = new CancellationTokenSource();
             cancellation = _discoveryCancellation.Token;
@@ -129,7 +156,7 @@ public sealed class LampArrayController : IDisposable
                 ReleaseWatcher(setupWatcher);
                 return;
             }
-            PublishStatus("正在搜尋 ESP32-S3 的 8 顆燈條…");
+            PublishStatus($"正在搜尋 ESP32-S3 的 {ExpectedLampCount} 顆燈條…");
             await enumeration.WaitAsync(TimeSpan.FromSeconds(8), cancellation).ConfigureAwait(false);
             await RefreshDevicesAsync(generation, cancellation).ConfigureAwait(false);
         }
@@ -159,12 +186,13 @@ public sealed class LampArrayController : IDisposable
     /// <summary>Submits a frame without holding the managed state gate across native I/O.</summary>
     public bool TrySendFrame(ReadOnlySpan<LedColor> colors)
     {
-        if (colors.Length != TargetLampCount)
-            throw new ArgumentException("每個畫面必須包含 8 顆燈。", nameof(colors));
+        if (colors.Length != ExpectedLampCount)
+            throw new ArgumentException($"每個畫面必須包含設定的 {ExpectedLampCount} 顆燈。", nameof(colors));
         // One render worker normally calls this method. A concurrent call skips rather than
         // waiting; the reusable native colour buffer remains owned until its call returns.
         if (Interlocked.CompareExchange(ref _sendInProgress, 1, 0) != 0) return false;
         LampArray? lamp = null;
+        FrameBuffers? buffers = null;
         int generation = 0;
         string? changedStatus = null;
         bool refresh = false;
@@ -176,13 +204,17 @@ public sealed class LampArrayController : IDisposable
             {
                 if (!_started || _lamp is null) return false;
                 lamp = _lamp;
+                buffers = _buffers;
+                // A stopped configuration/start racing a caller's earlier size check must not
+                // submit an old-length frame against the new native buffer.
+                if (colors.Length != buffers.Count) return false;
                 generation = _generation;
                 bool due = _lastSentTicks == 0 || now - _lastSentTicks >= _minimumIntervalTicks;
-                if (!due || (!_forceSend && colors.SequenceEqual(_lastColors))) return false;
+                if (!due || (!_forceSend && colors.SequenceEqual(buffers.LastColors))) return false;
             }
 
             int controlRevision = Volatile.Read(ref _controlRevision);
-            string status = ReadControlStatus(lamp, out bool canSend);
+            string status = ReadControlStatus(lamp, buffers.GrantedControlStatus, out bool canSend);
             lock (_gate)
             {
                 if (!IsSelectedLocked(lamp, generation)) return false;
@@ -192,20 +224,20 @@ public sealed class LampArrayController : IDisposable
             }
             if (!canSend) return false;
 
-            for (int i = 0; i < TargetLampCount; i++)
+            for (int i = 0; i < buffers.Count; i++)
             {
                 LedColor color = colors[i];
-                _colors[i] = LampColor.FromArgb(255, color.R, color.G, color.B);
+                buffers.Colors[i] = LampColor.FromArgb(255, color.R, color.G, color.B);
             }
             // A control callback can arrive inline here. It must not wait on _gate or perform
             // another native lighting operation; OnAvailabilityChanged only queues a refresh.
-            lamp.SetColorsForIndices(_colors, _indices);
+            lamp.SetColorsForIndices(buffers.Colors, buffers.Indices);
             submitted = true;
             lock (_gate)
             {
                 if (IsSelectedLocked(lamp, generation))
                 {
-                    colors.CopyTo(_lastColors);
+                    colors.CopyTo(buffers.LastColors);
                     _lastSentTicks = now;
                     _forceSend = Volatile.Read(ref _controlRevision) != controlRevision;
                 }
@@ -240,11 +272,13 @@ public sealed class LampArrayController : IDisposable
         System.Threading.Timer? timer;
         CancellationTokenSource? cancellation;
         SelectedLamp released;
+        FrameBuffers buffers;
         int stoppedGeneration;
         lock (_gate)
         {
             if (!_started) return;
             _started = false;
+            ++_stopOperations;
             stoppedGeneration = ++_generation;
             _enumerationFinished?.TrySetCanceled();
             _enumerationFinished = null;
@@ -256,45 +290,54 @@ public sealed class LampArrayController : IDisposable
             cancellation = _discoveryCancellation;
             _discoveryCancellation = null;
             released = DetachSelectedLampLocked();
+            buffers = _buffers;
             _devices.Clear();
             _connectedCount = 0;
+            _reportedLampCount = 0;
             _deviceSummary = "已停止控制燈條";
             _enumerated = false;
         }
-        if (cancellation is not null)
+        try
         {
-            Cleanup(cancellation.Cancel, "Discovery.Cancel");
-            // Retire only after Cancel returns; a finishing refresh must not dispose the
-            // source while this thread is about to request cancellation.
-            lock (_gate) _retiredCancellations.Add(cancellation);
-        }
-        if (timer is not null) Cleanup(timer.Dispose, "RefreshTimer.Dispose");
-        // Native calls are deliberately outside _gate. A black frame uses its own buffer,
-        // and skips if a render call still owns the old projection; it never waits for it.
-        if (released.Lamp is not null && Interlocked.CompareExchange(ref _sendInProgress, 1, 0) == 0)
-        {
-            try
+            if (cancellation is not null)
+            {
+                Cleanup(cancellation.Cancel, "Discovery.Cancel");
+                // Retire only after Cancel returns; a finishing refresh must not dispose the
+                // source while this thread is about to request cancellation.
+                lock (_gate) _retiredCancellations.Add(cancellation);
+            }
+            if (timer is not null) Cleanup(timer.Dispose, "RefreshTimer.Dispose");
+            // Native calls are deliberately outside _gate. A black frame uses its own buffer,
+            // and skips if a render call still owns the old projection; it never waits for it.
+            if (released.Lamp is not null && Interlocked.CompareExchange(ref _sendInProgress, 1, 0) == 0)
             {
                 try
                 {
-                    ReadControlStatus(released.Lamp, out bool canSend);
-                    if (canSend)
+                    try
                     {
-                        var black = new LampColor[TargetLampCount];
-                        for (int i = 0; i < black.Length; i++) black[i] = LampColor.FromArgb(255, 0, 0, 0);
-                        released.Lamp.SetColorsForIndices(black, _indices);
+                        ReadControlStatus(released.Lamp, buffers.GrantedControlStatus, out bool canSend);
+                        if (canSend)
+                        {
+                            var black = new LampColor[buffers.Count];
+                            for (int i = 0; i < black.Length; i++) black[i] = LampColor.FromArgb(255, 0, 0, 0);
+                            released.Lamp.SetColorsForIndices(black, buffers.Indices);
+                        }
                     }
+                    catch (Exception) { /* Device removal or lost arbitration also permits shutdown. */ }
                 }
-                catch (Exception) { /* Device removal or lost arbitration also permits shutdown. */ }
+                finally { Volatile.Write(ref _sendInProgress, 0); }
             }
-            finally { Volatile.Write(ref _sendInProgress, 0); }
+            ReleaseLampSubscription(released);
+            if (watcher is not null) ReleaseWatcher(watcher);
+            bool stillStopped;
+            lock (_gate) stillStopped = !_started && _generation == stoppedGeneration;
+            if (stillStopped) PublishStatus("已停止；Windows 可能恢復原先設定的燈效。");
         }
-        ReleaseLampSubscription(released);
-        if (watcher is not null) ReleaseWatcher(watcher);
-        TryDisposeCoordination();
-        bool stillStopped;
-        lock (_gate) stillStopped = !_started && _generation == stoppedGeneration;
-        if (stillStopped) PublishStatus("已停止；Windows 可能恢復原先設定的燈效。");
+        finally
+        {
+            Interlocked.Decrement(ref _stopOperations);
+            TryDisposeCoordination();
+        }
     }
 
     public void Dispose()
@@ -430,6 +473,8 @@ public sealed class LampArrayController : IDisposable
             string? selectedId;
             bool selectedSubscribed;
             int deviceRevision;
+            int expectedCount;
+            string grantedControlStatus;
             lock (_gate)
             {
                 if (!_started || generation != _generation) return;
@@ -438,11 +483,14 @@ public sealed class LampArrayController : IDisposable
                 selectedId = _selectedId;
                 selectedSubscribed = _availabilitySubscribed;
                 deviceRevision = _deviceRevision;
+                expectedCount = _expectedLampCount;
+                grantedControlStatus = _buffers.GrantedControlStatus;
             }
 
             LampArray? uniqueLamp = null;
             string? uniqueId = null;
             int matched = 0;
+            int reportedCount = 0;
             bool couldNotInspect = false;
             foreach (var candidate in candidates)
             {
@@ -458,8 +506,9 @@ public sealed class LampArrayController : IDisposable
                     }
                     if (candidateLamp.HardwareVendorId != TargetVendorId ||
                         candidateLamp.HardwareProductId != TargetProductId ||
-                        candidateLamp.LampCount != TargetLampCount || !candidateLamp.IsConnected)
+                        !candidateLamp.IsConnected)
                         continue;
+                    reportedCount = candidateLamp.LampCount;
                 }
                 catch (OperationCanceledException) { throw; }
                 catch (Exception)
@@ -476,12 +525,12 @@ public sealed class LampArrayController : IDisposable
             bool available = false;
             long minimumTicks = 1;
             bool newSubscription = false;
-            bool selectUnique = matched == 1 && !couldNotInspect;
+            bool selectUnique = matched == 1 && !couldNotInspect && reportedCount == expectedCount;
             if (selectUnique)
             {
                 // All native property and event operations finish before committing managed state.
                 minimumTicks = Math.Max(1, (long)Math.Ceiling(uniqueLamp!.MinUpdateInterval.TotalSeconds * Stopwatch.Frequency));
-                status = ReadControlStatus(uniqueLamp, out available);
+                status = ReadControlStatus(uniqueLamp, grantedControlStatus, out available);
                 if (!ReferenceEquals(uniqueLamp, selected) || !selectedSubscribed)
                 {
                     if (SupportsControlAvailability)
@@ -495,10 +544,12 @@ public sealed class LampArrayController : IDisposable
             else
             {
                 status = matched > 1
-                    ? "請只連接一個 ESP32-S3 8 燈裝置，避免控制錯誤燈條。"
+                    ? "請只連接一個 ESP32-S3 燈光裝置，避免控制錯誤燈條。"
                     : couldNotInspect
                         ? "無法確認全部同名裝置；請檢查連線與 Windows 動態光效設定。"
-                        : "找不到 ESP32-S3 的 8 顆燈條，請檢查 USB 資料線。";
+                        : matched == 1
+                            ? $"設定 {expectedCount} 顆、裝置回報 {reportedCount} 顆，請確認燈數與韌體；目前不送色。"
+                            : "找不到 ESP32-S3 燈光裝置，請檢查 USB 資料線。";
             }
 
             lock (_gate)
@@ -514,10 +565,14 @@ public sealed class LampArrayController : IDisposable
                 // An unplug that occurred during native inspection invalidates the candidate.
                 if (selectUnique && (uniqueId is null || !_devices.ContainsKey(uniqueId))) return;
                 _connectedCount = matched;
+                _reportedLampCount = matched == 1 && !couldNotInspect ? reportedCount : 0;
                 if (!selectUnique)
                 {
                     retired = DetachSelectedLampLocked();
-                    _deviceSummary = matched > 1 ? $"偵測到 {matched} 個符合的 8 燈裝置" : "未連接唯一可確認的 8 燈裝置";
+                    _deviceSummary = matched > 1 ? $"偵測到 {matched} 個符合的 ESP32-S3 裝置" :
+                        matched == 1 && !couldNotInspect
+                            ? $"{TargetName} · 設定 {expectedCount} 顆／裝置 {reportedCount} 顆"
+                            : "未連接唯一可確認的 ESP32-S3 燈光裝置";
                 }
                 else
                 {
@@ -533,7 +588,7 @@ public sealed class LampArrayController : IDisposable
                     else if (newSubscription) _availabilitySubscribed = true;
                     _minimumIntervalTicks = minimumTicks;
                     _available = available;
-                    _deviceSummary = $"{TargetName} · 8 顆 · VID 303A / PID 1001";
+                    _deviceSummary = $"{TargetName} · {reportedCount} 顆 · VID 303A / PID 1001";
                     uncommitted = default;
                 }
                 _status = status;
@@ -563,7 +618,7 @@ public sealed class LampArrayController : IDisposable
         QueueRefresh();
     }
 
-    private string ReadControlStatus(LampArray lamp, out bool canSend)
+    private string ReadControlStatus(LampArray lamp, string grantedControlStatus, out bool canSend)
     {
         canSend = false;
         if (!SupportsControlAvailability)
@@ -576,7 +631,7 @@ public sealed class LampArrayController : IDisposable
                 : "開發版尚無套件身分；請保持視窗在前景，背景同步請安裝 MSIX。";
         canSend = true;
         return HasPackageIdentity
-            ? "已取得 8 顆燈的控制權。"
+            ? grantedControlStatus
             : "已取得前景控制權；背景同步請使用 MSIX 安裝版。";
     }
 
@@ -655,6 +710,25 @@ public sealed class LampArrayController : IDisposable
     }
 
     private readonly record struct SelectedLamp(LampArray? Lamp, bool Subscribed);
+
+    /// <summary>Lifetime is independent of the selected WinRT projection; never resized during I/O.</summary>
+    private sealed class FrameBuffers
+    {
+        public readonly LampColor[] Colors;
+        public readonly LedColor[] LastColors;
+        public readonly int[] Indices;
+        public readonly string GrantedControlStatus;
+        public int Count => Colors.Length;
+
+        public FrameBuffers(int count)
+        {
+            Colors = new LampColor[count];
+            LastColors = new LedColor[count];
+            Indices = new int[count];
+            GrantedControlStatus = $"已取得 {count} 顆燈的控制權。";
+            for (int i = 0; i < count; i++) Indices[i] = i;
+        }
+    }
 
     [DllImport("kernel32.dll", ExactSpelling = true)]
     private static extern int GetCurrentPackageFullName(ref uint packageFullNameLength, IntPtr packageFullName);

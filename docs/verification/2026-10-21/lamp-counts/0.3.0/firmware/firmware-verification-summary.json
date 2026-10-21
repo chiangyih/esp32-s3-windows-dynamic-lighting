@@ -1,0 +1,49 @@
+{
+  "ObservedAtUtc": "2026-10-21T07:29:10.2611031+00:00",
+  "FirmwareDefaults": {
+    "LampCount": 8,
+    "LedBranchBudgetMa": 50,
+    "IdleMaPerLamp": 1,
+    "ChannelCeiling": 24,
+    "NativeUsbDeclaredMa": 100,
+    "UsePowerSwitch": false,
+    "DataPin": 4
+  },
+  "HostProtocolAndLimiterChecks": {
+    "Status": "Passed",
+    "Count": 26,
+    "Log": "host-tests.log"
+  },
+  "ConfigBoundaryChecks": {
+    "Status": "Passed",
+    "Count": 8,
+    "Report": "config-boundaries.json"
+  },
+  "CompilerCore": "esp32:esp32 3.1.1",
+  "ArduinoCli": "nightly-20260918, commit189327e",
+  "DefaultBuild": {
+    "Status": "Passed",
+    "LampCount": 8,
+    "LedBudgetMa": 50,
+    "FlashBytes": 376008,
+    "StaticRamBytes": 41920,
+    "WarningCount": 0,
+    "Report": "default-8-budget-50/firmware-build-report.json",
+    "MainImageSha256": "FF32E2C1EB04059FE9FFB1B2415A0D103C1E5EDAFA1E63A40BE6887E588D5F8F"
+  },
+  "Count64Build": {
+    "Status": "Passed",
+    "LampCount": 64,
+    "LedBudgetMa": 80,
+    "FlashBytes": 376036,
+    "StaticRamBytes": 47632,
+    "WarningCount": 0,
+    "Report": "count-64-budget-80/firmware-build-report.json",
+    "MainImageSha256": "C87C999CCAC5DF98DD8CC1C0E028AC4AE1DA86C8A9CB720C9E417E796E41DD80"
+  },
+  "Uploaded": false,
+  "SerialPortOpened": false,
+  "UsbCurrentMeasured": false,
+  "PhysicalCount64Verified": false,
+  "Note": "Explicit64/80iscompile-onlymodelconfiguration,notphysicalUSBpowerapproval."
+}

@@ -545,6 +545,65 @@ void frameLimiterWideArithmetic() {
   limitFrame(input.data(), &zeroCountOutput, 0, 255, 50, 1, 20);
   require(zeroCountOutput == sentinel, "zero-lamp limit wrote outside empty output");
 }
+
+void configurableLampCountEndpoints() {
+  for (const uint16_t count : std::array<uint16_t, 2>{1, 64}) {
+    lampArray::Protocol protocol(count, 16667);
+    require(protocol.valid(), "supported count endpoint was rejected");
+    std::array<uint8_t, 22> attributes{};
+    require(protocol.getFeature(kAttributes, attributes.data(), size16(attributes)) ==
+                attributes.size(), "array attributes response failed");
+    require(read16(attributes.data()) == count, "attributes reported wrong configured count");
+    hostControl(protocol);
+    uint32_t version = 0;
+    std::array<uint8_t, 64 * 3 + 1> frame{};
+    frame.back() = 0xa5;
+    for (uint16_t first = 0; first < count; first += 8) {
+      const uint8_t slots = static_cast<uint8_t>(count - first < 8 ? count - first : 8);
+      const bool finalPacket = first + slots == count;
+      auto packet = multi(slots, finalPacket);
+      for (uint8_t slot = 0; slot < slots; ++slot) {
+        const uint16_t id = static_cast<uint16_t>(first + slot);
+        lamp(packet, slot, id, static_cast<uint8_t>(id + 1),
+             static_cast<uint8_t>(id + 2), static_cast<uint8_t>(id + 3));
+      }
+      require(protocol.setFeature(kMulti, packet.data(), size16(packet)),
+              "configured-count multi-packet update failed");
+      if (!finalPacket)
+        require(!protocol.copyCommittedFrame(frame.data(), count * 3, version),
+                "configured-count frame committed before final packet");
+    }
+    require(protocol.copyCommittedFrame(frame.data(), count * 3, version),
+            "configured-count final frame missing");
+    for (uint16_t id = 0; id < count; ++id) {
+      const size_t offset = static_cast<size_t>(id) * 3;
+      require(frame[offset] == id + 1 && frame[offset + 1] == id + 2 &&
+                  frame[offset + 2] == id + 3, "configured-count color/index mismatch");
+    }
+    require(frame.back() == 0xa5, "configured-count copy exceeded output capacity");
+    auto beyond = multi(1, true);
+    lamp(beyond, 0, count, 255, 0, 0);
+    require(!protocol.setFeature(kMulti, beyond.data(), size16(beyond)),
+            "configured-count out-of-range lamp ID was accepted");
+  }
+}
+
+void sixtyFourLampPowerModel() {
+  std::array<uint8_t, 64 * 3> input{};
+  std::array<uint8_t, 64 * 3> output{};
+  input.fill(255);
+  limitFrame(input.data(), output.data(), 64, 24, 80, 1, 20);
+  uint64_t sum = 0;
+  for (const auto channel : output) {
+    require(channel > 0 && channel <= 24, "64-lamp model lost output or exceeded ceiling");
+    sum += channel;
+  }
+  require(sum * 20 <= uint64_t(80 - 64) * 255,
+          "64-lamp frame exceeded explicit arithmetic budget");
+  limitFrame(input.data(), output.data(), 64, 24, 50, 1, 20);
+  for (const auto channel : output)
+    require(channel == 0, "insufficient idle budget did not suppress dynamic output");
+}
 }  // namespace
 
 int main() {
@@ -573,6 +632,8 @@ int main() {
       {"frame arithmetic power budget", frameLimiterPowerBudget},
       {"frame limiter current-model invariant over 500 frames", frameLimiterModelInvariant},
       {"frame limiter wide arithmetic and zero count", frameLimiterWideArithmetic},
+      {"one/64-lamp attributes, packet commits and index boundaries", configurableLampCountEndpoints},
+      {"64-lamp explicit power model and insufficient idle budget", sixtyFourLampPowerModel},
   };
   size_t failed = 0;
   for (const auto& test : tests) {

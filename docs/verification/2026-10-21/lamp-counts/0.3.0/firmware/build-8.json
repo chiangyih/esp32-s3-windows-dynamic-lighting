@@ -1,0 +1,45 @@
+{
+  "CreatedUtc": "2026-10-21T07:25:27.4970000+00:00",
+  "Status": "Compiled",
+  "Sketch": "01-8_ws2812",
+  "BoardFqbn": "esp32:esp32:esp32s3:USBMode=default,CDCOnBoot=default,MSCOnBoot=default,DFUOnBoot=default,FlashMode=opi,FlashSize=32M,PSRAM=opi,PartitionScheme=app5M_fat24M_32MB,CPUFreq=80",
+  "LampCount": 8,
+  "LedBranchBudgetMa": 50,
+  "BuildDefines": "-DCONFIG_LAMP_COUNT=8 -DCONFIG_LED_BUDGET_MA=50",
+  "ConfigSourceSha256": "21889BA710DA1134C6D4911B17A95163C3DFD3C29A40D8321C9872CC5765AB48",
+  "Uploaded": false,
+  "PhysicalLampCountVerified": false,
+  "UsbCurrentMeasured": false,
+  "Files": [
+    {
+      "File": "01-8_ws2812.ino.bin",
+      "Bytes": 376112,
+      "Sha256": "FF32E2C1EB04059FE9FFB1B2415A0D103C1E5EDAFA1E63A40BE6887E588D5F8F"
+    },
+    {
+      "File": "01-8_ws2812.ino.bootloader.bin",
+      "Bytes": 18928,
+      "Sha256": "7087872BC4354203EA297399285C259C44BBBC572EBE0F696DB44379260126D9"
+    },
+    {
+      "File": "01-8_ws2812.ino.elf",
+      "Bytes": 7109176,
+      "Sha256": "81193E9126D36824B8FDC7CA6C965A84EE5C4BB34E7F3CFBF405BD7E6CAD655C"
+    },
+    {
+      "File": "01-8_ws2812.ino.map",
+      "Bytes": 9343969,
+      "Sha256": "241092FFA5D4AE625B421D09AEB46DCE854504C367671E64170D79013F7E48FE"
+    },
+    {
+      "File": "01-8_ws2812.ino.merged.bin",
+      "Bytes": 33554432,
+      "Sha256": "63E522C6E1313CF8B368B59E15D9CBB1E200531B199517ACB86C304EF9CAD7A9"
+    },
+    {
+      "File": "01-8_ws2812.ino.partitions.bin",
+      "Bytes": 3072,
+      "Sha256": "79F32D2653156A80A7A246AFC9120B22399C3AC68C7C64812D50249189892C82"
+    }
+  ]
+}

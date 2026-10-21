@@ -51,8 +51,10 @@ Check(allocated == 0, $"Frame generation performs no managed allocation ({alloca
 var audioCount = AudioChecks.Run();
 var featureCount = FeatureChecks.Run();
 var effectCount = EffectChecks.Run();
+var lampCountChecks = LampCountChecks.Run();
 var report = new { ObservedAtUtc = DateTimeOffset.UtcNow, Status = "Passed", CoreCheckCount = checks.Count,
-    AudioCheckCount = audioCount, FeatureCheckCount = featureCount, EffectCheckCount = effectCount, Checks = checks };
+    AudioCheckCount = audioCount, FeatureCheckCount = featureCount, EffectCheckCount = effectCount,
+    LampCountCheckCount = lampCountChecks, Checks = checks };
 var json = JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true });
 Console.WriteLine(json);
 if (args.Length > 0)

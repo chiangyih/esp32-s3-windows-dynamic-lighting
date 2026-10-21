@@ -1,0 +1,39 @@
+{
+  "ObservedAtUtc": "2026-10-21T07:35:02.4194599+00:00",
+  "Version": "0.3.0.0",
+  "Status": "PassedWithPhysicalLimits",
+  "Range": "1..64",
+  "DefaultCount": 8,
+  "PureChecks": 148,
+  "PreviewChecks": 6,
+  "FirmwareHostChecks": 26,
+  "FirmwareConfigChecks": 8,
+  "FirmwareBuilds": [
+    "8 lamps / 50 mA",
+    "64 lamps / 80 mA (compile only)"
+  ],
+  "ShutdownRoutesPassed": 4,
+  "PackagedCountControlsPassed": 4,
+  "SettingsSaveRestorePassed": true,
+  "CurrentSavedCount": 8,
+  "PackagedReportedCount": 8,
+  "MismatchCountsRejected": [
+    1,
+    64
+  ],
+  "MismatchSentFrames": 0,
+  "StopRestartPassed": true,
+  "MatchingEightLampStatus": "等待燈光控制權；請在「背景光源控制項」將此 App 排到前面。",
+  "MatchingEightLampSentFrames": 0,
+  "FirmwareUploaded": false,
+  "SerialPortOpened": false,
+  "PhysicalCount64Verified": false,
+  "UsbCurrentMeasured": false,
+  "StoreCertified": false,
+  "Notes": [
+    "Packaged LampArray readback reported 8 despite zero VID-filtered PnP matches. Unpackaged diagnostics found no device; those are retained separately.",
+    "Matching 8-lamp packaged run waited for Windows arbitration and sent 0 frames. This run does not establish new physical music-sync acceptance.",
+    "First normal package title read occurred too early; re-read matched and WM_CLOSE completed. No force termination.",
+    "Prior 8-lamp physical acceptance remains historical evidence; default firmware and USB limits remain unchanged."
+  ]
+}

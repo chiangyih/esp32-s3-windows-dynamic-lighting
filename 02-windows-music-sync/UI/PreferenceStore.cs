@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using MusicSync.Core;
+using MusicSync.Lighting;
 
 namespace MusicSync.UI;
 
@@ -8,6 +9,7 @@ internal sealed record UserPreferences
 {
     public int GainDb { get; init; }
     public int BrightnessPercent { get; init; } = 65;
+    public int LampCount { get; init; } = LampCountLimits.Default;
     public EffectSettings Effect { get; init; } = new();
 }
 
@@ -30,7 +32,8 @@ internal static class PreferenceStore
                 var value = JsonSerializer.Deserialize<UserPreferences>(File.ReadAllText(SettingsPath), JsonOptions);
                 if (value?.Effect is { } effect && Enum.IsDefined(effect.Signal) && Enum.IsDefined(effect.Palette) &&
                     Enum.IsDefined(effect.Animation) && Enum.IsDefined(effect.Speed))
-                    return value with { GainDb = Math.Clamp(value.GainDb, -12, 24),
+                    return value with { LampCount = Math.Clamp(value.LampCount, LampCountLimits.Minimum, LampCountLimits.Maximum),
+                        GainDb = Math.Clamp(value.GainDb, -12, 24),
                         BrightnessPercent = Math.Clamp(value.BrightnessPercent, 5, 100),
                         Effect = effect with { CustomColorCount = Math.Clamp(effect.CustomColorCount, 2, 4),
                             StyleCyclesPerSecond = FiniteSpeed(effect.StyleCyclesPerSecond, 0.75),

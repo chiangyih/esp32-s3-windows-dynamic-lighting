@@ -41,6 +41,8 @@ internal sealed class LaunchOptions
     public bool ExerciseEffects { get; private set; }
     public bool ExerciseLifecycle { get; private set; }
     public bool ShowAbout { get; private set; }
+    public int? LampCountOverride { get; private set; }
+    public bool ExerciseLampCounts { get; private set; }
 
     public static LaunchOptions Parse(string[] args)
     {
@@ -55,6 +57,11 @@ internal sealed class LaunchOptions
                 case "--exercise-effects": result.ExerciseEffects = true; break;
                 case "--exercise-lifecycle": result.ExerciseLifecycle = true; break;
                 case "--about": result.ShowAbout = true; break;
+                case "--exercise-lamp-counts": result.ExerciseLampCounts = true; break;
+                case "--lamp-count" when i + 1 < args.Length:
+                    if (int.TryParse(args[++i], out var lampCount) && lampCount >= 1 && lampCount <= 64)
+                        result.LampCountOverride = lampCount;
+                    break;
                 case "--close-after-ms" when i + 1 < args.Length:
                     if (int.TryParse(args[++i], out var closeMs))
                     {

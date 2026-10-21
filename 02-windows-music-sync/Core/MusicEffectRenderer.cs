@@ -2,7 +2,7 @@ using MusicSync.Lighting;
 
 namespace MusicSync.Core;
 
-/// <summary>Allocation-free 8-lamp music effects. All modes fade to black with the input envelope.</summary>
+/// <summary>Allocation-free music effects for 1–64 lamps. Silence fades every mode to black.</summary>
 public sealed class MusicEffectRenderer
 {
     private double _phase;
@@ -19,7 +19,7 @@ public sealed class MusicEffectRenderer
     public void Fill(double level, double spectralPosition, double bassBalance, double beatPulse,
         double tempoBpm, double deltaSeconds, double brightness, EffectSettings settings, Span<LedColor> frame)
     {
-        if (frame.Length != 8) throw new ArgumentException("Expected exactly 8 LEDs.", nameof(frame));
+        LampCountLimits.Validate(frame.Length);
         ArgumentNullException.ThrowIfNull(settings);
         level = Unit(level);
         brightness = Unit(brightness);
@@ -34,9 +34,8 @@ public sealed class MusicEffectRenderer
         var advance = elapsed * CurrentCyclesPerSecond;
         if (settings.Animation == AnimationMode.Sequential && elapsed > 0)
         {
-            // At 30 Hz, 4 complete 8-lamp cycles would require 32 distinct steps per second.
             // Advance by less than one lamp per rendered frame, even after a scheduling stall.
-            advance = Math.Min(advance, 1.0 / 8 - 1e-10);
+            advance = Math.Min(advance, 1.0 / frame.Length - 1e-10);
             CurrentCyclesPerSecond = advance / elapsed;
         }
         _phase = Wrap(_phase + advance);
@@ -67,12 +66,12 @@ public sealed class MusicEffectRenderer
                 break;
             case AnimationMode.Sequential:
                 frame.Clear();
-                var lamp = Math.Min(7, (int)(_phase * 8));
+                var lamp = Math.Min(frame.Length - 1, (int)(_phase * frame.Length));
                 frame[lamp] = Scale(Palette(signalPosition, settings), intensity);
                 break;
             default:
                 for (var index = 0; index < frame.Length; index++)
-                    frame[index] = Scale(Palette(signalPosition + _phase + index / 8.0, settings), intensity);
+                    frame[index] = Scale(Palette(signalPosition + _phase + index / (double)frame.Length, settings), intensity);
                 break;
         }
     }

@@ -12,6 +12,7 @@
     <Compile Include="../Core/LevelMeter.cs" Link="Core/LevelMeter.cs" />
     <Compile Include="../Core/FrameMapper.cs" Link="Core/FrameMapper.cs" />
     <Compile Include="../Lighting/LedColor.cs" Link="Lighting/LedColor.cs" />
+    <Compile Include="../Lighting/LampCountLimits.cs" Link="Lighting/LampCountLimits.cs" />
     <Compile Include="../Audio/PcmSampleDecoder.cs" Link="Audio/PcmSampleDecoder.cs" />
     <Compile Include="../Audio/AudioSnapshot.cs" Link="Audio/AudioSnapshot.cs" />
     <Compile Include="../Audio/AudioFeatureAnalyzer.cs" Link="Audio/AudioFeatureAnalyzer.cs" />

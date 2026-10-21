@@ -1,0 +1,18 @@
+'Platform (pv)' not specified. Default is Windows 10.਍ഀ
+Writing PRI config file to D:\00_Codex_project\esp32-s3-windows뿯劽態光效\02-windows-music-sync\artifacts\package-development-20261021-153133-155\priconfig.xml ...਍ഀ
+Successfully Completed਍ഀ
+਍Output location of PRI file(s) is detected to be under the project root. If previously generated PRI file(s) are present, these may be re-indexed and lead to unexpected results.਍ഀ
+Index Pass Completed.਍ഀ
+AlternateForm Qualifiers: LIGHTUNPLATED,UNPLATED਍ഀ
+Language Qualifiers: zh-Hant,cs,de,es,fr,it,ja,ko,pl,pt-BR,ru,tr,zh-Hans਍ഀ
+Scale Qualifiers: 100,125,150,200,400਍ഀ
+TargetSize Qualifiers: 256,16,20,24,30,32,36,40,48,60,64,72,80,96਍ഀ
+਍ഀ
+Finished building਍ഀ
+Version: 1.0਍ഀ
+Resource Map Name: LocalDev.Esp32MusicSync਍ഀ
+Named Resources: 231਍ഀ
+Resource Candidates: 341਍ഀ
+Successfully Completed਍ഀ
+WARNING: PRI257: 0xdef00522 - Resources found for language(s) 'zh-hant,cs,de,es,fr,it,ja,ko,pl,pt-br,ru,tr,zh-hans' but no resources found for default language(s): 'zh-Hant-TW'. Change the default language or qualify resources with the default language. http://go.microsoft.com/fwlink/?LinkId=231899਍ഀ
+਍

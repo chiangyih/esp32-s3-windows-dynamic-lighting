@@ -27,6 +27,7 @@ internal sealed partial class MainForm : Form
     private readonly Label _level = new();
     private readonly Label _gainValue = new();
     private readonly Label _brightnessValue = new();
+    private readonly Label _previewCaption = new();
     private readonly MeterPreview _preview = new();
     private readonly Button _start = new ActionButton { Text = "開始同步 (&S)", Width = 136 };
     private readonly Button _stop = new ActionButton { Text = "停止 (&T)", Width = 88, Enabled = false };
@@ -117,7 +118,7 @@ internal sealed partial class MainForm : Form
         header.Controls.Add(image, 0, 0);
         header.SetRowSpan(image, 2);
         header.Controls.Add(Label(Program.DisplayName, _headingFont, UiTheme.Accent, UiTheme.Background), 1, 0);
-        header.Controls.Add(Label("電腦播放音訊 · 8 顆 LED", _smallFont, UiTheme.Muted, UiTheme.Background), 1, 1);
+        header.Controls.Add(Label("電腦播放音訊 · 可自訂 1～64 顆 LED", _smallFont, UiTheme.Muted, UiTheme.Background), 1, 1);
         _shell.Controls.Add(header, 0, 0);
 
         var meter = new SurfacePanel { Dock = DockStyle.Fill, Padding = new Padding(18, 12, 18, 12), Margin = new Padding(0, 0, 0, 12) };
@@ -135,7 +136,8 @@ internal sealed partial class MainForm : Form
         _preview.Margin = new Padding(0, 7, 0, 7);
         meterLayout.Controls.Add(_preview, 0, 1);
         meterLayout.SetColumnSpan(_preview, 2);
-        meterLayout.Controls.Add(Label("連續色彩預覽 · 8 LED", _smallFont, UiTheme.Muted), 0, 2);
+        ConfigureLabel(_previewCaption, "連續色彩預覽 · 8 LED", _smallFont, UiTheme.Muted);
+        meterLayout.Controls.Add(_previewCaption, 0, 2);
         ConfigureLabel(_tempoLabel, "節奏估測中", _smallFont, UiTheme.Muted);
         _tempoLabel.TextAlign = ContentAlignment.MiddleRight;
         meterLayout.Controls.Add(_tempoLabel, 1, 2);
@@ -236,6 +238,7 @@ internal sealed partial class MainForm : Form
         Shown += async (_, _) =>
         {
             _uiTimer.Start();
+            if (_options.ExerciseLampCounts && _options.DiagnosticSeconds > 0) ExerciseLampCountControls();
             if (_options.CloseAfterMilliseconds > 0)
             {
                 _closeTestTimer.Interval = _options.CloseAfterMilliseconds;
@@ -306,6 +309,7 @@ internal sealed partial class MainForm : Form
         _stopFailed = false;
         _startError = null;
         _start.Enabled = false;
+        _lampCount.Enabled = false;
         _state.Text = "正在連接…";
         try
         {
@@ -336,7 +340,7 @@ internal sealed partial class MainForm : Form
             await _engine.StopAsync().WaitAsync(TimeSpan.FromSeconds(6));
             if (_closing || IsDisposed || Disposing) return false;
             _start.Enabled = true;
-            _preview.UpdateFrame(new MusicSync.Lighting.LedColor[8]);
+            _preview.UpdateFrame(new MusicSync.Lighting.LedColor[_engine.LampCount]);
             _state.Text = "已停止";
             return true;
         }
@@ -376,6 +380,7 @@ internal sealed partial class MainForm : Form
     private void UpdateStatus()
     {
         if (_closing) return;
+        _lampCount.Enabled = !_busy && !_engine.IsRunning && !_engine.IsStopping;
         if (_options.ExerciseEffects && _options.DiagnosticSeconds > 0) ExerciseEffectControls();
         _everAvailable |= _engine.HasLightingControl;
         if (_options.ReportPath != null)
@@ -407,9 +412,10 @@ internal sealed partial class MainForm : Form
             _lighting.Text = _engine.LightingStatus;
             var rms = _engine.Rms;
             _level.Text = rms > 0.00001 ? $"{20 * Math.Log10(rms):F1} dBFS" : "靜音";
-            Span<MusicSync.Lighting.LedColor> colors = stackalloc MusicSync.Lighting.LedColor[8];
-            _engine.CopyPreview(colors);
-            _preview.UpdateFrame(colors);
+            Span<MusicSync.Lighting.LedColor> colors = stackalloc MusicSync.Lighting.LedColor[MusicSync.Lighting.LampCountLimits.Maximum];
+            var lampCount = _engine.CopyPreview(colors);
+            _preview.UpdateFrame(colors[..lampCount]);
+            _previewCaption.Text = $"連續色彩預覽 · {lampCount} LED";
             var bpm = _engine.TempoBpm;
             _tempoLabel.Text = _engine.Settings.Speed == SpeedMode.Beat
                 ? bpm > 0 ? $"估測 {bpm:F0} BPM" : "節奏估測中 · 慢速"
@@ -505,6 +511,10 @@ internal sealed partial class MainForm : Form
                 ["Theme"] = "Tiffany blue / graphite", ["CloseRequestedBy"] = _closeRoute
             };
             _report["EffectSettings"] = _engine.Settings;
+            _report["ConfiguredLampCount"] = _engine.LampCount;
+            _report["ReportedLampCount"] = _engine.ReportedLampCount;
+            _report["LampCountControlChecks"] = _lampCountControlChecks;
+            _report["LampCountEditingEnabled"] = _lampCount.Enabled;
             _report["SelectedPage"] = _pages.SelectedTab?.Text;
             _report["DisplayedVersion"] = AboutVersion;
             _report["HardwareRequirement"] = HardwareRequirement;

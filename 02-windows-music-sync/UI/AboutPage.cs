@@ -21,7 +21,7 @@ internal sealed partial class MainForm
         var requirement = Label(HardwareRequirement, _bodyFont, UiTheme.Text);
         requirement.Name = "HardwareRequirementLabel";
         layout.Controls.Add(requirement, 0, 3);
-        layout.Controls.Add(Label("目前版本支援本專案 ESP32-S3 USB Light Strip（8 顆 WS2812）。\nWS2812 燈條需搭配相容控制板與韌體，單獨接上燈條並不代表支援 Windows 動態光效。", _bodyFont, UiTheme.Muted), 0, 4);
+        layout.Controls.Add(Label("目前支援本專案 ESP32-S3 USB Light Strip（1～64 顆 WS2812）。\n燈數須與韌體回報一致；燈條需搭配相容控制板與韌體。\n增加燈數前，請確認 USB 供電能力。", _bodyFont, UiTheme.Muted), 0, 4);
         layout.Controls.Add(Label("使用前請確認", _statusFont, UiTheme.Accent), 0, 5);
         layout.Controls.Add(Label("在 Windows 設定 → 個人化 → 動態光效確認能看到燈具，並啟用裝置控制。\n背景使用時，請將本程式的控制優先順序排到前面。", _bodyFont, UiTheme.Text), 0, 6);
         layout.Controls.Add(Label("未連接相容硬體時，畫面預覽仍可能變化，實體燈光不會受控制。", _smallFont, UiTheme.Muted), 0, 7);

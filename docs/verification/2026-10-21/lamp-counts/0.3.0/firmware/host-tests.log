@@ -1,0 +1,28 @@
+protocol_tests.cpp
+PASS initial state and frame version
+PASS autonomous mode rejects host updates
+PASS multi-packet frame commits atomically
+PASS invalid multi IDs cannot partly mutate staging
+PASS duplicate multi IDs rejected
+PASS multi packet counts and exact lengths
+PASS inclusive range and intensity
+PASS invalid ranges cannot partly mutate staging
+PASS range exact lengths
+PASS multi intensity boundaries
+PASS autonomous transition clears committed and staged colors
+PASS disconnect reset returns to black autonomous
+PASS rapid autonomous round trip requires fresh host commit
+PASS attributes request, geometry, advance and wrap
+PASS small frame buffer does not consume version
+PASS unknown reports and truncated attributes
+PASS empty multi packet commits pending colors
+PASS reserved flags and control values rejected
+PASS invalid configuration and null pointers
+PASS output guard bytes and failed-query position
+PASS frame ceiling preserves common scale
+PASS frame arithmetic power budget
+PASS frame limiter current-model invariant over 500 frames
+PASS frame limiter wide arithmetic and zero count
+PASS one/64-lamp attributes, packet commits and index boundaries
+PASS 64-lamp explicit power model and insufficient idle budget
+26/26 tests passed
