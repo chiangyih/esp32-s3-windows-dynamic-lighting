@@ -8,6 +8,7 @@
 | `2026-10-21/software-verification.json` | 燒錄前 18 個原始碼、腳本、測試與產物的大小及 SHA-256。 |
 | `2026-10-21/device-upload/` | 晶片讀回、四段燒錄雜湊驗證、啟動日誌、USB／COM 與 Windows LampArray 枚舉結果。 |
 | `2026-10-21/switched-baseline/` | 原先含 TPS2553、74AHCT125 方案的建置、23/23 測試與原驗證清單。 |
+| `2026-10-21/git-initial-push.json` | 首次推送後的本機 HEAD、origin/main、遠端 main 一致及乾淨工作目錄快照；屬該次提交的歷史讀回。 |
 
 第一個程式的現行位置為專案根目錄的 `01-8_ws2812/`，主程式為 `01-8_ws2812/01-8_ws2812.ino`。歷史 manifest 中的原始 `firmware/WindowsDynamicLighting/` 路徑保留不改，以維持當時建置證據；移位後的最新建置與測試紀錄另存於 `2026-10-21/01-8_ws2812/`，不覆寫原有清單或日誌。
 

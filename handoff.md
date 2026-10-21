@@ -198,3 +198,11 @@ Git 範圍包含韌體、PC 測試、工具腳本、README、交接、硬體照�
 移位後已重新建置成功：Sketch 376008 bytes、全域變數 41920 bytes，PC 測試 24/24 通過。`build/01-8_ws2812.ino.bin` 為 376112 bytes、SHA-256 `2AFF8C9688BFE43697EDB5BF0CBE7ECA02CD082E694E1B4FC53B2033824C4A32`；本次沒有重刷。裝置仍對應前節實際燒錄的 `07E982D874ACB52631F5478038E648253A70F6FBA272789390EF45B8C9398157` 映像，雖然 9 個來源檔內容相同，也分開保存兩次建置紀錄。
 
 最新 19 項軟體檔案清單為本機 `build/verification.json`；Git 內的新清單與新建置／測試日誌在 `docs/verification/2026-10-21/01-8_ws2812/`。先前各版本證據繼續保留。
+
+## 2026-10-21 首次 commit 與 push 核對
+
+已完成本機 `main` 首次提交及推送，私人儲存庫為 [chiangyih/esp32-s3-windows-dynamic-lighting](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting)。首次提交為 `f0c1817dfc92a0ea4097631be65a201b8679af0b`，包含 45 檔，第一個程式完整存放於 `01-8_ws2812/`；沒有把舊 `firmware/` 路徑或本機 `build/` 產物納入 Git。
+
+首次 push 後，以 `git rev-parse HEAD`、`git rev-parse origin/main` 與 `git ls-remote origin refs/heads/main` 核對三者 SHA 完全相同，`git status --porcelain` 為空。讀回快照保存於 `docs/verification/2026-10-21/git-initial-push.json`。後續文件提交的最新 HEAD，應重新用同樣方式與遠端比較，不將首次提交 SHA 視為永久最新值。
+
+`.gitattributes` 保留原始 CRLF／LF 位元組，使來源與證據的 SHA-256 不因 Git 換行轉換而改變；圖片以二進位處理。`.gitignore` 排除本機編譯產物與機密設定。沒有 force push、全機 Git 設定變更或任何認證資料寫入儲存庫。
