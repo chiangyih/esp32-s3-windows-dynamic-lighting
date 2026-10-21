@@ -2,20 +2,20 @@
 
 使用 Waveshare ESP32-S3 N32R16 與 WS2812，透過 USB HID LampArray 接受 Windows 11「動態光效」控制。搭配本專案的 **「音樂動態燈光設置」App**，可分析電腦播放的音訊，讓燈條隨 YouTube 等播放內容變化。
 
-目前 App 送審版本為 **0.3.1.0**，支援自訂 **1～64 顆，預設 8 顆**，新增內建離線「隱私政策」分頁。Microsoft Store 套件已通過後台 `Validated` 檢查並成功提交，目前預先處理中；已設定通過認證後立即發布，**尚未認證通過或公開發布**。實體原型仍為 8 顆、GPIO4 直連及 USB 供電，沒有重刷 ESP32。以下狀態依 2026-10-21 的程式與後台讀回整理。
+目前 App **0.3.1.0 已正式上架 Microsoft Store**，台灣[公開商品頁已提供下載](https://apps.microsoft.com/detail/9nkrn1kcr738?hl=zh-TW&gl=TW)。本輪於 **2026-10-21 晚間追蹤讀回確認**，這是確認時間，不代表實際發布時刻。App 支援自訂 **1～64 顆，預設 8 顆**，內建離線「隱私政策」分頁。實體原型仍為 8 顆、GPIO4 直連及 USB 供電，沒有重刷 ESP32。
 
 [隱私政策（公開閱讀）](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)：與 App 內建離線政策共用同一份來源。
 
 | 項目 | 目前設定 |
 | --- | --- |
-| App | 音樂動態燈光設置 0.3.1.0，已提交 Store 認證 |
+| App | 音樂動態燈光設置 0.3.1.0，Microsoft Store 正式上架 |
 | 開發方式 | C# 10、.NET 10、WinForms，x64 |
 | Windows | Windows 11；套件最低 23H2，執行時另檢查 LampArray 控制權 API；目前以 24H2 測試 |
 | 裝置 | 本專案 `ESP32-S3 USB Light Strip`，VID 303A／PID 1001 |
 | 燈數 | 1～64 顆；App 設定須與韌體回報相同 |
 | 原型硬體 | Waveshare ESP32-S3-DEV-KIT-NXRX N32R16、8 顆 WS2812 |
 | 供電／資料 | 同一條 USB 傳輸及供電，GPIO4 輸出燈條資料 |
-| Store | 已提交；Publishing Status 步驟 2/4、預先處理中，通過認證後自動發布；尚未認證通過或公開發布，WACK 未跑 |
+| Store | 2026-10-21 晚間確認「在 Microsoft Store 中」；台灣公開頁可下載，Store 簽署套件安裝驗證及 WACK 尚未完成 |
 
 **64 顆目前只有編譯、程式與預覽驗證，尚未完成實體燈條及 USB 耗電驗證。** 使用者最新確認仍接8顆；64顆測試工具與所需量測條件已整理於[64顆USB實測](docs/64顆USB實測.md)。增加燈數前請先閱讀[自訂燈數與 USB 供電](docs/自訂燈數與USB供電.md)。
 
@@ -138,20 +138,20 @@ App 使用 Windows WASAPI 與 LampArray API，沒有 WebView、Windows App SDK�
 | --- | --- |
 | 8 顆實體原型 | 先前已燒錄，Windows 設定頁辨識成功；使用者確認 8 顆紅／綠／藍切換，以及舊版 App 三種效果、暫停漸暗 |
 | 0.3.1.0 程式與介面 | 本輪重跑 148 項純程式檢查通過；三頁真實截圖均為 1366×900 且目視確認，測試 PID 消失、清理錯誤為空，未回讀退出碼 |
-| 0.3.1.0 送審套件 | 正式產品身分已與 Partner Center 讀回核對；使用者手動上傳後，後台顯示 `Validated`、X64、Windows.Desktop、最低 10.0.22631.0 |
+| 0.3.1.0 上架套件 | Partner Center 產品詳細資料讀回目前上架套件為 0.3.1.0、X64、Windows.Desktop、最低 10.0.22631.0；僅桌面版 |
 | 0.3.0.0 程式與預覽 | 148 項純程式、6 項原生預覽檢查通過 |
 | 0.3.0.0 韌體 | 26 項 PC 協定／限流、8 項設定邊界檢查通過；8／50 mA 與 64／80 mA 完整建置均 0 warnings，未燒錄 |
 | 0.3.0.0 燈數比對 | 封裝 API 回報 8 顆；App 設為 1 或 64 顆均拒絕送色，0 幀；保存／重啟還原及停止／重啟通過 |
 | 0.3.0.0 退出 | 按鈕、啟動途中、通知區及 WM_CLOSE 四條路徑通過，程序退出且清理錯誤為空 |
 | 0.3.0.0 實體音樂送色 | 當次相符 8 顆測試仍等待 Windows 控制權、0 幀；沒有新增此版本的實體音樂驗收 |
 | USB／64 顆實體 | 電流、可用亮度、DIN 波形、電壓裕量、長時間負載、睡眠／喚醒及 USB 重插仍待驗證 |
-| Store | Submission 1 已提交，後台概觀顯示認證中；細部進度為預先處理中，認證及發布尚未啟動。WACK 仍未執行 |
+| Store | 後台顯示「在 Microsoft Store 中」，公開未登入頁顯示正確名稱、發行者 Tseng、下載及 Store 檢視按鈕；未安裝或驗證 Store 簽署套件 |
 
-0.3.1.0 上架準備見 [StoreSubmission 索引](02-windows-music-sync/Packaging/StoreSubmission/README.md)；[0.3.0.0 驗證摘要](docs/verification/2026-10-21/lamp-counts/0.3.0/verification-summary.json)與舊版實物驗收保留原版本。曾出現的退出阻塞及 0.2.1 修正後實際送色／清理證據，保留於 [handoff.md](handoff.md) 與[驗證目錄](docs/verification/README.md)。編譯、API 讀回與使用者實物觀察各自記錄，不互相取代。
+0.3.1.0 上架資料見 [StoreSubmission 索引](02-windows-music-sync/Packaging/StoreSubmission/README.md)；[0.3.0.0 驗證摘要](docs/verification/2026-10-21/lamp-counts/0.3.0/verification-summary.json)與舊版實物驗收保留原版本。曾出現的退出阻塞及 0.2.1 修正後實際送色／清理證據，保留於 [handoff.md](handoff.md) 與[驗證目錄](docs/verification/README.md)。編譯、API 讀回與使用者實物觀察各自記錄，不互相取代。
 
-2026-10-21 已完成產品 `9NKRN1KCR738` 的 Submission 1（`1152921505702190045`）提交。政策與支援網址、繁中說明、7 項功能、7 組搜尋字詞、三張截圖、商品圖示及認證測試備註均已保存。後台沿用既存 IARC 分級，沒有重新代答或新增同意；價格與發行設定讀回為免費、240 個市場、公開可搜尋，通過認證後立即發布。Publishing Status 顯示步驟 2/4：提交完成、預先處理進行中，認證及發布尚未啟動。證據見[提交狀態](docs/verification/2026-10-21/store-submission/0.3.1/submission-status.json)及[後台畫面](docs/verification/2026-10-21/store-submission/0.3.1/submission-in-certification.jpg)。
+2026-10-21 提交產品 `9NKRN1KCR738` 的 Submission 1（`1152921505702190045`）時，Publishing Status 曾顯示步驟 2/4、預先處理中；該[提交狀態](docs/verification/2026-10-21/store-submission/0.3.1/submission-status.json)及[當時畫面](docs/verification/2026-10-21/store-submission/0.3.1/submission-in-certification.jpg)保留為歷史。晚間追蹤已確認同一 Submission 的 0.3.1.0 正式上架，後台顯示「在 Microsoft Store 中」，台灣公開未登入頁顯示「音樂動態燈光設置」、發行者 Tseng 及下載按鈕。最新證據見[上架確認](docs/verification/2026-10-21/store-publication/0.3.1/publication-status.json)及[公開商品頁畫面](docs/verification/2026-10-21/store-publication/0.3.1/store-public-live.jpg)。本輪確認時間不作為實際發布時刻。
 
-公開 GitHub 政策與 App 內建來源文字一致，無需另外建立 Pages 或重建 MSIX。先前瀏覽器初始化故障及自動上傳錯誤保留於 [handoff.md](handoff.md)，已不是本輪目前的阻擋；本次沒有完成 WACK、乾淨機安裝或 64 顆實體 USB 測試。
+公開 GitHub 政策與 App 內建來源文字一致，無需另外建立 Pages 或重建 MSIX。先前瀏覽器初始化故障及自動上傳錯誤保留於 [handoff.md](handoff.md)，已不是目前的阻擋；WACK、乾淨機安裝、Store 簽署套件安裝驗證及 64 顆實體 USB 測試仍未完成。
 
 ## 專案目錄與文件
 

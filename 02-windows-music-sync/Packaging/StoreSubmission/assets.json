@@ -81,8 +81,11 @@
   },
   "PartnerCenterUploaded": true,
   "StoreSubmitted": true,
-  "StoreCertified": false,
-  "StorePublished": false,
+  "StoreCertified": true,
+  "StorePublished": true,
+  "PublishedObservedAtUtc": "2026-10-21T14:13:54.508Z",
+  "CertificationEvidence": "PublishedStateReadBackNotDetailedCertificationReport",
+  "PublicationEvidence": "docs/verification/2026-10-21/store-publication/0.3.1/publication-status.json",
   "OfficialReferences": [
     "https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/screenshots-and-images",
     "https://learn.microsoft.com/en-us/windows/uwp/debug-test-perf/windows-app-certification-kit"

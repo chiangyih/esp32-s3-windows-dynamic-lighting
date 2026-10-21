@@ -1,0 +1,67 @@
+- main:
+  - heading "音樂動態燈光設置" [level=1]
+  - paragraph: MSIX 或 PWA 應用程式
+  - generic: 在 Microsoft Store 中
+  - generic: 需要協助?
+  - link "連絡支援人員":
+    - /url: https://aka.ms/storedevsupport
+  - generic: 分析
+  - generic: 檢查您的應用程式執行情況。
+  - button "檢視分析":
+    - generic: 檢視分析
+  - text: 產品版本
+  - paragraph: 使用此區段來更新您的產品。
+  - generic: 更新您的產品
+  - text: 請參閱此
+  - link "Documentation for Product submission":
+    - /url: https://go.microsoft.com/fwlink/?linkid=2247663
+    - text: 文件
+  - text: 將您的產品提交至 Microsoft Store。
+  - button "開始更新":
+    - generic: 開始更新
+  - text: 
+  - text: Store 目前狀態
+  - generic: "(Submission 1: 上次修改於 2026/10/21)"
+  - generic: 檢查您的產品目前刊登在 Microsoft Store 中的詳細資料。這是唯讀區段。
+  - button "檢視產品詳細資料":
+    - generic: 檢視產品詳細資料
+  - generic: Your product is currently available in the Microsoft Store based on the discoverability configured in the Availability module.
+  - button "修改可用性":
+    - generic: 修改可用性
+  - generic: 其他功能
+  - generic: 產品頁面實驗
+  - generic: 使用標誌和螢幕擷取畫面進行實驗，以最佳化您在 Microsoft Store 中的產品頁面。
+  - button "建立實驗":
+    - generic: 建立實驗
+  - generic: 管理附加元件
+  - text: 附加元件是您的產品補充項目，可供客戶購買。若要深入了解，請參閱此
+  - link "Documentation for Add-Ons":
+    - /url: https://go.microsoft.com/fwlink/?linkid=2248017
+    - text: 文件
+  - text: 。
+  - button "建立附加元件":
+    - generic: 建立附加元件
+  - button "切換附加元件":
+    - generic: 
+  - generic: 管理套件正式發行前小眾測試版
+  - text: 您可以使用套件正式發行前小眾測試版，將特定套件散發給一組有限的測試人員。若要以深入了解，請參閱此
+  - link "Documentation for Package Flighting":
+    - /url: http://go.microsoft.com/fwlink/?LinkId=626101
+    - text: 文件
+  - text: 。
+  - button "建立新的套件正式發行前小眾測試版":
+    - generic: 建立新的套件正式發行前小眾測試版
+  - button "切換套件正式發行前小眾測試版":
+    - generic: 
+  - generic: 一般
+  - generic: 在社交媒體上分享
+  - generic: 透過與您的社交網路分享產品來推廣您的產品。
+  - link "在 Store 上檢視產品":
+    - /url: ms-windows-store://pdp/?productid=9NKRN1KCR738
+    - generic: 在 Store 上檢視產品
+  - button "立即共用":
+    - generic: 立即共用
+  - generic: 檢視產品識別資訊
+  - generic: 您可以分享 Store 深層連結，以協助客戶在 Store 上找到您的產品。
+  - button "切換產品識別":
+    - generic: 

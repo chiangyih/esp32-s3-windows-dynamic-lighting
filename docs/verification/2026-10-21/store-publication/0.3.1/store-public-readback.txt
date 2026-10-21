@@ -1,0 +1,65 @@
+- banner:
+  - navigation:
+    - button "跳到主要內容":
+      - generic: 跳到主要內容
+    - link "通用 Microsoft 網站":
+      - /url: https://microsoft.com
+      - img "通用 Microsoft 網站"
+    - link "Microsoft Store 住家":
+      - /url: /home?hl=zh-TW&gl=TW
+      - img "Microsoft Store 住家"
+    - link "已選取首頁":
+      - /url: /home?hl=zh-TW&gl=TW
+      - generic "已選取首頁": 首頁
+    - link "應用程式":
+      - /url: /apps?hl=zh-TW&gl=TW
+      - generic "應用程式"
+    - link "遊戲":
+      - /url: /games?hl=zh-TW&gl=TW
+      - generic "遊戲"
+    - link "佈景主題":
+      - /url: /themes?hl=zh-TW&gl=TW
+      - generic "佈景主題"
+    - link "關於":
+      - /url: /about?hl=zh-TW&gl=TW
+      - generic "關於"
+    - generic "搜尋":
+      - textbox:
+        - /placeholder: 搜尋應用程式、遊戲及其他項目
+    - status
+    - link:
+      - /url: /apppack?ocid=pack-nav&hl=zh-TW&gl=TW
+    - generic: 登入
+    - button "[登入] 按鈕":
+      - generic: "[登入] 按鈕"
+- main:
+  - heading "音樂動態燈光設置" [level=1]
+  - paragraph:
+    - link "Tseng":
+      - /url: /search/publisher?name=Tseng&hl=zh-TW&gl=TW
+      - generic: Tseng
+  - paragraph:
+    - link "公用程式與工具":
+      - /url: /collections/computed/apps/topfree/utilities%20%26%20tools?hl=zh-TW&gl=TW
+      - generic: 公用程式與工具
+  - paragraph: 分析電腦播放音訊，讓相容的 ESP32-S3／WS2812 燈條隨音樂變化。
+  - button "下載 音樂動態燈光設置":
+    - generic "下載 音樂動態燈光設置": 下載
+  - button "在 Microsoft Store 中檢視":
+    - paragraph: 在 Microsoft Store 中檢視
+  - img "此產品已 3+ 分級為 3+，IARC 適合 3 歲 (含) 以上"
+  - 'generic "年齡分級: 3+。按一下以取得詳細資訊。"':
+    - link "3+":
+      - /url: https://www.globalratings.com/
+      - generic: 3+
+  - heading "螢幕擷取畫面" [level=2]
+  - button "音樂燈光設定：選擇音訊依據、配色、動態與速度，停止同步後可設定燈數。"
+  - button "關於與版本：查看版本編號、Windows 動態光效相容硬體需求及燈數限制。"
+  - button "內建隱私政策：查看音訊處理、本機設定及診斷資料說明，不需開啟外部網頁。"
+  - generic "向右捲動":
+    - button "向右捲動":
+      - img "向右捲動":
+  - heading "說明" [level=2]
+  - paragraph: 讓桌面燈條隨電腦播放的音樂變化。選擇音量、低／中／高頻能量分布或高低音比例，搭配呼吸、流動及單顆依序效果，建立自己的燈光氣氛。 本程式分析 Windows 預設多媒體播放裝置的系統混音，再透過 Windows 動態光效控制相容燈條。音訊可來自 YouTube 或其他正在播放聲音的應用程式，不需登入 YouTube。 使用前必須備妥相容硬體。此版本只控制本專案 ESP32-S3 USB Light Strip 識別的裝置，需搭配正確的 USB HID LampArray 韌體與 WS2812 燈條。App 可設定 1～64 顆、預設 8 顆，設定須與韌體回報一致；App 不會自動偵測實體顆數或改寫韌體。目前實體原型為 8 顆；64 顆只有程式、預覽與編譯驗證，實體運作及 USB 供電能力仍需依硬體量測確認。 請在 Windows「設定 → 個人化 → 動態光效」啟用裝置，並在背景光源控制項調整本程式的優先順序。開啟 App、確認燈數後，播放音樂並按「開始同步」。不必將 Windows 內建效果切換成「音效」。暫停播放後燈光會漸暗。 配色包含 Windows 佈景主題輔色、彩虹及 2～4 種自訂顏色；速度可使用節奏估測、手動快／中／慢或自訂循環速度。聲頻為粗頻帶分析，節奏估測可能出現半拍／倍拍。 程式可縮至通知區繼續同步。音訊只在記憶體分析，不開啟麥克風、不保存錄音、不上傳音訊，沒有廣告、追蹤器、雲端帳號或遙測服務。正常關閉會保存本機燈數與燈效偏好；關閉程式會停止分析並釋放資源。App 內建可離線閱讀的隱私政策。 系統需求：Windows 11 x64，套件最低 23H2；執行時另檢查所需 LampArray API，目前以 24H2 測試。未連接相容硬體時可觀察預覽，但無法控制實體燈光。
+  - button "說明 閱讀更多資訊":
+    - generic "說明 閱讀更多資訊": 閱讀較多資訊

@@ -1,0 +1,43 @@
+{
+  "CreatedAtUtc": "2026-10-21T14:17:49.4238001Z",
+  "StoreId": "9NKRN1KCR738",
+  "SubmissionId": "1152921505702190045",
+  "Version": "0.3.1.0",
+  "Files": [
+    {
+      "File": "monitor-completion.json",
+      "Bytes": 329,
+      "Sha256": "63AC1F89B5BFA88D62F717CF4950F729FA7AE1463774D8A27601FD4ACFDA383F"
+    },
+    {
+      "File": "partner-center-published-overview.jpg",
+      "Bytes": 95208,
+      "Sha256": "10688B2DED76824B1B49CDC410865C1E720F71B8F03F84B6E9EEC2A040938F5B"
+    },
+    {
+      "File": "partner-center-published-overview.txt",
+      "Bytes": 2913,
+      "Sha256": "6FAD47A93E8C678F29EBA838DC07C02891E09A5FA7AA840E6AA58AA7F21A2BA8"
+    },
+    {
+      "File": "publication-status.json",
+      "Bytes": 2487,
+      "Sha256": "68D26A20626EC5F37AE418AE550FB738B77AF8C24033BEF8DE8CBB0E2158F140"
+    },
+    {
+      "File": "published-package-readback.txt",
+      "Bytes": 5243,
+      "Sha256": "358F82DA974C1459578717CBE319E19C3FF10F4C28331E81D4A6D69856020511"
+    },
+    {
+      "File": "store-public-live.jpg",
+      "Bytes": 68230,
+      "Sha256": "4A6171CBC82B2417D3D6FA19072EB6BA06A161B2A5110FF002E04C2D610B83E0"
+    },
+    {
+      "File": "store-public-readback.txt",
+      "Bytes": 4400,
+      "Sha256": "278361B3DC7F9C81C9D63F345C836D5AB85691D68D254D34233292F8C99FE2F1"
+    }
+  ]
+}

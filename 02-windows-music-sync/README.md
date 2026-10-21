@@ -2,7 +2,7 @@
 
 分析電腦播放音訊，控制本專案 ESP32-S3／WS2812 燈條，可自訂 **1～64 顆、預設 8 顆**。精簡 WinForms 視窗採蒂芬妮藍搭配深藍底，可縮至通知區，音訊及燈光均使用 Windows 系統 API；沒有 WebView、Windows App SDK、NAudio、FFT 或雲端服務。
 
-目前送審版本為 **0.3.1.0**，新增內建離線「隱私政策」第三分頁，發行者 Tseng，文字與套件共用同一份嵌入資源，不開啟外部連結。正式產品身分已與 Partner Center 後台讀回核對，套件為 `Validated` 並已成功提交；目前預先處理中，通過認證後將立即發布，尚未認證通過或公開發布。
+目前 **0.3.1.0 已正式上架 Microsoft Store**，台灣[公開商品頁已提供下載](https://apps.microsoft.com/detail/9nkrn1kcr738?hl=zh-TW&gl=TW)。本輪於 **2026-10-21 晚間追蹤讀回確認**；確認時間不代表實際發布時刻。此版本內建離線「隱私政策」第三分頁，發行者 Tseng，與套件共用同一份政策來源，不開啟外部連結。
 
 保留0.3.0.0加入的燈數設定，僅在停止同步並完成清理後可修改，正常關閉後會保存。App 設定必須與韌體回報的 `LampCount` 相同；不符時顯示兩個數值並停止送色。現有實體裝置仍為 8 顆，本輪沒有重刷韌體。設定、韌體與 USB 供電限制見 [自訂燈數與 USB 供電](../docs/自訂燈數與USB供電.md)。64 顆目前只有編譯、純程式及預覽測試，尚未完成 64 顆實體燈條或 USB 供電驗證。
 
@@ -72,7 +72,7 @@ dotnet run --project .\02-windows-music-sync\tests\TestRunner.csproj -c Release
 & .\02-windows-music-sync\scripts\launch-packaged.ps1 -Arguments '--autostart'
 ```
 
-開發註冊會直接使用該 `layout` 目錄，請保留正在使用的目錄；一般使用者日後以 Store 安裝時由 Windows 管理程式檔案。
+開發註冊會直接使用該 `layout` 目錄，請保留正在使用的目錄；一般使用者可由 [Microsoft Store](https://apps.microsoft.com/detail/9nkrn1kcr738?hl=zh-TW&gl=TW) 取得程式，由 Windows 管理安裝檔案。本專案尚未完成 Store 簽署套件安裝驗證。
 
 短時診斷會自動開始、可能控制燈條，時間到後儲存統計並退出：
 
@@ -95,11 +95,13 @@ dotnet run --project .\02-windows-music-sync\tests\TestRunner.csproj -c Release
 
 ## Microsoft Store
 
-MSIX manifest、圖示、封裝腳本、內建政策與提交狀態見 [封裝文件](Packaging/README.md)及[上架資料索引](Packaging/StoreSubmission/README.md)。正式產品身分已在 Partner Center 核對相符；`LocalDev.Esp32MusicSync`仍僅為開發測試身分。
+MSIX manifest、圖示、封裝腳本、內建政策與上架狀態見 [封裝文件](Packaging/README.md)及[上架資料索引](Packaging/StoreSubmission/README.md)。正式產品身分已在 Partner Center 核對相符；`LocalDev.Esp32MusicSync`仍僅為開發測試身分。
 
 2026-10-21，產品 `9NKRN1KCR738` 的 Submission 1（`1152921505702190045`）已提交。使用者手動上傳的 0.3.1.0 X64 套件在後台顯示 `Validated`，裝置系列限定 Windows.Desktop，最低版本 10.0.22631.0。繁中商品頁、三張截圖與圖示、[公開隱私政策](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)、支援網址及認證備註均已保存。App 仍可離線閱讀同一政策。
 
-後台概觀顯示認證中；Publishing Status 的細部進度為步驟 2/4、提交完成及預先處理進行中，認證和發布尚未啟動。已設定通過認證後立即發布；目前尚未認證通過或公開發布。證據見[提交狀態](../docs/verification/2026-10-21/store-submission/0.3.1/submission-status.json)及[後台畫面](../docs/verification/2026-10-21/store-submission/0.3.1/submission-in-certification.jpg)。先前工具與自動上傳錯誤保留於交接歷史；WACK、乾淨機安裝及 64 顆實體 USB 測試仍未完成。
+提交後曾顯示步驟 2/4、預先處理中；[提交狀態](../docs/verification/2026-10-21/store-submission/0.3.1/submission-status.json)及[當時畫面](../docs/verification/2026-10-21/store-submission/0.3.1/submission-in-certification.jpg)保留為歷史。2026-10-21 晚間追蹤讀回已確認正式上架：後台顯示「在 Microsoft Store 中」，產品詳細資料為同一 Submission 的 0.3.1.0 X64 桌面套件；台灣公開未登入頁顯示正確名稱、發行者 Tseng 及下載按鈕。最新證據見[上架確認](../docs/verification/2026-10-21/store-publication/0.3.1/publication-status.json)及[公開商品頁畫面](../docs/verification/2026-10-21/store-publication/0.3.1/store-public-live.jpg)。本輪確認時間不代表實際發布時刻。
+
+先前工具與自動上傳錯誤保留於交接歷史；WACK、乾淨機安裝、Store 簽署套件安裝驗證及 64 顆實體 USB 測試仍未完成。本輪沒有安裝 Store 版本或操作硬體。
 
 最新實測狀態見 [handoff.md](../handoff.md)；前一輪設計文件中的「尚未實作」是當時歷史。
 

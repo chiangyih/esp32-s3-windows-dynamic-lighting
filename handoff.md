@@ -516,3 +516,17 @@ Additional Testing Info 已儲存英文runFullTrust理由、無硬體預覽測�
 證據在 `docs/verification/2026-10-21/store-submission/0.3.1/`：公開欄位／套件／既存分級讀回JSON、實際提交文案及審查備註、submission-status.json、概觀文字及submission-in-certification.jpg。截圖顯示認證中／預先處理與自動發布設定，未擷取身分頁SID。舊工具故障與失敗上傳保留為歷史，不再列為目前阻擋。
 
 本輪只操作Store與文件，沒有改App程式、重新建置套件、操作COM或燒錄；已註冊layout繼續保留。WACK未執行、乾淨機測試及64顆實體USB電氣驗證仍未完成，不能隨Store提交改為通過。依既有授權自動commit／push；本機與遠端最終SHA以Git讀回為準。Microsoft認證／發布為外部後續流程，目前沒有另建排程或輪詢自動化。
+
+## 2026-10-21 22:13 台北追蹤確認：0.3.1.0 已正式上架，追蹤完成
+
+使用者要求自動追蹤認證並於正式發布後通知；其後建立本對話每小時追蹤「追蹤音樂動態燈光設置上架」（automation）。本輪 heartbeat 先讀取本交接與 `store-submission/0.3.1/` 歷史快照，再使用既有 Edge 已登入工作階段唯讀查核同一產品，沒有重新提交、修改可用性、價格、權限或其他Store欄位。使用者原有概觀分頁保留；另開追蹤分頁讀取證據。
+
+**2026-10-21 22:13:54（台北；UTC 14:13:54.508）已確認公開上架。** Partner Center 概觀顯示「在 Microsoft Store 中」，Store目前狀態為 Submission 1，明文顯示產品 currently available in the Microsoft Store。從「檢視產品詳細資料」進入唯讀現行套件頁，URL含原 Submission `1152921505702190045`，套件仍為 `Esp32MusicSync_0.3.1.0_x64_store.msix`、v0.3.1.0、X64、Windows.Desktop最低10.0.22631.0。由已發布狀態確認認證流程已完成；本輪未開詳細認證報告，也未讀到Microsoft實際批准／發布時間，因此上述時間僅是本輪驗證時間。
+
+公開商店 [音樂動態燈光設置](https://apps.microsoft.com/detail/9NKRN1KCR738) 在未登入的頁面顯示正確產品名、發行者Tseng、免費下載標題，以及可用的「下載 音樂動態燈光設置」按鈕與「在 Microsoft Store 中檢視」。實際頁面為zh-TW／gl=TW，僅確認台灣市場；沒有逐一驗證原設定的240市場。此結論同時依後台可用狀態與公開商品及下載按鈕，不是依HTTP200、既存網址或套件Validated推定。沒有點擊下載、開啟Store App或安裝正式商店套件。
+
+必要非敏感證據保存於 `docs/verification/2026-10-21/store-publication/0.3.1/`：publication-status.json、後台概觀文字／截圖、唯讀套件頁文字、公開商店文字／截圖及檔案雜湊清單。`store-submission/0.3.1/submission-status.json` 的認證中／2/4及false欄位維持當時快照，不覆寫歷史。現行身分與素材中繼資料、各README／商品頁／認證說明已改為已公開上架。
+
+確認上架後已呼叫App的automation_update（mode=delete）刪除本追蹤，工具回報deleteStatus=deleted，精簡回應保存於monitor-completion.json。完成通知附商店連結及上述驗證時間，之後不再定期查核。沒有保存登入憑證、SID或不必要的個人資料。
+
+本輪僅更新文件與證據，沒有改App／韌體、重新建置候選、操作ESP32／COM或重跑硬體測試；既有註冊layout保留。**WACK、乾淨機測試、正式商店簽署套件安裝與64顆實體USB電氣驗證仍未執行**；Store上架不代表這些項目完成，已確認的實體配置仍為8顆。依使用者既有授權自動commit／push，本機與遠端最終一致性以Git讀回為準。

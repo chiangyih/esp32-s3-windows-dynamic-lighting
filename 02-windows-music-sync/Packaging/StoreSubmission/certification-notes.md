@@ -1,6 +1,6 @@
 # 認證測試說明
 
-0.3.1.0 正式產品身分已在 Partner Center 讀回相符，產品 `9NKRN1KCR738`、Submission 1 `1152921505702190045`。套件由使用者手動上傳後顯示 Validated；商品頁及下述用途／測試備註已儲存，備註重新載入後文字完全相符。2026-10-21 已提交，後台為認證中／預先處理，通過後自動發布；尚未認證通過或公開發布。此文件不是 WACK 或硬體電氣測試通過報告。
+**0.3.1.0 已正式上架 Microsoft Store**，台灣[公開商品頁已提供下載](https://apps.microsoft.com/detail/9nkrn1kcr738?hl=zh-TW&gl=TW)。本輪於 **2026-10-21 晚間追蹤讀回確認**，確認時間不代表實際發布時刻。產品 `9NKRN1KCR738`、Submission 1 `1152921505702190045` 的後台顯示「在 Microsoft Store 中」，產品詳細資料為 0.3.1.0 X64 桌面套件；公開未登入頁顯示正確名稱、發行者 Tseng 及下載按鈕。商品頁及下述用途／測試備註均已儲存讀回。此文件不是 WACK、Store 簽署套件安裝或硬體電氣測試通過報告。
 
 ## runFullTrust 用途（可供能力審查欄位）
 
@@ -37,7 +37,9 @@ This is a C# / .NET WinForms desktop lighting utility. It requires the desktop p
 - 0.3.0.0 封裝 API 讀回 8 顆；設定 1／64 顆拒絕送色。設定 8 顆當次仍等待 Windows 仲裁、0 幀，未新增此版本實體音樂驗收。
 - 舊版 8 顆三種效果及暫停漸暗由使用者目視確認；0.2.1 另有實際送色與正常退出證據。不能直接改寫為 0.3.0 新驗收。
 - WACK因目前非管理員尚未執行；MakeAppx正常驗證、本機註冊、Partner Center套件驗證、提交、認證及發布各自分開記錄。
-- 本輪 Edge 瀏覽器工具恢復，正式身分、政策／支援網址、zh-TW 商品頁、三圖／圖示與備註皆完成後台讀回。兩次自動套件上傳 Error 後，使用者手動上傳成功，後台 Validated。本輪已提交並進入預先處理，尚未認證通過或公開發布。
+- 提交階段：Edge 瀏覽器工具恢復，正式身分、政策／支援網址、zh-TW 商品頁、三圖／圖示與備註皆完成後台讀回。兩次自動套件上傳 Error 後，使用者手動上傳成功，後台 Validated；隨後提交，當時步驟 2/4、預先處理中，保留為歷史證據。
+- 正式上架追蹤：2026-10-21 晚間由 Partner Center 與台灣公開未登入商品頁交叉確認 0.3.1.0 已正式上架。最新證據見[上架確認](../../../docs/verification/2026-10-21/store-publication/0.3.1/publication-status.json)及[公開商品頁畫面](../../../docs/verification/2026-10-21/store-publication/0.3.1/store-public-live.jpg)；較早的[提交狀態](../../../docs/verification/2026-10-21/store-submission/0.3.1/submission-status.json)保留當時進度，不作目前狀態。追蹤確認時間不作為實際發布時刻。
+- WACK、乾淨機安裝、Store 簽署套件安裝驗證及 64 顆實體 USB 測試仍未完成；本輪沒有安裝 App 或操作硬體。
 - 既存 IARC 結果為 3+（PEGI 3+、ESRB Everyone），本輪只讀回，未重新作答或代替使用者接受條款；有效分級與目前應用程式功能無明顯衝突。
 
 精簡證據：[0.3.0 驗證摘要](../../../docs/verification/2026-10-21/lamp-counts/0.3.0/verification-summary.json)；完整歷史：[handoff.md](../../../handoff.md)。

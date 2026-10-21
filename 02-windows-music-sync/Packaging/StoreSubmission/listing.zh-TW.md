@@ -1,6 +1,6 @@
-# Microsoft Store 商品頁（zh-TW，已提交）
+# Microsoft Store 商品頁（zh-TW，已正式上架）
 
-2026-10-21：0.3.1.0 套件已由使用者手動上傳，Partner Center 驗證為 Validated；正式產品身分讀回相符。繁中商品頁、三張截圖及 300×300 圖示已儲存讀回，Submission 1 已提交，正在預先處理／認證中。通過認證後自動發布，目前尚未認證通過或公開發布。實際欄位讀回見 `docs/verification/2026-10-21/store-submission/0.3.1/store-readback.json`。
+**0.3.1.0 已正式上架**，台灣[公開商品頁已提供下載](https://apps.microsoft.com/detail/9nkrn1kcr738?hl=zh-TW&gl=TW)。本輪於 **2026-10-21 晚間追蹤讀回確認**，不是實際發布時刻紀錄。Partner Center 顯示「在 Microsoft Store 中」，產品詳細資料確認同一 Submission 1 的 0.3.1.0 X64 桌面套件；公開未登入商品頁顯示「音樂動態燈光設置」、發行者 Tseng 及下載按鈕。最新證據見[上架確認](../../../docs/verification/2026-10-21/store-publication/0.3.1/publication-status.json)及[公開商品頁畫面](../../../docs/verification/2026-10-21/store-publication/0.3.1/store-public-live.jpg)。提交時的欄位讀回保留於 [store-readback.json](../../../docs/verification/2026-10-21/store-submission/0.3.1/store-readback.json)，當時步驟 2/4、預先處理中的紀錄是歷史，不是目前狀態。
 
 ## 產品名稱
 
@@ -61,8 +61,8 @@
 | 類別 | 公用程式 + 工具；無次要類別／子類別 |
 | 發行市場與可見性 | 後台既存全球 240 市場、公用對象、可搜尋，盡快發布、永不停止取得 |
 | 年齡分級 | 既存 IARC／PEGI 3+、ESRB Everyone 已讀回；本輪未重新作答或代同意問卷 |
-| 發行時機 | 通過認證後自動發布；送審後概觀再次明確顯示此設定 |
+| 發行狀態 | 提交時設定通過認證後自動發布；2026-10-21 晚間追蹤已確認正式上架，台灣公開頁提供下載；確認時間不作為實際發布時刻 |
 
-三張 1366×900 真實截圖及圖示已上傳，欄位、圖片數量與標題儲存後讀回相符。先前工具故障及兩次自動套件上傳 Error 保留於交接歷史，已由使用者手動上傳解決。本輪未執行 WACK 或新增硬體測試；套件 Validated、已提交、認證通過與公開發布分別記錄。這些內部狀態不放入面向使用者的版本更新欄位。
+三張 1366×900 真實截圖及圖示已上傳，欄位、圖片數量與標題儲存後讀回相符。先前工具故障及兩次自動套件上傳 Error 保留於交接歷史，已由使用者手動上傳解決。正式上架已確認，但 WACK、乾淨機安裝、Store 簽署套件安裝驗證及 64 顆實體 USB 測試仍未完成；本輪未安裝 App 或操作硬體。這些內部狀態不放入面向使用者的版本更新欄位。
 
 建議搜尋字詞：音樂、動態光效、燈條、WS2812、ESP32、LampArray、音訊同步。

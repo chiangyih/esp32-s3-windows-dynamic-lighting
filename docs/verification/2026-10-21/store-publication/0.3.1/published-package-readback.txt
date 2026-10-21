@@ -1,0 +1,94 @@
+
+  - heading "音樂動態燈光設置 | Packages" [level=1]
+  - text: Future Windows on Arm devices will no longer support AArch32, therefore we recommend updating your targeted platforms to Arm64 (AArch64), which works on all Windows on Arm devices, as soon as possible in order to ensure your customers can continue to enjoy your experience.
+  - link "Learn more":
+    - /url: https://learn.microsoft.com/en-us/windows/arm/overview
+  - button "更多資訊":
+  - button "關閉訊息":
+    - img "關閉訊息":
+  - paragraph:
+    - text: If you are using Visual Studio, be sure you signed in with the same account associated with your developer account, as some parts of the package are specific to this account.
+    - link "Learn more":
+      - /url: http://go.microsoft.com/fwlink/?LinkId=528684
+  - generic: Drag your packages here (.msix, .msixbundle, .msixupload, .appx, .appxbundle, .appxupload, .xap) or browse your files.
+  - heading "Device family availability" [level=2]
+  - paragraph: This table shows which packages will be offered to specific Windows 10/11 device families (and earlier OS versions, if applicable) in ranked order. If a device family’s box is unchecked, new customers on that type of device won’t be able to acquire the app (though customers who already have the app can still use it, and will get any updates you submit).
+  - checkbox "Let Microsoft decide whether to make this app available to any future device families" [disabled]
+  - generic: Let Microsoft decide whether to make this app available to any future device families
+  - table:
+    - rowgroup:
+      - row "Packages Windows 10/11 Desktop Windows 10/11 Desktop Windows 10 Mobile Windows 10 Mobile Windows 10/11 Xbox Windows 10/11 Xbox Windows 10 Team Windows 10 Team Windows 10 Mixed Reality Windows 10 Mixed Reality Windows 8/8.1 Windows Phone 8.x and earlier":
+        - columnheader "Packages"
+        - columnheader "Windows 10/11 Desktop Windows 10/11 Desktop":
+          - checkbox "Windows 10/11 Desktop" [checked] [disabled]
+          - generic: Windows 10/11 Desktop
+          - generic: Windows 10/11 Desktop
+        - columnheader "Windows 10 Mobile Windows 10 Mobile":
+          - checkbox "Windows 10 Mobile" [disabled]
+          - generic: Windows 10 Mobile
+          - generic: Windows 10 Mobile
+        - columnheader "Windows 10/11 Xbox Windows 10/11 Xbox":
+          - checkbox "Windows 10/11 Xbox" [disabled]
+          - generic: Windows 10/11 Xbox
+          - generic: Windows 10/11 Xbox
+        - columnheader "Windows 10 Team Windows 10 Team":
+          - checkbox "Windows 10 Team" [disabled]
+          - generic: Windows 10 Team
+          - generic: Windows 10 Team
+        - columnheader "Windows 10 Mixed Reality Windows 10 Mixed Reality":
+          - checkbox "Windows 10 Mixed Reality" [disabled]
+          - generic: Windows 10 Mixed Reality
+          - generic: Windows 10 Mixed Reality
+        - columnheader "Windows 8/8.1"
+        - columnheader "Windows Phone 8.x and earlier"
+    - rowgroup:
+      - row "Esp32MusicSync_0.3.1.0_x64_store.msix v0.3.1.0, X64 1":
+        - cell "Esp32MusicSync_0.3.1.0_x64_store.msix v0.3.1.0, X64":
+          - generic: Esp32MusicSync_0.3.1.0_x64_store.msix
+          - generic: v0.3.1.0, X64
+        - cell "1"
+        - cell
+        - cell
+        - cell
+        - cell
+        - cell
+        - cell
+  - list:
+    - generic: "1"
+    - text: Offered to this device family first.
+    - generic: 2+
+    - text: Offered if a device can’t support a higher-ranked package.
+    - listitem: To make packages available to this device family, check its box.
+  - heading "Windows 10 packages" [level=2]
+  - table:
+    - row "Esp32MusicSync_0.3.1.0_x64_store.msix Show details Version v0.3.1.0 Architecture X64 Device families Windows.Desktop min version 10.0.22631.0 Remove":
+      - cell "Esp32MusicSync_0.3.1.0_x64_store.msix Show details Version v0.3.1.0 Architecture X64 Device families Windows.Desktop min version 10.0.22631.0 Remove":
+        - table:
+          - row "Esp32MusicSync_0.3.1.0_x64_store.msix Show details":
+            - cell "Esp32MusicSync_0.3.1.0_x64_store.msix Show details":
+              - text: Esp32MusicSync_0.3.1.0_x64_store.msix
+              - button "Show details"
+          - row "Version v0.3.1.0":
+            - cell "Version"
+            - cell "v0.3.1.0"
+          - row "Architecture X64":
+            - cell "Architecture"
+            - cell "X64"
+          - row "Device families Windows.Desktop min version 10.0.22631.0":
+            - cell "Device families"
+            - cell "Windows.Desktop min version 10.0.22631.0":
+              - generic: Windows.Desktop min version 10.0.22631.0
+          - row "Remove":
+            - cell "Remove":
+              - button "Remove"
+  - checkbox "Make this update mandatory." [disabled]
+  - generic: Make this update mandatory.
+  - link "Learn more":
+    - /url: http://go.microsoft.com/fwlink/?linkid=2112201
+  - generic: Mandatory update settings only apply to UWP packages for customers running Windows 10/11, version 1607 or later.
+  - button "Save" [disabled]
+- progressbar "Progress bar"
+- generic: 收益
+- generic: 深入解析
+- generic: 應用程式與遊戲
+- generic: 說明 + 支援

@@ -1,0 +1,10 @@
+{
+  "AutomationId": "automation",
+  "Name": "追蹤音樂動態燈光設置上架",
+  "CompletionReason": "BackendPublishedAndPublicTaiwanStoreDownloadAvailable",
+  "Tool": "codex_app.automation_update",
+  "Mode": "delete",
+  "ToolIsError": false,
+  "ToolMessage": "Deleted automation in the app.",
+  "DeleteStatus": "deleted"
+}
