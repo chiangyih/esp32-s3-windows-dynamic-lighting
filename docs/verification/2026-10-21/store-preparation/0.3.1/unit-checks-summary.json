@@ -1,0 +1,13 @@
+{
+  "ObservedAtUtc": "2026-10-21T07:54:46.1598907+00:00",
+  "Command": "dotnet run --project .\\02-windows-music-sync\\tests\\TestRunner.csproj -c Release",
+  "ExitCode": 0,
+  "Status": "Passed",
+  "CoreChecks": 17,
+  "AudioFormatChecks": 26,
+  "FeatureChecks": 17,
+  "EffectChecks": 55,
+  "LampCountChecks": 33,
+  "TotalChecks": 148,
+  "EvidenceSource": "Summary transcribed from the successful command output in this run; no additional test execution."
+}

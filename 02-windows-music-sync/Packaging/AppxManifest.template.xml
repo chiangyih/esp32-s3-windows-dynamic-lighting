@@ -10,7 +10,7 @@
   <Properties>
     <DisplayName>__DISPLAY_NAME__</DisplayName>
     <PublisherDisplayName>__PUBLISHER_DISPLAY_NAME__</PublisherDisplayName>
-    <Description>以電腦播放音量控制 ESP32-S3 的 8 顆 WS2812，音訊僅在記憶體分析。</Description>
+    <Description>分析電腦播放音訊，控制本專案 ESP32-S3 的 1～64 顆 WS2812，音訊僅在記憶體處理。</Description>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>
@@ -22,7 +22,7 @@
   <Applications>
     <Application Id="App" Executable="Esp32MusicSync.exe" EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements DisplayName="__DISPLAY_NAME__"
-        Description="以電腦播放音量控制 8 顆 WS2812"
+        Description="分析電腦播放音訊，控制本專案 ESP32-S3 的 1～64 顆 WS2812"
         BackgroundColor="#101828"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">

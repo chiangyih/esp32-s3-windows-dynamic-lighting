@@ -1,0 +1,33 @@
+{
+  "ObservedAtUtc": "2026-10-21T08:02:05.6295962+00:00",
+  "Status": "BlockedBeforeUpload",
+  "StoreId": "9NKRN1KCR738",
+  "Version": "0.3.1.0",
+  "CandidatePackage": "02-windows-music-sync/artifacts/package-store-20261021-155702-548/Esp32MusicSync_0.3.1.0_x64_store.msix",
+  "PackageSha256": "412629BE9587F16D6CB4D5D52742D715A99D60C13497FDC111189E35F0977CB9",
+  "MakeAppxValidation": "Passed",
+  "OfflinePolicyEmbedded": true,
+  "PolicySourceSha256": "244F3D392118376EFAA744DA7EB8FF8662C11172A2E1676FCBC7753690613CAE",
+  "UserConfirmedNoPublicPolicyUrl": true,
+  "PolicyUrl": null,
+  "BrowserAutomationStatus": "InitializationFailedAfterReset",
+  "BrowserAutomationError": "failed to write kernel assets: 系統找不到指定的路徑。 (os error 3)",
+  "PartnerCenterReadbackPerformed": false,
+  "Wack": "NotRun",
+  "AdministratorContext": false,
+  "WindowsSecuritySettingsChanged": false,
+  "ProductCreatedByAgent": false,
+  "PackageUploaded": false,
+  "StoreListingSaved": false,
+  "IarcCompleted": false,
+  "Submitted": false,
+  "Certified": false,
+  "Published": false,
+  "ScreenshotsReviewed": 3,
+  "PhysicalLedMusicVerification": "Not performed in this run; capture runs were silent and waited for lighting arbitration.",
+  "FirmwareUploaded": false,
+  "PolicyReferences": [
+    "https://learn.microsoft.com/en-us/windows/apps/publish/store-policy-archive/store-policy-7-19#105-personal-information",
+    "https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information"
+  ]
+}

@@ -76,7 +76,9 @@ internal sealed partial class MainForm : Form
         Font = _bodyFont;
         BackColor = UiTheme.Background;
         ForeColor = UiTheme.Text;
-        ClientSize = new Size(820, 786);
+        // Explicit capture-only sizing; normal launches retain the compact window.
+        ClientSize = options.StoreScreenshot && options.ScreenshotPath != null
+            ? new Size(1366, 900) : new Size(820, 786);
         MinimumSize = new Size(750, 810);
         StartPosition = FormStartPosition.CenterScreen;
         _ownedIcon = Icon.ExtractAssociatedIcon(Application.ExecutablePath);
@@ -188,9 +190,12 @@ internal sealed partial class MainForm : Form
         lightingPage.Controls.Add(_content);
         var aboutPage = new TabPage("關於與版本") { BackColor = UiTheme.Background, Padding = new Padding(0, 14, 0, 0), AutoScroll = true };
         aboutPage.Controls.Add(BuildAboutPage());
+        var privacyPage = new TabPage("隱私政策") { BackColor = UiTheme.Background, Padding = new Padding(0, 14, 0, 0) };
+        privacyPage.Controls.Add(BuildPrivacyPage());
         _pages.TabPages.Add(lightingPage);
         _pages.TabPages.Add(aboutPage);
-        _pages.SelectedIndex = _options.ShowAbout ? 1 : 0;
+        _pages.TabPages.Add(privacyPage);
+        _pages.SelectedIndex = _options.ShowPrivacy ? 2 : _options.ShowAbout ? 1 : 0;
         _shell.Controls.Add(_pages, 0, 1);
 
         var footer = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1, Margin = Padding.Empty };
@@ -515,9 +520,17 @@ internal sealed partial class MainForm : Form
             _report["ReportedLampCount"] = _engine.ReportedLampCount;
             _report["LampCountControlChecks"] = _lampCountControlChecks;
             _report["LampCountEditingEnabled"] = _lampCount.Enabled;
+            if (_options.StoreScreenshot && _options.ScreenshotPath != null)
+            {
+                _report["StoreScreenshotDraft"] = true;
+                _report["ScreenshotClientWidth"] = _shell.Width;
+                _report["ScreenshotClientHeight"] = _shell.Height;
+            }
             _report["SelectedPage"] = _pages.SelectedTab?.Text;
             _report["DisplayedVersion"] = AboutVersion;
             _report["HardwareRequirement"] = HardwareRequirement;
+            _report["PrivacyPolicyEmbedded"] = true;
+            _report["PrivacyPolicyCharacters"] = _privacyPolicyText.Length;
             _report["EffectControlChecks"] = _effectControlChecks;
             _report["SettingsLoaded"] = _preferencesLoaded;
             _report["PreferenceSaveSucceeded"] = _preferenceSaveSucceeded;

@@ -35,12 +35,14 @@ internal sealed class LaunchOptions
     public int DiagnosticSeconds { get; private set; }
     public string? ReportPath { get; private set; }
     public string? ScreenshotPath { get; private set; }
+    public bool StoreScreenshot { get; private set; }
     public bool CloseViaButton { get; private set; }
     public bool CloseViaTray { get; private set; }
     public int CloseAfterMilliseconds { get; private set; }
     public bool ExerciseEffects { get; private set; }
     public bool ExerciseLifecycle { get; private set; }
     public bool ShowAbout { get; private set; }
+    public bool ShowPrivacy { get; private set; }
     public int? LampCountOverride { get; private set; }
     public bool ExerciseLampCounts { get; private set; }
 
@@ -57,6 +59,8 @@ internal sealed class LaunchOptions
                 case "--exercise-effects": result.ExerciseEffects = true; break;
                 case "--exercise-lifecycle": result.ExerciseLifecycle = true; break;
                 case "--about": result.ShowAbout = true; break;
+                case "--privacy": result.ShowPrivacy = true; break;
+                case "--store-screenshot": result.StoreScreenshot = true; break;
                 case "--exercise-lamp-counts": result.ExerciseLampCounts = true; break;
                 case "--lamp-count" when i + 1 < args.Length:
                     if (int.TryParse(args[++i], out var lampCount) && lampCount >= 1 && lampCount <= 64)

@@ -14,9 +14,9 @@
     <ApplicationIcon>Packaging/Assets/AppIcon.ico</ApplicationIcon>
     <Title>音樂動態燈光設置</Title>
     <Product>音樂動態燈光設置</Product>
-    <Version>0.3.0</Version>
-    <AssemblyVersion>0.3.0.0</AssemblyVersion>
-    <FileVersion>0.3.0.0</FileVersion>
+    <Version>0.3.1</Version>
+    <AssemblyVersion>0.3.1.0</AssemblyVersion>
+    <FileVersion>0.3.1.0</FileVersion>
     <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
     <Platforms>x64</Platforms>
     <PlatformTarget>x64</PlatformTarget>
@@ -29,5 +29,6 @@
     <Compile Remove="tests/**/*.cs;artifacts/**/*.cs" />
     <EmbeddedResource Remove="tests/**/*;artifacts/**/*" />
     <None Remove="tests/**/*;artifacts/**/*" />
+    <EmbeddedResource Include="Packaging/privacy-policy.zh-TW.md" LogicalName="MusicSync.PrivacyPolicy.zh-TW.md" WithCulture="false" />
   </ItemGroup>
 </Project>

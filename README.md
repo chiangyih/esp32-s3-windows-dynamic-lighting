@@ -2,24 +2,24 @@
 
 使用 Waveshare ESP32-S3 N32R16 與 WS2812，透過 USB HID LampArray 接受 Windows 11「動態光效」控制。搭配本專案的 **「音樂動態燈光設置」App**，可分析電腦播放的音訊，讓燈條隨 YouTube 等播放內容變化。
 
-目前 App 版本為 **0.3.0.0**，支援自訂 **1～64 顆，預設 8 顆**。實體原型仍為 8 顆、GPIO4 直連及 USB 供電；新增燈數功能時沒有重刷 ESP32。以下狀態依 2026-10-21 的程式與驗證紀錄整理。
+目前 App 候選版本為 **0.3.1.0**，支援自訂 **1～64 顆，預設 8 顆**，新增內建離線「隱私政策」分頁。已依使用者提供的正式產品身分建置並本機註冊，尚未上傳 Microsoft Store。實體原型仍為 8 顆、GPIO4 直連及 USB 供電，沒有重刷 ESP32。以下狀態依 2026-10-21 的程式與驗證紀錄整理。
 
 | 項目 | 目前設定 |
 | --- | --- |
-| App | 音樂動態燈光設置 0.3.0.0 |
+| App | 音樂動態燈光設置 0.3.1.0 候選 |
 | 開發方式 | C# 10、.NET 10、WinForms，x64 |
 | Windows | Windows 11；套件最低 23H2，執行時另檢查 LampArray 控制權 API；目前以 24H2 測試 |
 | 裝置 | 本專案 `ESP32-S3 USB Light Strip`，VID 303A／PID 1001 |
 | 燈數 | 1～64 顆；App 設定須與韌體回報相同 |
 | 原型硬體 | Waveshare ESP32-S3-DEV-KIT-NXRX N32R16、8 顆 WS2812 |
 | 供電／資料 | 同一條 USB 傳輸及供電，GPIO4 輸出燈條資料 |
-| Store | 已準備 MSIX 與圖示，完成本機開發註冊；尚未完成 WACK、Store 提交、認證及發布 |
+| Store | 正式身分候選 MSIX、本機註冊及三張截圖已備；WACK 未跑，未上傳／送審／認證／發布 |
 
 **64 顆目前只有編譯、程式與預覽驗證，尚未完成實體燈條及 USB 耗電驗證。** 增加燈數前請先閱讀[自訂燈數與 USB 供電](docs/自訂燈數與USB供電.md)。
 
 ## App 畫面與功能
 
-![音樂動態燈光設置 0.3.0.0 主頁，停止狀態與8顆設定](docs/verification/2026-10-21/lamp-counts/0.3.0/packaged/count8-save.png)
+![音樂動態燈光設置 0.3.1.0 主頁](02-windows-music-sync/Packaging/StoreSubmission/Screenshots/01-lighting-settings.png)
 
 | 選項 | 功能 |
 | --- | --- |
@@ -29,7 +29,7 @@
 | 變化方式 | 呼吸、流動、單顆依序 |
 | 變化快慢 | 音樂節奏自動估測、手動曲風快／中／慢、自訂每秒 0.1～4 循環 |
 | 預覽 | 整條連續漸層，依設定燈數顯示色彩分布；1 顆顯示單色 |
-| 視窗 | 蒂芬妮藍與深藍配色、關於與版本分頁、通知區執行、明確關閉按鈕 |
+| 視窗 | 蒂芬妮藍與深藍配色、燈光設置／關於與版本／隱私政策三分頁、通知區執行、明確關閉按鈕 |
 
 聲頻分析是粗頻帶能量分布，沒有進行 FFT、精確音高或樂器辨識。節奏為起音間隔估測，可能半拍／倍拍；資訊不足時使用慢速。「曲風快慢」是手動預設，不會自動辨識曲風。
 
@@ -46,7 +46,7 @@
 
 需搭配支援 Windows 動態光效的硬體；目前 App 僅控制唯一符合本專案識別的裝置。預覽有變化不代表取得實體控制權，請同時查看「USB 燈條」狀態。
 
-音訊來源為**預設多媒體播放裝置的混音**，可能包含其他 App；YouTube 若指定至其他輸出，請改用預設輸出。程式只在記憶體分析，不開啟麥克風、不保存錄音、不上傳音訊。完整說明見 [App README](02-windows-music-sync/README.md) 與[隱私政策草稿](02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)。
+音訊來源為**預設多媒體播放裝置的混音**，可能包含其他 App；YouTube 若指定至其他輸出，請改用預設輸出。程式只在記憶體分析，不開啟麥克風、不保存錄音、不上傳音訊。「隱私政策」分頁使用隨 App 封裝的同一份[政策文字](02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)，發行者 Tseng，可離線捲動閱讀，不開啟外部網頁。完整操作見 [App README](02-windows-music-sync/README.md)。
 
 ## 自訂燈數與 USB 供電
 
@@ -135,15 +135,19 @@ App 使用 Windows WASAPI 與 LampArray API，沒有 WebView、Windows App SDK�
 | 範圍 | 結果與界線 |
 | --- | --- |
 | 8 顆實體原型 | 先前已燒錄，Windows 設定頁辨識成功；使用者確認 8 顆紅／綠／藍切換，以及舊版 App 三種效果、暫停漸暗 |
+| 0.3.1.0 程式與介面 | 本輪重跑 148 項純程式檢查通過；三頁真實截圖均為 1366×900 且目視確認，測試 PID 消失、清理錯誤為空，未回讀退出碼 |
+| 0.3.1.0 候選套件 | 以使用者提供身分建置、本機註冊 PFN 相符；Partner Center 後台尚未讀回，不代表 Store 已接受套件 |
 | 0.3.0.0 程式與預覽 | 148 項純程式、6 項原生預覽檢查通過 |
 | 0.3.0.0 韌體 | 26 項 PC 協定／限流、8 項設定邊界檢查通過；8／50 mA 與 64／80 mA 完整建置均 0 warnings，未燒錄 |
 | 0.3.0.0 燈數比對 | 封裝 API 回報 8 顆；App 設為 1 或 64 顆均拒絕送色，0 幀；保存／重啟還原及停止／重啟通過 |
 | 0.3.0.0 退出 | 按鈕、啟動途中、通知區及 WM_CLOSE 四條路徑通過，程序退出且清理錯誤為空 |
 | 0.3.0.0 實體音樂送色 | 當次相符 8 顆測試仍等待 Windows 控制權、0 幀；沒有新增此版本的實體音樂驗收 |
 | USB／64 顆實體 | 電流、可用亮度、DIN 波形、電壓裕量、長時間負載、睡眠／喚醒及 USB 重插仍待驗證 |
-| Store | MakePri／MakeAppx 與本機開發註冊通過；WACK、正式 Store 身分、提交／認證／發布未完成 |
+| Store | MakePri／MakeAppx 與本機註冊通過；WACK 因目前非管理員未執行，未上傳／送審／認證／發布 |
 
-最新精簡證據：[0.3.0.0 驗證摘要](docs/verification/2026-10-21/lamp-counts/0.3.0/verification-summary.json)。舊版驗收、曾出現的退出阻塞及 0.2.1 修正後實際送色／清理證據，保留於 [handoff.md](handoff.md) 與[驗證目錄](docs/verification/README.md)。編譯、API 讀回與使用者實物觀察各自記錄，不互相取代。
+0.3.1.0 上架準備見 [StoreSubmission 索引](02-windows-music-sync/Packaging/StoreSubmission/README.md)；[0.3.0.0 驗證摘要](docs/verification/2026-10-21/lamp-counts/0.3.0/verification-summary.json)與舊版實物驗收保留原版本。曾出現的退出阻塞及 0.2.1 修正後實際送色／清理證據，保留於 [handoff.md](handoff.md) 與[驗證目錄](docs/verification/README.md)。編譯、API 讀回與使用者實物觀察各自記錄，不互相取代。
+
+此次自動上架仍有未完成項目：瀏覽器與 node_repl 工具在 kernel assets 初始化時發生路徑錯誤，無法操作 Partner Center；另依使用者再次確認，維持不建立外部隱私政策網址。Store 政策要求該網址，App 內建頁不能取代，因此此必填資料仍未完成，沒有建立網站、公開儲存庫或填入假網址。[Microsoft Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
 
 ## 專案目錄與文件
 

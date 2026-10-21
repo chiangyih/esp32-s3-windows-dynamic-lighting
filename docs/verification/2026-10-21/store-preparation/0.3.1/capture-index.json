@@ -1,0 +1,73 @@
+{
+  "CreatedUtc": "2026-10-21T07:59:01.1771510+00:00",
+  "Status": "DraftPendingVisualReview",
+  "ExecutableVersion": "0.3.1.0",
+  "LaunchMode": "PackageAumid",
+  "ActualPackageIdentity": {
+    "Name": "20249Tseng.492594FB8837",
+    "PackageFullName": "20249Tseng.492594FB8837_0.3.1.0_x64__da8gn0c7d0k5y",
+    "PackageFamilyName": "20249Tseng.492594FB8837_da8gn0c7d0k5y",
+    "Publisher": "CN=6C3EB95B-3829-4DE0-AD7C-CD31021C08A5",
+    "Version": "0.3.1.0"
+  },
+  "BackendVerified": false,
+  "StoreIdentityVerified": false,
+  "UploadedToStore": false,
+  "VisualReviewRequired": true,
+  "ExpectedScreenshots": 3,
+  "Screenshots": [
+    {
+      "File": "01-lighting-settings.png",
+      "Width": 1366,
+      "Height": 900,
+      "Bytes": 33490,
+      "Sha256": "14AFE321BC8C9BE608F8AE82C86A26D0F6B8B1984BCE736496110768C849F00D",
+      "Caption": "音樂燈光設定：選擇音訊依據、配色、動態與速度，停止同步後可設定燈數。",
+      "ReportFile": "01-lighting-settings.json",
+      "ProcessId": 13032,
+      "ExitCode": null,
+      "ExitCodeVerified": false,
+      "ExitCodeReadError": "Package activation did not expose an exit code; PID disappearance and app cleanup are checked separately.",
+      "ProcessExitVerifiedExternally": true,
+      "PackageIdentityReported": true,
+      "DailyPreferencesSaved": false,
+      "PhysicalLedVerified": false
+    },
+    {
+      "File": "02-about-and-hardware.png",
+      "Width": 1366,
+      "Height": 900,
+      "Bytes": 27878,
+      "Sha256": "67641132ADEBC80B5B2BEC43264210C91A5891192E6A88DC6F07EBC6E798CABC",
+      "Caption": "關於與版本：查看版本及相容硬體需求；需搭配支援 Windows 動態光效的本專案裝置。",
+      "ReportFile": "02-about-and-hardware.json",
+      "ProcessId": 34620,
+      "ExitCode": null,
+      "ExitCodeVerified": false,
+      "ExitCodeReadError": "Package activation did not expose an exit code; PID disappearance and app cleanup are checked separately.",
+      "ProcessExitVerifiedExternally": true,
+      "PackageIdentityReported": true,
+      "DailyPreferencesSaved": false,
+      "PhysicalLedVerified": false
+    },
+    {
+      "File": "03-privacy-policy.png",
+      "Width": 1366,
+      "Height": 900,
+      "Bytes": 40537,
+      "Sha256": "02755E61AA8126A50A627747503BC0835986269CFF820F8B784F8E5C04DD24B4",
+      "Caption": "內建隱私政策：查看音訊處理、本機設定及診斷資料說明，不需開啟外部網頁。",
+      "ReportFile": "03-privacy-policy.json",
+      "ProcessId": 33476,
+      "ExitCode": null,
+      "ExitCodeVerified": false,
+      "ExitCodeReadError": "Package activation did not expose an exit code; PID disappearance and app cleanup are checked separately.",
+      "ProcessExitVerifiedExternally": true,
+      "PackageIdentityReported": true,
+      "DailyPreferencesSaved": false,
+      "PhysicalLedVerified": false
+    }
+  ],
+  "Failure": null,
+  "Note": "Real app client UI captured at Store dimensions. Audio/device status reflects the run; no physical LED result is implied. Reports may contain local endpoint descriptions and are not Store assets."
+}

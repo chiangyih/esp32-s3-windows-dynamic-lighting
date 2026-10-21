@@ -1,0 +1,13 @@
+{
+  "Status": "AwaitingActualPartnerCenterProduct",
+  "ProductId": null,
+  "ReservedProductName": null,
+  "IdentityName": null,
+  "Publisher": null,
+  "PublisherDisplayName": null,
+  "SupportUrl": null,
+  "PrivacyPolicyUrl": null,
+  "PrivacyContact": null,
+  "StorePackageVersion": null,
+  "Note": "Use only values read from this app's actual Partner Center product and authorized publisher contact. Null fields are placeholders, not a valid submission configuration."
+}

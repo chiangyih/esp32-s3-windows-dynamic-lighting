@@ -1,0 +1,13 @@
+{
+  "ObservedAtUtc": "2026-10-21T08:02:52.3667397+00:00",
+  "SourcePackageFamily": "LocalDev.Esp32MusicSync_3p158v40tjaa6",
+  "TargetPackageFamily": "20249Tseng.492594FB8837_da8gn0c7d0k5y",
+  "Mode": "OneTimeLocalCandidateDeploymentCopy",
+  "ExistingTargetOverwritten": false,
+  "SourceRetained": true,
+  "LampCount": 10,
+  "GainDb": 20,
+  "BrightnessPercent": 65,
+  "AppRuntimeMigrationFeature": false,
+  "PreferencesUploaded": false
+}

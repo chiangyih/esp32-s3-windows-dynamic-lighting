@@ -1,0 +1,142 @@
+{
+  "ObservedAtUtc": "2026-10-21T07:58:52.2202501+00:00",
+  "Version": "0.3.1.0",
+  "Runtime": ".NET 10.0.13",
+  "LanguageVersion": "C# 10.0",
+  "PackageIdentity": true,
+  "DurationSeconds": 3.2332693,
+  "AudioPackets": 8,
+  "MaximumRms": 0,
+  "AudioDevice": "\u5587\u53ED (High Definition Audio Device)",
+  "AudioStatus": "\u6B63\u5728\u64F7\u53D6\u96FB\u8166\u64AD\u653E\u97F3\u8A0A\uFF1A\u5587\u53ED (High Definition Audio Device)",
+  "ConnectedCount": 1,
+  "LightingStatus": "\u7B49\u5F85\u71C8\u5149\u63A7\u5236\u6B0A\uFF1B\u8ACB\u5728\u300C\u80CC\u666F\u5149\u6E90\u63A7\u5236\u9805\u300D\u5C07\u6B64 App \u6392\u5230\u524D\u9762\u3002",
+  "EverHadLightingControl": false,
+  "SentFrames": 0,
+  "BlackFramesSent": 0,
+  "CpuMilliseconds": 1890.625,
+  "CpuPercentOfOneCore": 58.4608481998465,
+  "CpuPercentOfMachine": 14.615207530728943,
+  "SteadyStateSeconds": 0,
+  "SteadyCpuPercentOfOneCore": null,
+  "PeakWorkingSetBytes": 91574272,
+  "PeakPrivateBytes": 23093248,
+  "Threads": 23,
+  "StartError": null,
+  "Samples": [
+    {
+      "Second": 0,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 1,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 2,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 3,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    }
+  ],
+  "PhysicalLedObservation": "API results do not replace physical observation.",
+  "AudioStored": false,
+  "Theme": "Tiffany blue / graphite",
+  "CloseRequestedBy": "button",
+  "EffectSettings": {
+    "Signal": 0,
+    "Palette": 1,
+    "Animation": 1,
+    "Speed": 0,
+    "StyleCyclesPerSecond": 0.75,
+    "CustomCyclesPerSecond": 1,
+    "ThemeColor": {
+      "R": 0,
+      "G": 120,
+      "B": 212
+    },
+    "CustomColorCount": 2,
+    "Color1": {
+      "R": 129,
+      "G": 216,
+      "B": 208
+    },
+    "Color2": {
+      "R": 133,
+      "G": 115,
+      "B": 230
+    },
+    "Color3": {
+      "R": 248,
+      "G": 178,
+      "B": 102
+    },
+    "Color4": {
+      "R": 240,
+      "G": 128,
+      "B": 168
+    }
+  },
+  "ConfiguredLampCount": 8,
+  "ReportedLampCount": 8,
+  "LampCountControlChecks": [],
+  "LampCountEditingEnabled": false,
+  "StoreScreenshotDraft": true,
+  "ScreenshotClientWidth": 1366,
+  "ScreenshotClientHeight": 900,
+  "SelectedPage": "\u71C8\u5149\u8A2D\u7F6E",
+  "DisplayedVersion": "0.3.1.0",
+  "HardwareRequirement": "\u5FC5\u9808\u642D\u914D\u652F\u63F4 Windows\u300C\u52D5\u614B\u5149\u6548\u300D\u7684\u786C\u9AD4\uFF0C\u624D\u80FD\u63A7\u5236\u5BE6\u9AD4\u71C8\u5149\u3002",
+  "PrivacyPolicyEmbedded": true,
+  "PrivacyPolicyCharacters": 1237,
+  "EffectControlChecks": [],
+  "SettingsLoaded": true,
+  "PreferenceSaveSucceeded": null,
+  "LifecycleExerciseRequested": false,
+  "StopRestartPassed": false,
+  "LifecycleStopSnapshot": null,
+  "LifecycleError": null,
+  "Shutdown": {
+    "IsDisposed": true,
+    "AudioWorkerRunning": false,
+    "RenderWorkerRunning": false,
+    "LightingDiscoveryRunning": false,
+    "CleanupErrors": [],
+    "CleanupWorkerRunning": false
+  },
+  "FormDisposed": true,
+  "UiComponentsDisposed": true,
+  "OwnedFontsDisposed": true,
+  "UiCleanupErrors": [],
+  "ShutdownElapsedMilliseconds": 182.9481
+}

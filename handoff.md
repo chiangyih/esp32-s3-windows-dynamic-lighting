@@ -431,3 +431,28 @@ Config.h新增CONFIG_LAMP_COUNT與CONFIG_LED_BUDGET_MA建置覆寫，預設8顆�
 0.3.0.0已MakePri單一索引、MakeAppx正常驗證（無/nv）並開發註冊，未改憑證信任或Developer Mode。有效layout為 `02-windows-music-sync/artifacts/package-development-20261021-153133-155/layout`，須保留；unsigned MSIX 58,195,164 bytes，SHA-256 `F182FB50B47DEC175E959712ED0A0D0CA254F66409D0093608BA12044C93AB14`，layout150,547,172 bytes。先前同版本中間封裝未註冊，保留本機歷史。WACK、正式Store身分、提交／認證／發布仍未完成。
 
 精簡報告及截圖在 `docs/verification/2026-10-21/lamp-counts/0.3.0/`。測試後開啟正常封裝版主頁，未自動開始、未帶report／exercise參數，燈數保留8。64顆實體USB耗電、最大可用亮度、長時間負載、USB拔插及競爭控制仍待分別驗證。依使用者既有授權自動commit／push，實際SHA與遠端一致性以完成後Git讀回為準。
+
+## 2026-10-21 0.3.1.0 Store候選與內建隱私政策；尚未上傳送審
+
+使用者要求自動上架Microsoft Store，提供本產品正式識別：Name `20249Tseng.492594FB8837`、Publisher `CN=6C3EB95B-3829-4DE0-AD7C-CD31021C08A5`、PublisherDisplayName `Tseng`、PFN `20249Tseng.492594FB8837_da8gn0c7d0k5y`、Store ID `9NKRN1KCR738`。這些是使用者提供值，不是Partner Center後台讀回；只保存所需公開套件識別，沒有保存Package SID、密碼或金鑰。名稱沿用本輪提問中的「音樂動態燈光設置」。
+
+### 已完成的本機工作
+
+- 新增「隱私政策」第三分頁，使用同一份 `Packaging/privacy-policy.zh-TW.md` 作嵌入資源；發行者Tseng，離線唯讀、可捲動、網址辨識停用，不開外部網頁。沒有捏造email或聯絡網址。內容涵蓋系統播放混音、本機處理／設定／可選診斷及使用者停止方式。三頁共用退出流程，隱藏燈光頁不更新預覽；沒有新增WebView、依賴套件、動畫計時器或音訊／燈光功能。
+- App／manifest／封裝預設版本更新為0.3.1.0，manifest描述改為1～64顆。新增明確 `--store-screenshot` 診斷旗標，只有與截圖路徑一起使用才採1366×900，正常視窗仍820×786；`--privacy` 可選隱私頁。新capture-store-screenshots.ps1支援AUMID套件啟動、拒絕已有App程序、驗證尺寸／50MB上限／SHA／正常退出及清理，不保存日常偏好或強制終止程序。
+- 正式Store候選已使用上述Identity建置，MakePri單一索引及MakeAppx正常驗證通過。最終檔案 `02-windows-music-sync/artifacts/package-store-20261021-155702-548/Esp32MusicSync_0.3.1.0_x64_store.msix`，**58,198,227 bytes**，SHA-256 `412629BE9587F16D6CB4D5D52742D715A99D60C13497FDC111189E35F0977CB9`；layout150,552,842 bytes／342檔。未簽開發憑證；這是Store候選，不是已通過認證的安裝包。
+- 初次155439候選將檔名含zh-TW的policy自動編成satellite，檢查主DLL資源名稱為空，在啟動前即發現。已補 `WithCulture=false` 並在build-package.ps1新增主DLL資源／來源SHA比對；最終主DLL包含完整policy，SHA `244F3D392118376EFAA744DA7EB8FF8662C11172A2E1676FCBC7753690613CAE`。初版保留本機歷史，不可上傳。
+- 以既有Developer Mode註冊最終layout，本機讀回Name／PFN／0.3.1.0及InstallLocation相符；沒有更改Developer Mode或憑證信任。Windows對同版本Register及ForceUpdateFromAnyVersion仍保留初版路徑，已核對無App程序且僅為本輪從未啟動的初版候選，移除其註冊時使用PreserveApplicationData，再註冊最終layout成功；沒有移除原LocalDev套件或刪除歷史檔案。
+- 正式身分AUMID啟動三頁，各產出1366×900 PNG，目視確認主頁、關於0.3.1.0及政策內容正常可讀（RichTextBox未空白），三例SelectedPage相符、PackageIdentity=true、PrivacyPolicyEmbedded=true、1237字元。三個原PID均消失，四種工作均false、清理錯誤為空，清理約126～183ms；Package Activation未提供ExitCode，因此沒有宣稱退出碼0。各例裝置回報8、等待仲裁、0幀，沒有新增實體音樂驗收。
+- 148項純程式檢查本輪重新通過。三張候選PNG及caption／SHA索引位於 `02-windows-music-sync/Packaging/StoreSubmission/Screenshots/`，繁中商品頁、runFullTrust說明、測試步驟及身分來源在同一StoreSubmission目錄。原820×786截圖保留歷史，沒有放大舊圖當新截圖。
+- 因正式PFN與舊LocalDev不同，僅在本機候選profile尚無settings.json時，複製既有LocalDev設定並核對雜湊，保留8顆／Gain20dB／亮度65%與配色等偏好，來源保留。這是本機部署的一次性複製，不是新增App自動遷移功能，也未上傳設定。測試後已以正式候選正常啟動 `--privacy` 供檢視，沒有autostart／report／exercise參數；原LocalDev0.3.0套件及其資料仍保留。
+
+### 尚未完成與阻擋原因
+
+使用者第一次表示隱私政策不使用外部連結；說明Store要求後，第二次明確選擇「**維持不建立外部網址**」。已遵守，沒有建立公開網站／GitHub Pages、沒有填假網址或將內建頁宣稱為Store URL替代。Microsoft Store政策7.19（2025-10-14生效）及已公布的7.20（2026-10-22生效）10.5.1均要求Win32產品維持隱私政策並於Partner Center提供政策URL；內建政策是另外提供。故PrivacyPolicyUrl仍null，送審資料未完成。來源：https://learn.microsoft.com/en-us/windows/apps/publish/store-policy-archive/store-policy-7-19#105-personal-information 及 https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information 。若使用者日後改變這項偏好，須先確認公開政策的內容與目的地後再發布，不沿用其他專案網址。
+
+Edge視窗標題顯示Partner Center概觀已開啟，但cua_repl與node_repl均在執行程式前初始化失敗：`failed to write kernel assets: 系統找不到指定的路徑。 (os error 3)`，兩種工具重設後重試仍相同。不能據視窗標題當作產品／登入／草稿狀態讀回，沒有透過其他UI自動化繞過此故障；未讀取或匯出瀏覽器憑證。本機也未找到msstore或StoreBroker CLI。後續需恢復可用瀏覽器工具，才能接續本產品Partner Center草稿。
+
+WACK工具存在（10.0.26100.8249），本輪只檢查help，沒有執行reset／test；目前執行環境非管理員，未提升權限或改Windows設定。沒有新乾淨機／USB電氣或64顆實體驗證。**本輪未上傳套件、未儲存商品頁、未完成IARC、未提交認證、未認證或發布**；MakeAppx與本機開發註冊不等於以上任何Store狀態。
+
+精簡證據在 `docs/verification/2026-10-21/store-preparation/0.3.1/`，其中preparation-status.json明列政策URL與工具兩個阻擋條件。正式產品後台狀態仍待live readback，不能因使用者提供Store ID或本機PFN匹配就標為Validated。最終已註冊layout必須保留；此輪沒有重刷ESP32、操作COM或改Windows動態光效優先順序。依既有授權自動commit／push，實際同步SHA以完成後讀回為準。

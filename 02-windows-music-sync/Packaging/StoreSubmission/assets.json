@@ -1,0 +1,90 @@
+{
+  "PreparedUtc": "2026-10-21T16:02:05.5905894+08:00",
+  "AppVersion": "0.3.1.0",
+  "HistoricalScreenshotVersion": "0.3.0.0",
+  "Assets": [
+    {
+      "Kind": "ListingIcon",
+      "RepositoryRelativePath": "02-windows-music-sync/Packaging/StoreListing/StoreListingIcon-300.png",
+      "Width": 300,
+      "Height": 300,
+      "Bytes": 27885,
+      "Sha256": "E493BE0C3B35CFFFDCEB7E59CF9F3B9C98A65C0BE51A935A55513D8A8B055B61",
+      "Status": "DimensionsReadyCandidate"
+    },
+    {
+      "Kind": "DesignMaster",
+      "RepositoryRelativePath": "02-windows-music-sync/Packaging/StoreListing/StoreListingIcon-1024.png",
+      "Width": 1024,
+      "Height": 1024,
+      "Bytes": 111820,
+      "Sha256": "026F18D950ADFC77FFE1982FE65D36A0BA87A289FAA4C8A1798B2D555F580728",
+      "Status": "DesignSourceOnly"
+    },
+    {
+      "Kind": "HistoricalMainScreenshot",
+      "RepositoryRelativePath": "docs/verification/2026-10-21/lamp-counts/0.3.0/packaged/count8-save.png",
+      "Width": 820,
+      "Height": 786,
+      "Bytes": 27761,
+      "Sha256": "2C04EF9272D701A441E6B92194E38A017C6E18BF2AE7E808596958AD32CFF647",
+      "Status": "HistoricalNotForStoreSubmission"
+    },
+    {
+      "Kind": "HistoricalAboutScreenshot",
+      "RepositoryRelativePath": "docs/verification/2026-10-21/lamp-counts/0.3.0/packaged/about.png",
+      "Width": 820,
+      "Height": 786,
+      "Bytes": 24699,
+      "Sha256": "6D58B0891EDDD0B3A54F9765CCF6ABD44110FAA59EA8060E726ECCEFD8B3E730",
+      "Status": "HistoricalNotForStoreSubmission"
+    }
+  ],
+  "StoreScreenshots": [
+    {
+      "RepositoryRelativePath": "02-windows-music-sync/Packaging/StoreSubmission/Screenshots/01-lighting-settings.png",
+      "Width": 1366,
+      "Height": 900,
+      "Bytes": 33490,
+      "Sha256": "14AFE321BC8C9BE608F8AE82C86A26D0F6B8B1984BCE736496110768C849F00D",
+      "Caption": "音樂燈光設定：選擇音訊依據、配色、動態與速度，停止同步後可設定燈數。",
+      "VisualReview": "Passed"
+    },
+    {
+      "RepositoryRelativePath": "02-windows-music-sync/Packaging/StoreSubmission/Screenshots/02-about-and-hardware.png",
+      "Width": 1366,
+      "Height": 900,
+      "Bytes": 27878,
+      "Sha256": "67641132ADEBC80B5B2BEC43264210C91A5891192E6A88DC6F07EBC6E798CABC",
+      "Caption": "關於與版本：查看版本及相容硬體需求；需搭配支援 Windows 動態光效的本專案裝置。",
+      "VisualReview": "Passed"
+    },
+    {
+      "RepositoryRelativePath": "02-windows-music-sync/Packaging/StoreSubmission/Screenshots/03-privacy-policy.png",
+      "Width": 1366,
+      "Height": 900,
+      "Bytes": 40537,
+      "Sha256": "02755E61AA8126A50A627747503BC0835986269CFF820F8B784F8E5C04DD24B4",
+      "Caption": "內建隱私政策：查看音訊處理、本機設定及診斷資料說明，不需開啟外部網頁。",
+      "VisualReview": "Passed"
+    }
+  ],
+  "StoreScreenshotDirectory": "Screenshots",
+  "StoreScreenshotStatus": "VisualReviewedCandidatesNotUploaded",
+  "Wack": {
+    "HelpInvoked": true,
+    "Status": "NotRun",
+    "HelpStandardOutput": "Empty",
+    "TestInvoked": false,
+    "Executable": "C:\\Program Files (x86)\\Windows Kits\\10\\App Certification Kit\\appcert.exe",
+    "FileVersion": "10.0.26100.8249"
+  },
+  "PartnerCenterUploaded": false,
+  "StoreSubmitted": false,
+  "StoreCertified": false,
+  "StorePublished": false,
+  "OfficialReferences": [
+    "https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/screenshots-and-images",
+    "https://learn.microsoft.com/en-us/windows/uwp/debug-test-perf/windows-app-certification-kit"
+  ]
+}

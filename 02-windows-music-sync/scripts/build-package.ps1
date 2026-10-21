@@ -7,7 +7,7 @@ param(
     [string]$DisplayName = '音樂動態燈光設置',
     [string]$PublisherDisplayName = 'ESP32 Music Sync Development',
     [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')]
-    [string]$Version = '0.3.0.0',
+    [string]$Version = '0.3.1.0',
     [string]$OutputRoot,
     [string]$WindowsSdkBin
 )
@@ -60,6 +60,26 @@ $project = Join-Path $appRoot 'MusicSync.csproj'
     -p:Version=$Version -p:AssemblyVersion=$Version -p:FileVersion=$Version
 if ($LASTEXITCODE -ne 0) { throw "dotnet publish failed with exit code $LASTEXITCODE" }
 if (-not (Test-Path -LiteralPath (Join-Path $layout 'Esp32MusicSync.exe'))) { throw 'Publish did not produce Esp32MusicSync.exe.' }
+
+# The policy must be in the main assembly, not a culture satellite: the app loads
+# this exact resource for offline reading. Validate the actual published bytes.
+$policyResourceName = 'MusicSync.PrivacyPolicy.zh-TW.md'
+$policyAssembly = [Reflection.Assembly]::Load([IO.File]::ReadAllBytes((Join-Path $layout 'Esp32MusicSync.dll')))
+$policyStream = $policyAssembly.GetManifestResourceStream($policyResourceName)
+if (-not $policyStream) { throw 'Published app is missing its embedded offline privacy policy.' }
+$policyBuffer = [IO.MemoryStream]::new()
+$policyHasher = [Security.Cryptography.SHA256]::Create()
+try {
+    $policyStream.CopyTo($policyBuffer)
+    if ($policyBuffer.Length -eq 0) { throw 'Embedded privacy policy is empty.' }
+    $policySha256 = ([BitConverter]::ToString($policyHasher.ComputeHash($policyBuffer.ToArray()))).Replace('-', '')
+    $policySourceSha256 = (Get-FileHash -LiteralPath (Join-Path $appRoot 'Packaging\privacy-policy.zh-TW.md') -Algorithm SHA256).Hash
+    if ($policySha256 -ne $policySourceSha256) { throw 'Embedded privacy policy differs from the reviewed source.' }
+} finally {
+    $policyHasher.Dispose()
+    $policyBuffer.Dispose()
+    $policyStream.Dispose()
+}
 
 & (Join-Path $PSScriptRoot 'generate-assets.ps1') -OutputDirectory $assets
 $template = [IO.File]::ReadAllText((Join-Path $appRoot 'Packaging\AppxManifest.template.xml'))
@@ -160,6 +180,9 @@ $report = [ordered]@{
     ResourcePackageSplitting = 'Disabled for standalone MSIX; all qualifiers in one PRI'
     ResourceIndexFileCount = $resourceIndexFiles.Count
     ResourceIndexSha256 = (Get-FileHash -LiteralPath $resourceIndex -Algorithm SHA256).Hash
+    EmbeddedPrivacyPolicy = $true
+    PrivacyPolicyResource = $policyResourceName
+    PrivacyPolicySha256 = $policySha256
     Signed = $false
     Installed = $false
     WindowsAppCertificationKit = 'NotRun'
