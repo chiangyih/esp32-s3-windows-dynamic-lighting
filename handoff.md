@@ -206,3 +206,95 @@ Git 範圍包含韌體、PC 測試、工具腳本、README、交接、硬體照�
 首次 push 後，以 `git rev-parse HEAD`、`git rev-parse origin/main` 與 `git ls-remote origin refs/heads/main` 核對三者 SHA 完全相同，`git status --porcelain` 為空。讀回快照保存於 `docs/verification/2026-10-21/git-initial-push.json`。後續文件提交的最新 HEAD，應重新用同樣方式與遠端比較，不將首次提交 SHA 視為永久最新值。
 
 `.gitattributes` 保留原始 CRLF／LF 位元組，使來源與證據的 SHA-256 不因 Git 換行轉換而改變；圖片以二進位處理。`.gitignore` 排除本機編譯產物與機密設定。沒有 force push、全機 Git 設定變更或任何認證資料寫入儲存庫。
+
+## 2026-10-21 Windows 原生純色與 8 顆變色驗證
+
+本輪約 12:18–12:27（Asia/Taipei）。使用者確認已接好 GPIO4、5V、GND，授權測試 Windows 原生動態光效。未修改韌體、重編譯、燒錄或開啟 COM；實板仍對應先前已上傳的 SHA-256 `07E982D874ACB52631F5478038E648253A70F6FBA272789390EF45B8C9398157` 映像。
+
+| 檢查 | 結果與證據來源 |
+| --- | --- |
+| 本機 Windows | 實際讀回 Windows 11 Pro 24H2，build 26100.9711。 |
+| Windows 原生設定頁 | 已目視確認「個人化 → 動態光效 → ESP32-S3 USB Light Strip」；裝置控制與前景相容應用程式控制均開啟。 |
+| 裝置屬性 | WinRT 實際讀回唯一符合的 VID 303A / PID 1001、LampCount=8、IsConnected=true、IsEnabled=true；最小更新間隔 16.667ms。 |
+| 原生純色點亮 | 將裝置效果由「音效」改為「純色」後，使用者回報「8 顆都有亮起」。 |
+| 原生紅／綠／藍切換 | 以設定頁色票依序選紅色、草皮綠、藍色，每次均目視確認色票勾選更新；使用者回報「8 顆都跟著變成紅、綠、藍」。基本純色控制通過。 |
+| 最終狀態 | 設定頁停在純色／藍色；搭配 Windows 輔色為關閉，亮度滑桿維持本輪觀察值，未調整。韌體既有低亮度限制保留。 |
+| 逐顆索引 0–7 | 尚未完成。WinRT 測試工具等候前景及 IsAvailable=true 的條件未滿足，於送色前停止，Steps 為空；沒有執行逐顆序列或送出最後黑幀。不能從這個失敗推定硬體不支援逐顆控制。 |
+
+實際 LED 顏色結果來自使用者實物目視回報；不是攝影、色度計或示波器量測。這次已確認 GPIO4 直連在目前接線下可完成基本變色；不代表已量測 DIN 裕量、整板／LED 電流、USB 暫停耗電或長期可靠性。動畫效果、睡眠／喚醒、USB 重插及逐顆實體索引仍待驗證。
+
+新增 `scripts/test-lamparray.ps1`：預設 InspectOnly 開啟 WinRT 物件讀取屬性，不送色；明確加 `-RunSequence` 才會等待測試視窗取得前景及 Windows 控制權，再嘗試低亮度序列。首次初始化的 .NET Color 型別問題已修正，最後版本語法檢查與 InspectOnly 實測成功。RunSequence 本輪未通過控制權條件；後續加入 ControlWait 診斷欄位，尚未重跑送色序列。工具以 JSON 的 Status／Error 判讀結果，不能只看程序退出碼。
+
+完整本機證據位於 `build/device-verification/20261021-windows-control-20261021-041855/`，精簡複本與本輪結論位於 `docs/verification/2026-10-21/windows-control/`。保留初始化失敗、修正後讀回、未送色序列與使用者確認的不同證據，不覆寫先前的驗證清單。沒有保存含 Windows 帳號的設定頁截圖。本輪文件與工具僅在本機更新，尚未新增 commit／push。
+
+## 2026-10-21 「音效」與 YouTube 音樂的差異
+
+使用者提供 Windows 11 動態光效截圖，顯示全域效果選為「音效」，並回報燈條似乎沒有隨播放中的音樂變化。其後在本機設定頁實際讀回 `ESP32-S3 USB Light Strip` 的**個別**效果也已選「音效」，因此先前測試留下的個別「純色／藍色」已不是目前阻擋全域效果的原因。沒有更改效果、亮度、韌體或裝置接線。
+
+展開個別「音效」選項後，實際看到效果速度滑桿、搜尋方向（目前為右）、主色與第二種色彩。使用者另外確認：暫停 YouTube 時，8 顆仍持續自行流動或變色。這支持目前看到的是按設定持續運作的燈光動畫，**不構成 YouTube 音訊同步的證據**；使用者原本也回報播放音樂時沒有觀察到隨節奏變化。Microsoft [內建效果表](https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-devices-lights-winrt-windldefaulteffecttype)記載以顏色、速度及方向運作的 Wave 等視覺效果，未列音訊分析效果；本輪未取得足夠在地化資源證明本機「音效」字串確切對應哪個英文名稱，不據名稱推定音訊功能。
+
+目前 `01-8_ws2812/` 韌體是 USB HID LampArray 收色並驅動 WS2812，專案內沒有 Windows 播放音訊擷取與節奏分析程式。要實現 YouTube 音樂同步，需要新增 Windows 端音訊擷取／分析與 LampArray 控制，並再做實板驗證；Microsoft [WASAPI loopback](https://learn.microsoft.com/en-us/windows/win32/coreaudio/loopback-recording)可擷取電腦播放的音訊。本輪只完成設定與使用者目視的診斷，沒有宣稱已實作音樂同步。使用者截圖含 Windows 帳號資訊，未複製進專案或 Git。
+
+## 2026-10-21 USB HID Usage Tables 1.4 參考核對
+
+使用者提供 USB-IF 官方 [HID Usage Tables 1.4](https://www.usb.org/sites/default/files/hut1_4.pdf)。本輪唯讀核對第 26 章（PDF 第 329–345 頁附近，印刷頁 328–344）與目前 `01-8_ws2812/` 原始碼，未修改或重新燒錄裝置。
+
+目前描述元宣告 Lighting and Illumination Usage Page `0x59`、LampArray Usage `0x01`。6 個 Feature Report 的 Usage 依次為 LampArray Attributes `0x02`、Lamp Attributes Request `0x20`、Response `0x22`、Multi Update `0x50`、Range Update `0x60`、Control `0x70`；RGBI `0x51`–`0x54` 與 AutonomousMode `0x71` 亦對應第 26 章。協定程式以 RGB 乘 Intensity/255 更新燈色，處理 8 槽 Multi、含首尾的 Range、UpdateComplete 批次套用，以及預設開啟自主模式。這是來源碼對照，不是 USB 認證或每個報告的實板交叉測試。
+
+查出一項能力宣告不一致：`LampArrayProtocol.h` 的每燈屬性將紅、綠、藍與整體亮度 `*LevelCount` 都回報為 255；但目前 `MaxChannelValue=24`，`FrameLimiter.h` 會將每個輸出通道縮至最高 24，並可能因 50 mA 模型進一步降低。同一顆燈的實際輸出因此沒有 255 個非零亮度階數，不符合第 26.9 節對 `*LevelCount` 作為支援階數的描述。這是靜態程式檢查發現，非實測 PWM 精度。須在保留 USB 供電保護前提下，連同主機可送的有效 RGBI 範圍（第 26.11 節）評估宣告、映射及驗證；不能只把屬性值從 255 改成 24。此項不會解釋燈條未隨 YouTube 音樂改變，且本輪未修改或重新燒錄韌體。
+
+燈距、邊界尺寸與 UpdateLatency 仍使用原型估值，需實物與時序量測。第 26 章定義主機與 LampArray 之間的燈色／控制報告，沒有定義 YouTube 或系統音訊分析；音樂同步須另由 Windows 端程式完成。本輪在 README、交接與驗證紀錄中加入官方 PDF 連結及核對結果，未複製或重新發布 PDF 內容。
+
+## 2026-10-21 WASAPI loopback 與背景音樂同步設計
+
+使用者提供 [Microsoft WASAPI loopback 文件](https://learn.microsoft.com/en-us/windows/win32/coreaudio/loopback-recording)，並明確選擇「**先評估並更新設計文件**」。本輪新增 [Windows 音樂同步設計](docs/Windows音樂同步設計.md)，只規劃 Windows 端應用，不新增程式、不安裝 MSIX、不修改系統設定或韌體，也沒有音樂同步實板測試。
+
+官方文件確認 loopback 能以共用模式擷取選定 Windows 播放端點的混音，可作 YouTube 播放音訊分析，但不會自動控制 HID 燈具，且混音並非 YouTube 專屬。建議第一版以 RMS 音量驅動 8 格燈條，暫停或無音訊時漸暗；以既有 LampArray 介面送出 8 顆色彩畫面，並保留韌體亮度上限。若要在瀏覽器位於前景時持續控制，Microsoft [Dynamic lighting 文件](https://learn.microsoft.com/en-us/windows/apps/develop/devices-sensors/lighting-dynamic-lamparray)要求背景 ambient 應用具 package identity，並在 manifest 宣告 `com.microsoft.windows.lighting` AppExtension；使用者須於背景光源控制項安排優先順序。現有前景診斷腳本不能代替此封裝應用。
+
+設計文件分列音訊、控制權、實物與電氣四階段驗證。音訊擷取、MSIX 封裝／安裝、背景 `IsAvailable` 與播放／暫停實際燈效仍全數待實作／驗證；不把既有「音效」自行動畫或原生純色成功當作音樂同步通過。
+
+## 2026-10-21 Microsoft ArduinoHidForWindows 整套函式庫評估
+
+使用者詢問是否可採用 [Microsoft ArduinoHidForWindows](https://github.com/microsoft/ArduinoHidForWindows) 全套函式庫。本輪對照其 `deb7e5e20d96bab5571ee2629d634375002f5513` 來源、現行 `01-8_ws2812/` 與本機 Arduino-ESP32 core 3.1.1；未修改或重新燒錄韌體。上游 `library.properties` 是 v1.3.0、`architectures=samd`，README 記載 Arduino Zero／SAMD core 1.8.13 的驗證；MIT 授權允許在保留授權文字的條件下修改及移植。
+
+本專案目前只複製 Microsoft 的 `LampArrayReportDescriptor.h`（移除 `PROGMEM`）及授權文字，固定來源為上述 commit。`LampArrayProtocol.h` 的 RGBI／批次報告處理、`LampArrayHid.{h,cpp}` 的 Arduino-ESP32 TinyUSB／`USBHIDDevice` 介面、FreeRTOS 同步、`Ws2812Rmt.h` 與 `FrameLimiter.h` 都是本專案實作。上游 `Microsoft_HidDevice` 依賴 SAMD 的 `USBCON`、`PluggableUSBModule`、`USBDevice.sendControl/recvControl`；目前 ESP32 core 提供另一套 `USBHIDDevice` 回呼，故**完整函式庫不是 ESP32-S3 即裝即用方案**。若要移植，需要改寫 USB 傳輸及 Report ID／Feature Report 銜接，保留現有睡眠／自主模式、RMT、USB 供電估算與低亮度行為，之後重建並重新驗證 Windows 枚舉與實體 8 燈。
+
+上游 `Microsoft_HidLampArray.cpp` 在 `UpdateComplete` 時將讀指標直接設成寫指標，靜態程式檢查可見後續寫入會與已提交畫面共用緩衝，且解構時兩指標可能重複釋放；Report handler 也未先依傳入長度檢查再複製固定尺寸。這些是來源碼風險推論，不是此板實測故障，移植不能原樣照搬。上游 40 顆 NeoPixel 範例使用 Arduino Zero 與 74AHCT125，其輸出範例僅取 RGB，未處理 Intensity；也沒有目前 8 顆直連方案的 50 mA 模型。上游完整函式庫還包含與本燈條無關的 Consumer/System/Telephony/Wireless Radio HID 類別；**它沒有 Windows WASAPI 音訊擷取，因此不能單靠替換韌體實現 YouTube 音樂同步**。現行已通過原生紅／綠／藍實物目視的韌體先維持不變，音樂同步依前節 Windows 端設計處理。
+
+來源：[上游套件設定](https://github.com/microsoft/ArduinoHidForWindows/blob/deb7e5e20d96bab5571ee2629d634375002f5513/library.properties)、[USB 基底類別](https://github.com/microsoft/ArduinoHidForWindows/blob/deb7e5e20d96bab5571ee2629d634375002f5513/src/Microsoft_HidDevice.cpp)、[LampArray 實作](https://github.com/microsoft/ArduinoHidForWindows/blob/deb7e5e20d96bab5571ee2629d634375002f5513/src/Microsoft_HidLampArray.cpp)、[上游燈條範例](https://github.com/microsoft/ArduinoHidForWindows/blob/deb7e5e20d96bab5571ee2629d634375002f5513/examples/LampArray/LampArray.ino)。
+
+## 2026-10-21 Windows 音樂同步 App 實作（C# 10／.NET 10）
+
+使用者已明確授權開始實作，解除前節「先評估」限制。新增獨立目錄 `02-windows-music-sync/`，不與 `01-8_ws2812/` 混放。本輪沒有修改、重編譯或燒錄 ESP32 韌體，沒有開啟 COM；原接線 GPIO4／5V／GND 與既有軟體限亮維持。
+
+### 程式與資源設計
+
+目前版本 **0.1.2.0**，x64、C# LangVersion=10.0、.NET 10，SDK 10.0.402。WinForms 介面，不採 WebView、Windows App SDK、NAudio 或外部音訊／FFT 函式庫。Windows SDK 參考為 26100，套件最低 22631，並以 ApiInformation 檢查 LampArray 控制權 API；缺少時明確拒絕送色。
+
+音訊使用自寫 WASAPI COM shared／event-driven loopback，追蹤預設多媒體播放端點。支援浮點與 PCM8／16／24／32、WAVEFORMATEXTENSIBLE；直接在原生 buffer 計算各聲道 RMS／Peak，避免左右反相抵銷，不保存或上傳原始音訊。預設輸出變更／失效可重新開啟。第一版為**音量同步**，沒有宣稱節拍偵測或八頻帶頻譜。
+
+8 格由綠向黃、紅延伸，提供靈敏度與亮度調整；快速上升、較慢下降，資料逾 200ms 視為失效並漸暗。約 30fps，靜音後降至 8Hz，重複畫面不送色。只有唯一符合名稱／VID 303A／PID 1001／LampCount=8 才選取；遵守 MinUpdateInterval、IsAvailable、AvailabilityChanged 與 DeviceWatcher，不使用 raw HID 或修改系統控制權。介面預覽每 250ms 更新，隱藏不重繪；可縮至通知區，關閉即退出。
+
+### 本輪驗證與確切界線
+
+- Release 建置成功，0 warnings／0 errors；音訊與映射檢查共 **43 項**（26 audio＋17 core）通過。暖機後一萬次畫面映射測得 managed allocation=0 bytes。五份 PowerShell 腳本語法檢查皆零錯誤。
+- 0.1.1.0 已封裝啟動，讀回 package identity=true，找到唯一 8 燈裝置。6 秒、三段振幅的自製 440Hz 測試音只在記憶體產生，不修改系統音量。WASAPI 量測 RMS 約 0.197／0.545／0.696；停止播放後 RMS 歸零，預覽 Level 於第 21 秒歸零。音訊數值是實際 Windows 混音，與產生訊號振幅不同，未量測音效增強／音量處理鏈。
+- 該 60 秒診斷的穩定區間為 55.06 秒，CPU 約 **1.65% 單一邏輯核心**（本機四個邏輯核心，全機約 0.41%）；全期間含啟動的 CPU 約全機 1.03%。峰值工作集約 88.4 MB、私用約 26.6 MB。另一次 42.55 秒常駐取樣為工作集約 77.8 MB、私用約 17.4 MB。這些均為目前未取得燈光控制權的情境，不能稱為完整同步負載。早期 resource-initial-steady-invalid-time.json 時區換算錯誤，僅在本機保留，已排除效能證據。
+- **尚未取得控制權**：0.1.1.0 診斷 EverHadLightingControl=false、SentFrames=0，沒有以 App 送出燈色，不能稱為實體音樂同步通過。已請使用者在 Windows 動態光效「背景光源控制項」把「ESP32 音樂同步」排至最前，再播放／暫停 YouTube；回報尚待取得。未改登錄值、停用其他控制者或繞過 Windows 仲裁。
+- 0.1.2.0 僅追加靜音時預覽重繪修正與版本一致化，已重新封裝並開發註冊；最新啟動結果見 `docs/verification/2026-10-21/music-sync/0.1.2/`。前一個 0.1.1.0 的測試結果另保留在父目錄，不覆寫成新版本實測。
+
+### 封裝與 Store 狀態
+
+目前 unsigned 開發 MSIX：`02-windows-music-sync/artifacts/package-development-20261021-133216-749/Esp32MusicSync_0.1.2.0_x64_development.msix`，**57,610,921 bytes**，SHA-256 `25B31343EC53727CD1E8EFDC7A830FDA55E525DF9FB8ABA4A6FC19682BB70808`。self-contained layout 為 149,914,094 bytes。MakeAppx 正常驗證通過，沒有使用 /nv；MSIX 版本與 EXE 檔案版本一致。
+
+manifest 宣告 `com.microsoft.windows.lighting` AppExtension 與桌面 `runFullTrust`。程式不開啟麥克風、不建立網路連線；runFullTrust 本身不代表被網路沙箱限制。Store 建置模式要求實際 Partner Center 的 Identity／Publisher／DisplayName／PublisherDisplayName；預設 `LocalDev.Esp32MusicSync` 是開發佔位身分，不能冒用為正式 Store 身分。
+
+本機原已有 Developer Mode=1，本次使用 Add-AppxPackage -Register 標準開發註冊，未改模式、憑證信任、執行原則或管理員權限，沒有建立或匯出私鑰。已註冊 `LocalDev.Esp32MusicSync_0.1.2.0_x64__3p158v40tjaa6`，依賴上述 layout 目錄，暫勿將其視為可刪除中間產物。這不是從已簽署 MSIX 安裝的驗證，更不是 Store 安裝驗證。
+
+已提供包裝圖示、建置／開發安裝／帶參數啟動腳本、隱私政策草稿與 Store 待辦。WACK 工具存在，但未執行；目前使用者權杖非管理員。**Partner Center 產品保留、正式身分套件、WACK、乾淨機／Store 簽署安裝、認證與發布均未完成**，本輪未建立產品、上傳或送審。功能與操作見 `02-windows-music-sync/README.md`，上架事項見 `02-windows-music-sync/Packaging/README.md`。
+
+### 接續與版本控制
+
+先完成 Windows 背景控制權，讀回 IsAvailable=true 且實際有 SentFrames，再請使用者確認 8 顆隨 YouTube 播放／暫停反應。其後測試 USB 重插、音訊輸出切換、App 停止／退出與競爭控制者。API 成功不取代實體 LED 觀察，亦不代表電流／訊號電氣合規。若 YouTube 指定到非預設播放端點，需改用預設端點；混音包含其他應用程式，不是 YouTube 專屬。
+
+新程式、文件與精簡驗證證據目前僅在本機，未新增 commit／push；保留原先尚未提交的文件與測試腳本變更。本輪新增 .gitignore 排除 Windows bin／obj／artifacts，但已註冊的 layout 仍需保留以供目前本機開發 App 執行。

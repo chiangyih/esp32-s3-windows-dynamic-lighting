@@ -1,0 +1,126 @@
+[
+  {
+    "Path": "02-windows-music-sync/app.manifest",
+    "Sha256": "57393E9580EA55B1D80504A7007B66EFB1972A48BA86357A13803C8633659F83"
+  },
+  {
+    "Path": "02-windows-music-sync/Program.cs",
+    "Sha256": "728985DC4F8A54A8EF1FA2330CEC6A66948D48704CF92C83D66119426E6CB2CC"
+  },
+  {
+    "Path": "02-windows-music-sync/Core/SyncEngine.cs",
+    "Sha256": "39AF599F6AA7C56E2D14077C546C967DC0A408C0C6EE1234A3C2706EADFA2972"
+  },
+  {
+    "Path": "02-windows-music-sync/Core/LevelMeter.cs",
+    "Sha256": "1C4570D0483D5BC0336F942CB6F08A75CB86D4862E778CD4D94066D3F75C22F3"
+  },
+  {
+    "Path": "02-windows-music-sync/Core/FrameMapper.cs",
+    "Sha256": "91231DD6E6F4EC3610141E41AD93FE65B46E1DCBA4A1D5CB9A7EFC9F3484B451"
+  },
+  {
+    "Path": "02-windows-music-sync/UI/MeterPreview.cs",
+    "Sha256": "2EC6D668F6AD0268C5D58204B75ED7825A3994F5124D53155D5600F495CFABF9"
+  },
+  {
+    "Path": "02-windows-music-sync/UI/MainForm.cs",
+    "Sha256": "CC1D72E56482613302AC808BFD59B7D357F3357F93D18C4013A7D4A1CEE659BD"
+  },
+  {
+    "Path": "02-windows-music-sync/Audio/WasapiNative.cs",
+    "Sha256": "5D3ABC87E12F29CFEF7BB5D3CDD93B70B808C7FE8DA0F89A7DDD3A6B2FD82568"
+  },
+  {
+    "Path": "02-windows-music-sync/Audio/WasapiLoopbackCapture.cs",
+    "Sha256": "730D8436ECCCC6E154A1D482596936F608A1484BDBFA5B220DBEC37E274B4D85"
+  },
+  {
+    "Path": "02-windows-music-sync/Audio/PcmSampleDecoder.cs",
+    "Sha256": "F0C860EDCD117CBF8DA864972E4A3435BE6B25350CCEEE0F101AC25B212079E7"
+  },
+  {
+    "Path": "02-windows-music-sync/Audio/AudioSnapshot.cs",
+    "Sha256": "92B4C089228870683348968B16CFE57E1B5822AE4F5EDD80EC957FCAD01D6336"
+  },
+  {
+    "Path": "02-windows-music-sync/MusicSync.csproj",
+    "Sha256": "C16638B656D9403C6168BD595C57A9305744094F8F2C6AC9C9639A56613C184B"
+  },
+  {
+    "Path": "02-windows-music-sync/README.md",
+    "Sha256": "10C18E6DD237F54F9C84B804D3411B381AB2A840FA15E444F8B62FE58C1428C5"
+  },
+  {
+    "Path": "02-windows-music-sync/Packaging/README.md",
+    "Sha256": "4B7FD3878DFD5EE4BF6C71768EDF7FB861D1D3DC57D7174E26D945DDA38D875E"
+  },
+  {
+    "Path": "02-windows-music-sync/Packaging/privacy-policy.zh-TW.md",
+    "Sha256": "94677B1FFAA552657BA3689AFF8CA05EB417F46EC3060162E9178ECF3A04AAA8"
+  },
+  {
+    "Path": "02-windows-music-sync/tests/TestRunner.csproj",
+    "Sha256": "9A0B69C374604DD77B28D67887E5D016982AF3859537B43A5ED76F30BDB9506C"
+  },
+  {
+    "Path": "02-windows-music-sync/tests/Program.cs",
+    "Sha256": "0643B124DEB9EC632F4419F667018004935050CCFAD2C4F5D7E863A2986F70E7"
+  },
+  {
+    "Path": "02-windows-music-sync/tests/AudioChecks.cs",
+    "Sha256": "A2CFCC255855BF367238E3D034996D7D0D01C35C135068FE01446DE630220793"
+  },
+  {
+    "Path": "02-windows-music-sync/Packaging/AppxManifest.template.xml",
+    "Sha256": "4445EBF814F814C445CB102F48E85DAAD69E68E8E2F97F5209DE0A0FF4B39624"
+  },
+  {
+    "Path": "02-windows-music-sync/scripts/play-test-signal.ps1",
+    "Sha256": "06F20EE3E6A57F9D27F0B0B3500C445AA4CC854EBB77716DB613F48339493F04"
+  },
+  {
+    "Path": "02-windows-music-sync/scripts/launch-packaged.ps1",
+    "Sha256": "BD5D5DF0551BBE1F43CF6B0D52C2FE5FF153EF4BAE0D662677EE3F6180549437"
+  },
+  {
+    "Path": "02-windows-music-sync/scripts/install-dev.ps1",
+    "Sha256": "2180D65F36BB4EE79D9B9A41AB1AA66CE4936E30B4443418CCE2973F20089CAF"
+  },
+  {
+    "Path": "02-windows-music-sync/scripts/generate-assets.ps1",
+    "Sha256": "5EDC70AAE48383F91BE887B56E42E8896999A9CC4364A1D6089B886BC5455250"
+  },
+  {
+    "Path": "02-windows-music-sync/scripts/build-package.ps1",
+    "Sha256": "855CD0072095AD641E03A175976F0C319D17F01BCED2F0D89064236DF125871D"
+  },
+  {
+    "Path": "02-windows-music-sync/Lighting/LedColor.cs",
+    "Sha256": "A428197B9EAC47B2BB42B5B7CF11AC62F0DC6243431D21405018EB90D9ACFDFC"
+  },
+  {
+    "Path": "02-windows-music-sync/Lighting/LampArrayController.cs",
+    "Sha256": "6388095356B7CABA307C64F9263761A4E36507955F9896AA31CFDEEEA456FEBE"
+  },
+  {
+    "Path": "02-windows-music-sync/Packaging/Assets/Wide310x150Logo.png",
+    "Sha256": "10AA4805F3C86FA82FE303479AD0AFDAC5AFBD785D086F6C1CDB2B6A68BC3E3A"
+  },
+  {
+    "Path": "02-windows-music-sync/Packaging/Assets/StoreLogo.png",
+    "Sha256": "5904A4DBDF0FFEA2644F49B487B12D1B03E9CD1AA4722F5A24F36F0AB587997B"
+  },
+  {
+    "Path": "02-windows-music-sync/Packaging/Assets/Square44x44Logo.png",
+    "Sha256": "B9E97DBE6CE7A0A51990397537E9B55B1C7EED39494F9FEE2549CC9F5391BD72"
+  },
+  {
+    "Path": "02-windows-music-sync/Packaging/Assets/Square150x150Logo.png",
+    "Sha256": "8D70EF61AF270CB0EEC9155A2C18842D2890DF321E8358E059DB1456637EC524"
+  },
+  {
+    "Path": "02-windows-music-sync/Packaging/Assets/AppIcon.ico",
+    "Sha256": "4F68385409509B9B59D0D57E393D735FBA7D1A236FFDDBF5A07973CE3D3792E9"
+  }
+]

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CheckSdkVulnerabilities>true</CheckSdkVulnerabilities>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Core/LevelMeter.cs" Link="Core/LevelMeter.cs" />
+    <Compile Include="../Core/FrameMapper.cs" Link="Core/FrameMapper.cs" />
+    <Compile Include="../Lighting/LedColor.cs" Link="Lighting/LedColor.cs" />
+    <Compile Include="../Audio/PcmSampleDecoder.cs" Link="Audio/PcmSampleDecoder.cs" />
+  </ItemGroup>
+</Project>

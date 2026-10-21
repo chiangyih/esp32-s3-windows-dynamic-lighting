@@ -9,9 +9,11 @@
 | `2026-10-21/device-upload/` | 晶片讀回、四段燒錄雜湊驗證、啟動日誌、USB／COM 與 Windows LampArray 枚舉結果。 |
 | `2026-10-21/switched-baseline/` | 原先含 TPS2553、74AHCT125 方案的建置、23/23 測試與原驗證清單。 |
 | `2026-10-21/git-initial-push.json` | 首次推送後的本機 HEAD、origin/main、遠端 main 一致及乾淨工作目錄快照；屬該次提交的歷史讀回。 |
+| `2026-10-21/windows-control/` | Windows 原生設定頁辨識、8 顆紅／綠／藍變色的使用者確認，以及 WinRT 工具的初始化、屬性讀回與未取得控制權的序列紀錄。 |
+| `2026-10-21/music-sync/` | C# 10／.NET 10 App 的 43 項檢查、音訊與資源診斷；最新 0.1.2.0 封裝／開發註冊證據在子目錄，實體同步仍待背景控制權。 |
 
 第一個程式的現行位置為專案根目錄的 `01-8_ws2812/`，主程式為 `01-8_ws2812/01-8_ws2812.ino`。歷史 manifest 中的原始 `firmware/WindowsDynamicLighting/` 路徑保留不改，以維持當時建置證據；移位後的最新建置與測試紀錄另存於 `2026-10-21/01-8_ws2812/`，不覆寫原有清單或日誌。
 
 JSON 清單中的路徑沿用當時專案根目錄與 `build/` 相對路徑，用來辨識歷史建置；不表示清單中的編譯產物均已上傳 GitHub。`.bin`、`.elf`、`.map`、測試執行檔及工具鏈快取仍保存在本機 `build/`，由 `.gitignore` 排除。重新建置後的產物須用新的紀錄核對，不能覆寫歷史證據後沿用原結論。
 
-裝置紀錄已省略 MAC、USB instance 與序號。本次已確認燒錄及 OS LampArray 辨識；實際 LED 變色、亮度、DIN 訊號與耗電仍待實板觀察及量測。
+裝置紀錄已省略 MAC、USB instance 與序號。已確認燒錄、OS LampArray 與原生設定頁辨識；使用者已目視確認 8 顆都能隨原生設定切換紅／綠／藍。逐顆索引、亮度量測、DIN 訊號與耗電仍待驗證。`windows-control/sequence.json` 是送色前停止的紀錄，不能當成逐顆測試通過。該次序列之後，工具才加入 ControlWait 診斷；`lamp-properties-final.json` 對應最後工具的 InspectOnly，並未重跑送色。

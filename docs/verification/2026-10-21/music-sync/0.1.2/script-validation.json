@@ -1,0 +1,22 @@
+[
+  {
+    "Script": "build-package.ps1",
+    "ParseErrors": 0
+  },
+  {
+    "Script": "generate-assets.ps1",
+    "ParseErrors": 0
+  },
+  {
+    "Script": "install-dev.ps1",
+    "ParseErrors": 0
+  },
+  {
+    "Script": "launch-packaged.ps1",
+    "ParseErrors": 0
+  },
+  {
+    "Script": "play-test-signal.ps1",
+    "ParseErrors": 0
+  }
+]

@@ -1,0 +1,39 @@
+{
+    "ObservedAtUtc":  "2026-10-21T04:18:58.4743493Z",
+    "PowerShellVersion":  "5.1.26100.9711",
+    "OperatingSystem":  {
+                            "ProductName":  "Microsoft Windows 11 Pro",
+                            "DisplayVersion":  "24H2",
+                            "Build":  "26100.9711",
+                            "ProductNameSource":  "Win32_OperatingSystem.Caption"
+                        },
+    "ReadOnly":  true,
+    "WinRTLampArrayEnumeration":  {
+                                      "Status":  "Detected",
+                                      "Count":  1,
+                                      "Devices":  [
+                                                      {
+                                                          "Name":  "ESP32-S3 USB Light Strip",
+                                                          "SanitizedId":  "HID\\VID_303A\u0026PID_1001\\[instance-redacted]",
+                                                          "IsEnabled":  true
+                                                      }
+                                                  ],
+                                      "Error":  null
+                                  },
+    "PnpLampArrayUsage":  {
+                              "Status":  "Detected",
+                              "Count":  1,
+                              "Devices":  [
+                                              {
+                                                  "Name":  "HID-compliant device",
+                                                  "SanitizedId":  "HID\\VID_303A\u0026PID_1001\\[instance-redacted]",
+                                                  "LampArrayUsageId":  "HID_DEVICE_UP:0059_U:0001",
+                                                  "UsageEvidenceSources":  [
+                                                                               "HardwareID"
+                                                                           ]
+                                              }
+                                          ],
+                              "Error":  null
+                          },
+    "Interpretation":  "Enumeration evidence only; does not verify physical LEDs, brightness, or Windows effects."
+}

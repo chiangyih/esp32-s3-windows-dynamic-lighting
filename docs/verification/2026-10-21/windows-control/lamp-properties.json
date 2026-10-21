@@ -1,0 +1,26 @@
+{
+    "ObservedAtUtc":  "2026-10-21T04:20:27.4239983Z",
+    "Mode":  "InspectOnly",
+    "Status":  "Stopped",
+    "Target":  {
+                   "Name":  "ESP32-S3 USB Light Strip",
+                   "VendorId":  "0x303A",
+                   "ProductId":  "0x1001",
+                   "LampCount":  8
+               },
+    "MatchCount":  0,
+    "Properties":  null,
+    "FinalProperties":  null,
+    "Steps":  [
+
+              ],
+    "CleanupBlack":  "NotNeededNoColourWrites",
+    "CleanupError":  null,
+    "Error":  {
+                  "Stage":  "Initialization",
+                  "Type":  "System.Management.Automation.RuntimeException",
+                  "HResult":  "0x80131501"
+              },
+    "ElapsedMs":  171,
+    "PhysicalLedResult":  "Pending human observation; API success does not verify light output."
+}

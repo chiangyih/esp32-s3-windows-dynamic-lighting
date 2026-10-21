@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "app-window.png",
+    "Sha256": "90C981E08CB68411E4B251DF9A0DF19D0F91A8CED755710E489BF19F16256B59",
+    "CopiedExactly": true
+  },
+  {
+    "Name": "script-validation.json",
+    "Sha256": "96DACC7385AE3B96BA33DCC84EDAA357AA7281CA857DEF68DC62A7F7B0465E79",
+    "CopiedExactly": true
+  },
+  {
+    "Name": "packaged-runtime.json",
+    "Sha256": "F302BD2BD73E110184B22DCF203D6D6BC437F53F279C5334F58124745A3BCD09",
+    "CopiedExactly": true
+  },
+  {
+    "Name": "package-report.json",
+    "Sha256": "DE8032499A9A69FC796E10A9C509E4FFA674C2C23E5BDB2680787A9376A48195",
+    "CopiedExactly": true
+  },
+  {
+    "Name": "development-install-report.json",
+    "Sha256": "CFA199A792FD9E61A2B02F6386C072958CC7E816DD7492DB6807C17B63CDF0EA",
+    "CopiedExactly": true
+  },
+  {
+    "Name": "source-sha256.json",
+    "Sha256": "A778F6166A3D082CFDE344A822EC13346E55E2D8B915519323EEBB1C63DCF034",
+    "CopiedExactly": true
+  }
+]

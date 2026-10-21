@@ -1,0 +1,38 @@
+[
+  {
+    "File": "initial-enumeration.json",
+    "Bytes": 2276,
+    "Sha256": "BBDE39E318843C6096F6D886A01DA44738DA0BFDBC09AF057024D11CAE0E9176",
+    "CopyVerified": true
+  },
+  {
+    "File": "lamp-properties.json",
+    "Bytes": 853,
+    "Sha256": "2A9315F2F2737D0493830D5BD5D0122B14E486ACEDDF5EBD77668D56646BD781",
+    "CopyVerified": true
+  },
+  {
+    "File": "lamp-properties-retry.json",
+    "Bytes": 1619,
+    "Sha256": "45A6D07E3B61AF926071F8F5C93D1D7617BE2AC05EF6D2B0A8580B1E735B0E85",
+    "CopyVerified": true
+  },
+  {
+    "File": "sequence.json",
+    "Bytes": 1787,
+    "Sha256": "4A3492A3A2D1A1ABF6E4D5B435B3C3BC2344F3E5F334979B70D0B5B86F6FDE5F",
+    "CopyVerified": true
+  },
+  {
+    "File": "lamp-properties-final.json",
+    "Bytes": 2338,
+    "Sha256": "FB1C628F170A772150EDCC426BEF3ABB30FAE447CE525F019C64699BF7D3C5BD",
+    "CopyVerified": true
+  },
+  {
+    "File": "native-control-result.json",
+    "Bytes": 2034,
+    "Sha256": "A141DF4E99905BB1CB860ED4F30BF9F8DEEAE92D1F1D56C65C7DB9613B4CFAD6",
+    "CopyVerified": true
+  }
+]

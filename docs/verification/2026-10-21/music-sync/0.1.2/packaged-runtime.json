@@ -1,0 +1,142 @@
+{
+  "ObservedAtUtc": "2026-10-21T05:33:46.9902432+00:00",
+  "Version": "0.1.2.0",
+  "Runtime": ".NET 10.0.13",
+  "LanguageVersion": "C# 10.0",
+  "PackageIdentity": true,
+  "DurationSeconds": 15.0544606,
+  "AudioPackets": 55,
+  "MaximumRms": 0,
+  "AudioDevice": "\u5587\u53ED (High Definition Audio Device)",
+  "AudioStatus": "\u6B63\u5728\u64F7\u53D6\u96FB\u8166\u64AD\u653E\u97F3\u8A0A\uFF1A\u5587\u53ED (High Definition Audio Device)",
+  "ConnectedCount": 1,
+  "LightingStatus": "\u7B49\u5F85\u71C8\u5149\u63A7\u5236\u6B0A\uFF1B\u8ACB\u5728\u300C\u80CC\u666F\u5149\u6E90\u63A7\u5236\u9805\u300D\u5C07\u6B64 App \u6392\u5230\u524D\u9762\u3002",
+  "EverHadLightingControl": false,
+  "SentFrames": 0,
+  "BlackFramesSent": 0,
+  "CpuMilliseconds": 1312.5,
+  "CpuPercentOfOneCore": 8.718111241425563,
+  "CpuPercentOfMachine": 2.1795277234930075,
+  "SteadyStateSeconds": 10.029770500000001,
+  "SteadyCpuPercentOfOneCore": 2.336790174248723,
+  "PeakWorkingSetBytes": 80965632,
+  "PeakPrivateBytes": 20983808,
+  "Threads": 23,
+  "StartError": null,
+  "Samples": [
+    {
+      "Second": 0,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 1,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 2,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 3,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 4,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 5,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 6,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 7,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 8,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 9,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 10,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 11,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 12,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 13,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 14,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 15,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    }
+  ],
+  "PhysicalLedObservation": "Requires user confirmation; API results do not verify physical LEDs.",
+  "AudioStored": false
+}

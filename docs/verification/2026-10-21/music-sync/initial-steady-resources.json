@@ -1,0 +1,9 @@
+{
+  "ObservedAtUtc": "2026-10-21T05:25:24.0991170+00:00",
+  "DurationSeconds": 42.5529721,
+  "CpuPercentOfOneCore": 1.3586007544699799,
+  "WorkingSetBytes": 77758464,
+  "PrivateBytes": 17350656,
+  "State": "Running; lighting control not confirmed",
+  "Supersedes": "resource-initial-steady-invalid-time.json used incorrect timezone conversion and is not valid performance evidence"
+}

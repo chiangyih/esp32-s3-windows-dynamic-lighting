@@ -1,0 +1,46 @@
+{
+    "ObservedAtUtc":  "2026-10-21T04:25:02.1519849Z",
+    "Mode":  "RunSequence",
+    "Status":  "Stopped",
+    "Target":  {
+                   "Name":  "ESP32-S3 USB Light Strip",
+                   "VendorId":  "0x303A",
+                   "ProductId":  "0x1001",
+                   "LampCount":  8
+               },
+    "MatchCount":  1,
+    "Properties":  {
+                       "VendorId":  "0x303A",
+                       "ProductId":  "0x1001",
+                       "LampCount":  8,
+                       "Kind":  "Peripheral",
+                       "IsConnected":  true,
+                       "IsEnabled":  true,
+                       "IsAvailable":  false,
+                       "BrightnessLevel":  1,
+                       "MinUpdateIntervalMs":  16.667
+                   },
+    "FinalProperties":  {
+                            "VendorId":  "0x303A",
+                            "ProductId":  "0x1001",
+                            "LampCount":  8,
+                            "Kind":  "Peripheral",
+                            "IsConnected":  true,
+                            "IsEnabled":  true,
+                            "IsAvailable":  false,
+                            "BrightnessLevel":  1,
+                            "MinUpdateIntervalMs":  16.667
+                        },
+    "Steps":  [
+
+              ],
+    "CleanupBlack":  "NotNeededNoColourWrites",
+    "CleanupError":  null,
+    "Error":  {
+                  "Stage":  "AwaitForegroundAvailability",
+                  "Type":  "System.InvalidOperationException",
+                  "HResult":  "0x80131509"
+              },
+    "ElapsedMs":  11647,
+    "PhysicalLedResult":  "Pending human observation; API success does not verify light output."
+}

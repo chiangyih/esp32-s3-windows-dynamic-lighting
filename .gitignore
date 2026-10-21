@@ -1,5 +1,8 @@
 /build/
 /tests/build/
+/02-windows-music-sync/**/bin/
+/02-windows-music-sync/**/obj/
+/02-windows-music-sync/artifacts/
 
 # Local configuration, credentials, and editor caches.
 .env

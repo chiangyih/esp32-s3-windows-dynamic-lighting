@@ -1,0 +1,42 @@
+{
+  "RecordedAtLocal": "2026-10-21T12:27:05+08:00",
+  "Status": "PassedNativeSolidColorControl",
+  "Target": "ESP32-S3 USB Light Strip",
+  "LampCount": 8,
+  "WiringReportedByUser": { "DataGpio": 4, "Power": "Board 5V and GND" },
+  "Host": { "OperatingSystem": "Windows 11 Pro", "DisplayVersion": "24H2", "Build": "26100.9711" },
+  "NativeSettingsUi": {
+    "DevicePageObserved": true,
+    "DeviceDynamicLightingEnabled": true,
+    "ForegroundCompatibleAppsControlEnabled": true,
+    "InitialEffectObserved": "Audio",
+    "TestEffect": "SolidColor",
+    "PaletteSelections": ["Red", "TurfGreen", "Blue"],
+    "FinalEffect": "SolidColor",
+    "FinalColor": "Blue",
+    "FinalMatchWindowsAccentColor": false,
+    "BrightnessSliderChangedByAgent": false
+  },
+  "PhysicalEvidence": {
+    "Source": "User visual observation of the connected strip",
+    "FirstConfirmation": "8 顆都有亮起",
+    "ColorSwitchConfirmation": "8 顆都跟著變成紅、綠、藍",
+    "All8SolidColorLightingConfirmed": true,
+    "All8RedGreenBlueSwitchingConfirmed": true,
+    "InstrumentedColorMeasurement": false
+  },
+  "WinRtInspection": { "UniqueMatchingDevice": true, "Connected": true, "Enabled": true, "LampCount": 8, "MinUpdateIntervalMs": 16.667 },
+  "WinRtSequence": {
+    "Status": "StoppedBeforeAnyColorWrite",
+    "Stage": "AwaitForegroundAvailability",
+    "AcceptedFrameCount": 0,
+    "SingleLampMappingVerified": false,
+    "CleanupBlackSent": false,
+    "FinalScriptControlWaitDiagnosticsAddedAfterAttempt": true
+  },
+  "FirmwareChanged": false,
+  "FirmwareFlashed": false,
+  "UploadedApplicationSha256": "07E982D874ACB52631F5478038E648253A70F6FBA272789390EF45B8C9398157",
+  "Unverified": ["Physical lamp index mapping", "Animated effects", "Brightness calibration", "DIN signal margin", "Actual current", "USB suspend and resume", "USB replug reliability"],
+  "Interpretation": "Basic Windows native solid-color control passed. Physical results are user-reported. No claim of electrical compliance or complete hardware qualification."
+}

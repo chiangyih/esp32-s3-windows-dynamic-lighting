@@ -1,0 +1,450 @@
+{
+  "ObservedAtUtc": "2026-10-21T05:30:53.6584614+00:00",
+  "Version": "0.1.1.0",
+  "Runtime": ".NET 10.0.13",
+  "LanguageVersion": "C# 10.0",
+  "PackageIdentity": true,
+  "DurationSeconds": 60.209968,
+  "AudioPackets": 336,
+  "MaximumRms": 0.698563783691465,
+  "AudioDevice": "\u5587\u53ED (High Definition Audio Device)",
+  "AudioStatus": "\u6B63\u5728\u64F7\u53D6\u96FB\u8166\u64AD\u653E\u97F3\u8A0A\uFF1A\u5587\u53ED (High Definition Audio Device)",
+  "ConnectedCount": 1,
+  "LightingStatus": "\u7B49\u5F85\u71C8\u5149\u63A7\u5236\u6B0A\uFF1B\u8ACB\u5728\u300C\u80CC\u666F\u5149\u6E90\u63A7\u5236\u9805\u300D\u5C07\u6B64 App \u6392\u5230\u524D\u9762\u3002",
+  "EverHadLightingControl": false,
+  "SentFrames": 0,
+  "BlackFramesSent": 0,
+  "CpuMilliseconds": 2468.75,
+  "CpuPercentOfOneCore": 4.100207425237731,
+  "CpuPercentOfMachine": 1.0250518443922778,
+  "SteadyStateSeconds": 55.058125499999996,
+  "SteadyCpuPercentOfOneCore": 1.6459873234692672,
+  "PeakWorkingSetBytes": 88432640,
+  "PeakPrivateBytes": 26648576,
+  "Threads": 22,
+  "StartError": null,
+  "Samples": [
+    {
+      "Second": 1,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 2,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 3,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 4,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 5,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 6,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 7,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 8,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 9,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 10,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 11,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 12,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 13,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 14,
+      "Rms": 0.1966955681835463,
+      "Level": 0.891900208959955,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 15,
+      "Rms": 0.19742478609334393,
+      "Level": 0.8930212280524175,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 16,
+      "Rms": 0.5449106036392772,
+      "Level": 0.9999999999998881,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 17,
+      "Rms": 0.5445370939873164,
+      "Level": 1,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 18,
+      "Rms": 0.6956418244663632,
+      "Level": 1,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 19,
+      "Rms": 0.6955719188928506,
+      "Level": 1,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 20,
+      "Rms": 0,
+      "Level": 0.002438759254556686,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 21,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 22,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 23,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 24,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 25,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 26,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 27,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 28,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 29,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 30,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 31,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 32,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 33,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 34,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 35,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 36,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 37,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 38,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 39,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 40,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 41,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 42,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 43,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 44,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 45,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 46,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 47,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 48,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 49,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 50,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 51,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 52,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 53,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 54,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 55,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 56,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 57,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 58,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 59,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 60,
+      "Rms": 0,
+      "Level": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    }
+  ],
+  "PhysicalLedObservation": "Requires user confirmation; API results do not verify physical LEDs.",
+  "AudioStored": false
+}

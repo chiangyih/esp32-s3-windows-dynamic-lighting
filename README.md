@@ -1,10 +1,10 @@
 # ESP32 S3 USB 燈條與 Windows 動態光效
 
-使用 Waveshare ESP32-S3-DEV-KIT-NXRX N32R16 與 WS2812 燈條，經同一條 USB 線傳輸及供電。韌體提供 USB HID LampArray，目標由 Windows 11「設定 → 個人化 → 動態光效」直接控制，因此不需另外常駐一套自製控制程式。相容協定依據 [Microsoft Dynamic Lighting 裝置規範](https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/dynamic-lighting-devices)。
+使用 Waveshare ESP32-S3-DEV-KIT-NXRX N32R16 與 WS2812 燈條，經同一條 USB 線傳輸及供電。韌體提供 USB HID LampArray，基本燈效由 Windows 11「設定 → 個人化 → 動態光效」直接控制。YouTube 音量同步另由 [Windows 音樂同步 App](02-windows-music-sync/README.md) 在背景分析電腦播放音訊並送出燈色。燈具 HID 欄位依據 [USB HID Usage Tables 1.4 第 26 章](https://www.usb.org/sites/default/files/hut1_4.pdf)；Windows 相容性另參照 [Microsoft Dynamic Lighting 裝置規範](https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/dynamic-lighting-devices)。
 
-目前依使用者最新決定，採 **8 顆燈條直連**，先不使用 TPS2553 或 74AHCT125。`Config::UsePowerSwitch = false`，燈條由板上 5V 供電、GPIO4 送資料，GPIO9、GPIO10 不需接線。已完成燒錄與 Windows LampArray 枚舉；3.3V 訊號相容性、USB 耗電與實際燈效仍待確認。詳見 [直連接線](docs/直連接線.md)、[驗證紀錄](docs/驗證紀錄.md) 與 [交接文件](handoff.md)。
+目前依使用者最新決定，採 **8 顆燈條直連**，先不使用 TPS2553 或 74AHCT125。`Config::UsePowerSwitch = false`，燈條由板上 5V 供電、GPIO4 送資料，GPIO9、GPIO10 不需接線。已完成燒錄、Windows 動態光效設定頁辨識與純色控制；使用者確認 **8 顆都能隨設定切換紅、綠、藍**。逐顆索引、DIN 訊號裕量、USB 耗電與睡眠／喚醒仍待量測或驗證。詳見 [直連接線](docs/直連接線.md)、[驗證紀錄](docs/驗證紀錄.md) 與 [交接文件](handoff.md)。
 
-最新直連韌體已編譯成功，24/24 項 PC 協定與電流模型測試通過。2026-10-21 已經 CH343 **COM3** 燒錄，四段資料雜湊驗證成功；ROM 讀回 ESP32-S3 revision v0.2、32MB Octal Flash、16MB PSRAM。Windows LampArray API 已找到啟用的 `ESP32-S3 USB Light Strip`，實際 LED 輸出未目視驗證。
+最新直連韌體已編譯成功，24/24 項 PC 協定與電流模型測試通過。2026-10-21 已經 CH343 **COM3** 燒錄，四段資料雜湊驗證成功；ROM 讀回 ESP32-S3 revision v0.2、32MB Octal Flash、16MB PSRAM。Windows LampArray API 與原生設定頁均找到 `ESP32-S3 USB Light Strip`；8 顆紅／綠／藍切換結果來自使用者實物觀察，詳見驗證紀錄。此次燈效測試沒有重刷韌體。
 
 ## 使用者需求與原型設定
 
@@ -33,11 +33,13 @@
 
 板上 Type-C 經 CH334 USB hub 分別連到 CH343 UART 與 ESP32-S3 原生 USB。CH343 用於燒錄和日誌，原生 USB 用於 HID LampArray，不需再飛線 USB D+/D−。[Waveshare FAQ](https://docs.waveshare.com/ESP32-S3-DEV-KIT-N8R8/FAQ)
 
-GPIO19、20 保留給 USB。依系列原理圖，GPIO38 為板載 RGB；N32R16V 的 GPIO35–37 及 GPIO47、48 有記憶體／電壓限制，本案不使用。照片貼紙為 N32R16，Flash／PSRAM 容量與 OPI 設定仍須實板確認。[Waveshare 系列資料](https://docs.waveshare.com/ESP32-S3-DEV-KIT-N8R8)
+GPIO19、20 保留給 USB。依系列原理圖，GPIO38 為板載 RGB；N32R16V 的 GPIO35–37 及 GPIO47、48 有記憶體／電壓限制，本案不使用。照片貼紙為 N32R16；本次實板已讀回 32MB Flash、16MB PSRAM 與 Octal Flash 設定。[Waveshare 系列資料](https://docs.waveshare.com/ESP32-S3-DEV-KIT-N8R8)
 
 ## 韌體與建置
 
 第一個 8 顆 WS2812 程式集中在 `01-8_ws2812/`，主程式為 `01-8_ws2812/01-8_ws2812.ino`，以本機既有 Arduino ESP32 core **3.1.1** 為建置基準，不需額外 LED 函式庫。USB HID 使用 Arduino-ESP32 的 TinyUSB 介面，WS2812 以硬體 RMT 傳送 GRB 資料。
+
+韌體目前僅沿用 Microsoft `ArduinoHidForWindows` 的 LampArray **報告描述元**與 MIT 授權；協定解析、ESP32 USB 介面、RMT 與限亮由本專案實作。官方完整函式庫宣告支援 SAMD、使用不同 USB 介面，不能直接安裝後替換此 ESP32-S3 程式；可用性評估見 [交接文件](handoff.md)。
 
 搬移後已重新編譯並再次通過 24/24 測試；未再次燒錄，先前裝置驗證紀錄仍對應當時上傳的映像。
 
@@ -58,7 +60,9 @@ USB 保留 Arduino core 的開發用預設 VID/PID；若將來製作正式產品
 
 接上已燒錄且接線完成的板子，開啟「設定 → 個人化 → 動態光效」，啟用相容裝置控制，檢查是否出現 `ESP32-S3 USB Light Strip`，再測固定顏色、亮度及 Windows 提供的效果。若其他 RGB 軟體取得控制權，需調整 Windows 中的控制優先順序。[Microsoft 使用說明](https://support.microsoft.com/en-us/windows/hardware/input-devices/control-dynamic-lighting-devices-in-windows)
 
-單純出現 COM 埠或一般 HID 裝置，不代表 Windows 動態光效已識別。應以設定頁出現燈條，並能實際改變 LED 顏色作為功能驗收。Windows 內建效果不等同自動提供音樂節奏或螢幕色彩擷取；這些功能需要另外的相容應用程式。
+單純出現 COM 埠或一般 HID 裝置，不代表 Windows 動態光效已識別。應以設定頁出現燈條，並能實際改變 LED 顏色作為功能驗收。效果選項依 Windows 版本與相容應用程式而定；本機設定頁已實際看到「音效」及「純色」。
+
+本機 2026-10-21 再次檢查時，裝置本身也選了「音效」，其詳細設定為效果速度、方向與兩種色彩。使用者確認暫停 YouTube 時，燈條仍持續流動變色；這是自行運作的效果，不能據此認定已隨音樂節奏變化。其後使用者授權實作，[Windows 音樂同步 App](02-windows-music-sync/README.md) 現在提供 WASAPI 播放音訊分析與 LampArray 控制；初版以音量驅動 8 格燈條，不含節拍辨識。設計歷史見 [Windows 音樂同步設計](docs/Windows音樂同步設計.md)，最新實測狀態見 [交接文件](handoff.md)。[Microsoft 內建效果說明](https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-devices-lights-winrt-windldefaulteffecttype)、[WASAPI loopback](https://learn.microsoft.com/en-us/windows/win32/coreaudio/loopback-recording)。
 
 ## 韌體行為
 

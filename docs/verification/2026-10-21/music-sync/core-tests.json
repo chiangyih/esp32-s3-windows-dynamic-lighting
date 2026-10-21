@@ -1,0 +1,25 @@
+{
+  "ObservedAtUtc": "2026-10-21T05:20:53.4789747+00:00",
+  "Status": "Passed",
+  "CoreCheckCount": 17,
+  "AudioCheckCount": 26,
+  "Checks": [
+    "Silence stays dark",
+    "Noise gate rejects -80 dBFS",
+    "Music responds within 200 ms",
+    "Stale capture fades to black within 1.1 seconds",
+    "Invalid RMS does not light LEDs",
+    "Missing sample is stale",
+    "Current sample is fresh",
+    "One-second sample is stale",
+    "Sensitivity gain changes the response",
+    "Zero level is all black",
+    "Full level addresses all eight LEDs",
+    "Half level addresses first four LEDs",
+    "Fractional end segment avoids full-step flicker",
+    "Zero brightness is dark",
+    "Invalid level is dark",
+    "Brightness scales channels",
+    "Frame generation performs no managed allocation (0 bytes)"
+  ]
+}
