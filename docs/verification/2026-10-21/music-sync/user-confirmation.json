@@ -1,0 +1,13 @@
+{
+  "RecordedAtUtc": "2026-10-21T05:48:17.0211168+00:00",
+  "Source": "User reply to the playback/pause verification question",
+  "UserResponse": "已設定，燈會隨音樂變化，暫停後漸暗",
+  "Scope": "Current ESP32-S3, GPIO4/5V/GND, eight WS2812, Windows music sync App, YouTube playback/pause",
+  "PhysicalMusicSync": "PassedByUserObservation",
+  "InstalledPackageVersion": "0.1.2.0",
+  "ControlCountersAfterPriorityChange": "NotReadBack",
+  "PreviousNoControlReports": "Historical before user adjusted Windows background priority; preserved unchanged",
+  "InstrumentMeasurement": false,
+  "UsbReconnectAndAudioDeviceSwitch": "NotValidatedInThisConfirmation",
+  "StoreCertification": "NotPerformed"
+}

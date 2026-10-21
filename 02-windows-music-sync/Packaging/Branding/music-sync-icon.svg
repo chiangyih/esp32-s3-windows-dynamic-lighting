@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>ESP32 Music Sync — Pulse Notes</title>
+  <desc>Two connected musical notes above eight coloured LED segments, on a midnight blue rounded tile.</desc>
+  <defs>
+    <linearGradient id="background" x1=".08" y1="0" x2=".92" y2="1" gradientUnits="objectBoundingBox">
+      <stop stop-color="#192B4A"/><stop offset=".54" stop-color="#111D35"/><stop offset="1" stop-color="#17172F"/>
+    </linearGradient>
+    <radialGradient id="light" cx=".82" cy=".08" r=".92">
+      <stop stop-color="#6275CE" stop-opacity=".19"/><stop offset="1" stop-color="#6275CE" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="348" y1="290" x2="726" y2="290" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#43E5DA"/><stop offset=".5" stop-color="#82ADFF"/><stop offset="1" stop-color="#CB98FF"/>
+    </linearGradient>
+  </defs>
+  <rect x="24" y="24" width="976" height="976" rx="218" fill="url(#background)"/>
+  <rect x="24" y="24" width="976" height="976" rx="218" fill="url(#light)"/>
+  <rect x="25.5" y="25.5" width="973" height="973" rx="216.5" fill="none" stroke="#B2C8F5" stroke-opacity=".16" stroke-width="3"/>
+  <g fill="#F4F9FF">
+    <path d="M348 326h76v318h-76zM650 254h76v318h-76z"/>
+    <ellipse cx="296" cy="648" rx="128" ry="86" transform="rotate(-22 296 648)"/>
+    <ellipse cx="598" cy="576" rx="128" ry="86" transform="rotate(-22 598 576)"/>
+  </g>
+  <path d="M348 322v-22a28 28 0 0 1 21-27l322-79a28 28 0 0 1 35 27v88L348 402z" fill="url(#beam)"/>
+  <g>
+    <rect x="201" y="796" width="62" height="48" rx="20" fill="#29E0C8"/>
+    <rect x="281" y="796" width="62" height="48" rx="20" fill="#24C9E8"/>
+    <rect x="361" y="796" width="62" height="48" rx="20" fill="#40A4FF"/>
+    <rect x="441" y="796" width="62" height="48" rx="20" fill="#6E8CFF"/>
+    <rect x="521" y="796" width="62" height="48" rx="20" fill="#9C7CFF"/>
+    <rect x="601" y="796" width="62" height="48" rx="20" fill="#C57BFF"/>
+    <rect x="681" y="796" width="62" height="48" rx="20" fill="#EB75CA"/>
+    <rect x="761" y="796" width="62" height="48" rx="20" fill="#FF858E"/>
+  </g>
+</svg>

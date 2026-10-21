@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <title>ESP32 Music Sync — transparent mark for light surfaces</title>
+  <defs><linearGradient id="beam" x1="348" y1="290" x2="726" y2="290" gradientUnits="userSpaceOnUse"><stop stop-color="#008C86"/><stop offset=".5" stop-color="#2563D9"/><stop offset="1" stop-color="#7B41C6"/></linearGradient></defs>
+  <g fill="#172640"><path d="M348 326h76v318h-76zM650 254h76v318h-76z"/><ellipse cx="296" cy="648" rx="128" ry="86" transform="rotate(-22 296 648)"/><ellipse cx="598" cy="576" rx="128" ry="86" transform="rotate(-22 598 576)"/></g>
+  <path d="M348 322v-22a28 28 0 0 1 21-27l322-79a28 28 0 0 1 35 27v88L348 402z" fill="url(#beam)"/>
+  <g><rect x="201" y="796" width="62" height="48" rx="20" fill="#008A76"/><rect x="281" y="796" width="62" height="48" rx="20" fill="#0089A3"/><rect x="361" y="796" width="62" height="48" rx="20" fill="#2375CC"/><rect x="441" y="796" width="62" height="48" rx="20" fill="#465BD0"/><rect x="521" y="796" width="62" height="48" rx="20" fill="#6E4DCB"/><rect x="601" y="796" width="62" height="48" rx="20" fill="#9145B9"/><rect x="681" y="796" width="62" height="48" rx="20" fill="#B53F8D"/><rect x="761" y="796" width="62" height="48" rx="20" fill="#C5455C"/></g>
+</svg>

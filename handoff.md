@@ -304,3 +304,25 @@ manifest 宣告 `com.microsoft.windows.lighting` AppExtension 與桌面 `runFull
 使用者授權「請自動commit/push」。已在 main 提交並正常推送至私人 `chiangyih/esp32-s3-windows-dynamic-lighting`，實作提交為 `60e756e9abd3a2699beccd581f1f79d47ac0290c`，共60檔，包含 C# App、MSIX腳本／資產、設計、交接、原生Windows控制證據及test-lamparray。bin／obj／artifacts與機密副檔名未納入；保留目前已註冊App使用的本機layout。
 
 推送後已核對 local HEAD、origin/main與git ls-remote的main完全相同，工作目錄乾淨；證據在 `docs/verification/2026-10-21/git-music-sync-push.json`。本節與該讀回紀錄另以文件提交同步，故未來最新HEAD請重新查Git，不把實作提交SHA視為永久最新值。未force push、未修改遠端歷史、未保存認證資料。此Git同步不改變實體燈條尚待控制權／YouTube觀察，以及WACK／Store送審未完成的狀態。
+
+## 2026-10-21 使用者確認 YouTube 音樂同步與暫停漸暗
+
+使用者在背景光源控制優先順序／播放暫停問題中回覆：「**已設定，燈會隨音樂變化，暫停後漸暗**」。問題對象為目前8顆WS2812與本App，因此基本YouTube播放／暫停的實體音量燈效驗收，更新為**使用者目視確認通過**。本機讀回安裝版本仍為0.1.2.0；本次沒有為確認而重刷ESP32、播放測試音、重新啟動或升級App。
+
+此結果來源為使用者實物觀察，不是攝影或儀器量測；設定變更後本App的IsAvailable／SentFrames未另行讀回。前面0.1.1／0.1.2短時診斷的IsAvailable=false、SentFrames=0是調整控制權前的歷史，保留不改寫，也不再當成目前實體同步仍失敗的證據。使用者確認紀錄見 `docs/verification/2026-10-21/music-sync/user-confirmation.json`。
+
+USB重插、預設音訊輸出切換、競爭控制者、長時間資源占用、電氣量測、WACK與Store認證仍須分別驗證。本次確認沒有把這些項目一併列為通過。
+
+## 2026-10-21 Windows App／Microsoft Store 圖示設計
+
+使用者要求設計Windows App與上架Store用圖示。完成原創SVG「Pulse Notes」：白色雙音符、青至紫的音符橫樑、下方8格RGB LED、深藍圓角底；另有深／淺背景透明標誌。使用可編輯向量幾何，不含第三方圖庫、品牌商標或字型輪廓，不依賴AI點陣服務。
+
+原稿／預覽／素材雜湊在 `02-windows-music-sync/Packaging/Branding/`；Windows `Packaging/Assets/AppIcon.ico`含16／20／24／32／40／48／64／128／256共9個32-bit alpha尺寸。Assets共有66份PNG加1份ICO，涵蓋4種基礎資產、5種scale與14種targetsize的三種背景版本。Store商品頁交付 `Packaging/StoreListing/StoreListingIcon-300.png`（官方建議的300×300）與1024×1024設計原稿；商品頁圖示與manifest的StoreLogo用途分開。
+
+設計階段 `scripts/render-brand-assets.cjs`以sharp直接從SVG各尺寸渲染。一般建置由generate-assets.ps1驗證並複製已簽入圖檔，不需要Node／sharp，不增加App執行時相依套件。70項交付素材逐檔SHA均核對相符，Windows原生LoadImage實測9種ICO尺寸均可載入。System.Drawing.Icon建構子對多尺寸ICO的256px曾選到128px，已用原生LoadImage確認256px實際存在並正確載入，未將該選圖限制誤認成ICO缺少尺寸。
+
+圖示版為 **0.1.3.0**，已重新編譯／封裝，音訊與燈效程式碼未改。MakePri需移除createconfig預設的autoResourcePackage拆包設定，將所有scale／targetsize索引至單一resources.pri；初次產出的多PRI迭代僅留本機，最終已修正。dump確認Scale400、TargetSize16、unplated與lightunplated全部在單一索引；MakeAppx正常驗證通過。新圖示也已嵌入EXE並抽出目視確認。
+
+目前有效新圖示套件：`02-windows-music-sync/artifacts/package-development-20261021-134721-590/Esp32MusicSync_0.1.3.0_x64_development.msix`，58,164,335 bytes，SHA-256 `2111B6F25BEFB8112D6F4B1A3AAB773D7947F5985359F90F369461381F104DAF`；自包含layout 150,475,474 bytes，單一resources.pri SHA-256 `8F39541C4E86417AC1338E9FDE5B11B07D74B6040ECF7D3BB6AB91FC77F2B58F`。精簡證據見 `docs/verification/2026-10-21/icons/`。
+
+本輪**沒有安裝0.1.3.0或為圖示重新啟動App**，已安裝版本仍為0.1.2.0，保留使用者已確認正常的音樂同步環境。0.1.3.0尚未做安裝後圖示快取／深淺主題Shell實測；WACK、正式Store身分與上傳認證狀態不變。本輪同時追加使用者確認YouTube音樂同步通過的證據，舊0幀報告仍保留歷史。

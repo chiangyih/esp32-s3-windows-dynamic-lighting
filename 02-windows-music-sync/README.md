@@ -2,6 +2,8 @@
 
 以電腦播放音量控制既有 ESP32-S3／8 顆 WS2812。精簡 WinForms 視窗可縮至通知區，音訊及燈光均使用 Windows 系統 API；沒有 WebView、Windows App SDK、NAudio、FFT 或雲端服務。
 
+2026-10-21，使用者已確認0.1.2.0可讓8顆燈隨YouTube音樂變化，暫停後漸暗（實物目視來源）。0.1.3.0接入新的[Windows／Store圖示](Packaging/Branding/README.md)，音訊與燈效程式未變更；圖示封裝與已安裝版本分別記錄。
+
 ## 環境與硬體
 
 - C# **10.0** 語言、.NET **10**；SDK 基準 10.0.402。

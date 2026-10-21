@@ -1,0 +1,23 @@
+{
+  "ObservedAtUtc": "2026-10-21T05:49:21.5559089+00:00",
+  "Design": "Pulse Notes",
+  "VerifiedAssetHashes": 70,
+  "PackagePngCount": 66,
+  "IcoSizes": [
+    16,
+    20,
+    24,
+    32,
+    40,
+    48,
+    64,
+    128,
+    256
+  ],
+  "WindowsLoadImage": "Passed for all nine sizes",
+  "ResourceIndex": "All scales and target sizes in one PRI",
+  "InstalledVersion": "0.1.2.0",
+  "IconPackageVersion": "0.1.3.0",
+  "IconPackageInstalledThisTurn": false,
+  "StoreSubmitted": false
+}

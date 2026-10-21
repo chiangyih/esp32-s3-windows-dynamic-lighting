@@ -1,0 +1,56 @@
+[
+  {
+    "Size": 16,
+    "LoadedWidth": 16,
+    "LoadedHeight": 16,
+    "WindowsLoadImagePassed": true
+  },
+  {
+    "Size": 20,
+    "LoadedWidth": 20,
+    "LoadedHeight": 20,
+    "WindowsLoadImagePassed": true
+  },
+  {
+    "Size": 24,
+    "LoadedWidth": 24,
+    "LoadedHeight": 24,
+    "WindowsLoadImagePassed": true
+  },
+  {
+    "Size": 32,
+    "LoadedWidth": 32,
+    "LoadedHeight": 32,
+    "WindowsLoadImagePassed": true
+  },
+  {
+    "Size": 40,
+    "LoadedWidth": 40,
+    "LoadedHeight": 40,
+    "WindowsLoadImagePassed": true
+  },
+  {
+    "Size": 48,
+    "LoadedWidth": 48,
+    "LoadedHeight": 48,
+    "WindowsLoadImagePassed": true
+  },
+  {
+    "Size": 64,
+    "LoadedWidth": 64,
+    "LoadedHeight": 64,
+    "WindowsLoadImagePassed": true
+  },
+  {
+    "Size": 128,
+    "LoadedWidth": 128,
+    "LoadedHeight": 128,
+    "WindowsLoadImagePassed": true
+  },
+  {
+    "Size": 256,
+    "LoadedWidth": 256,
+    "LoadedHeight": 256,
+    "WindowsLoadImagePassed": true
+  }
+]

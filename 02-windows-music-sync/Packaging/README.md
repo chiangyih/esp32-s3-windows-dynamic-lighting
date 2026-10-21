@@ -14,7 +14,13 @@
 & .\02-windows-music-sync\scripts\build-package.ps1
 ```
 
-輸出在 `02-windows-music-sync/artifacts/package-development-<時間>/`，保留獨立的 `layout`、未簽署 `.msix` 和 `package-report.json`。腳本呼叫 Windows SDK MakeAppx 的正常驗證，不使用 `/nv`。不開啟或安裝 App，不操作音訊／燈條。
+輸出在 `02-windows-music-sync/artifacts/package-development-<時間>/`，保留獨立的 `layout`、未簽署 `.msix` 和 `package-report.json`。需要 Windows SDK 的 **MakePri 與 MakeAppx**。腳本先索引有 scale／targetsize 限定詞的圖示，產生 `resources.pri`，再呼叫 MakeAppx 的正常驗證，不使用 `/nv`。詳細輸出分別保存在 `makepri.log`、`makeappx.log`，設定檔與日誌不放進套件。流程不開啟或安裝 App，不操作音訊／燈條。
+
+圖示的可編輯 SVG 原稿位於 `Packaging/Branding/`，設計時離線輸出 PNG 與多尺寸 ICO，再簽入 `Packaging/Assets/`。一般重建套件**只讀取現成圖檔**，不需 Node.js、Sharp 或額外影像函式庫，也不將這些設計工具加入 App。`generate-assets.ps1` 現在負責驗證基底尺寸、PNG／ICO 檔頭、scale／targetsize 尺寸與複製後雜湊；拒絕將輸出寫回原始 Assets 目錄。
+
+`AppIcon.ico` 供 Win32 EXE／視窗與通知區使用；`StoreLogo`、`Square44x44Logo`、`Square150x150Logo`、`Wide310x150Logo` 與其限定尺寸供 MSIX／Windows 選用。Partner Center 商品頁圖示另行提供，與 manifest 的 `StoreLogo` 檔案用途不同。修改任何限定圖示後需重新建置 PRI，不能只替換 PNG 後沿用舊索引。
+
+此腳本製作單一 MSIX，會移除 MakePri `createconfig` 預設的 `resources/packaging` 自動拆包設定，將所有 scale／targetsize 變體收進同一個根目錄 `resources.pri`；若產生多份 PRI，便停止封裝，不刪除或忽略它們。`package-report.json` 會記錄 PRI 數量、雜湊與停用資源拆包的設定。MakePri 日誌另正規化為 UTF-8，便於直接讀取。
 
 開發 identity `LocalDev.Esp32MusicSync`、publisher `CN=ESP32 Music Sync Development` 都是**本機測試佔位值**，不代表已在 Partner Center 保留產品或有權上架。
 
@@ -80,6 +86,7 @@ Store 模式拒絕預設開發身份，並要求四項身分參數全部明確�
 - [Dynamic lighting：背景控制與套件身分](https://learn.microsoft.com/en-us/windows/apps/develop/devices-sensors/lighting-dynamic-lamparray)
 - [Microsoft LampArray manifest 範例](https://github.com/microsoft/Windows-universal-samples/blob/main/Samples/LampArray/cs/Package.appxmanifest)
 - [以 MakeAppx 建立套件](https://learn.microsoft.com/en-us/windows/msix/package/create-app-package-with-makeappx-tool)
+- [以 MakePri 建立套件資源索引](https://learn.microsoft.com/en-us/windows/msix/desktop/desktop-to-uwp-manual-conversion#generate-a-package-resource-index-pri-file-using-makepri)
 - [簽署應用程式套件](https://learn.microsoft.com/en-us/windows/msix/package/sign-app-package-using-signtool)
 - [開發簽署憑證與 LocalMachine TrustedPeople 要求](https://learn.microsoft.com/en-us/windows/msix/package/create-certificate-package-signing)
 - [WASAPI loopback](https://learn.microsoft.com/en-us/windows/win32/coreaudio/loopback-recording)

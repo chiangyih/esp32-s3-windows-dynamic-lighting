@@ -58,6 +58,8 @@ USB 保留 Arduino core 的開發用預設 VID/PID；若將來製作正式產品
 
 ## Windows 使用方式
 
+音樂同步App已新增至[02-windows-music-sync](02-windows-music-sync/README.md)。2026-10-21，使用者設定背景控制優先順序後確認：8顆燈會隨YouTube音樂變化，暫停後漸暗。此為0.1.2.0的使用者實物驗收；0.1.3.0另更新[App與Store圖示](02-windows-music-sync/Packaging/Branding/README.md)。
+
 接上已燒錄且接線完成的板子，開啟「設定 → 個人化 → 動態光效」，啟用相容裝置控制，檢查是否出現 `ESP32-S3 USB Light Strip`，再測固定顏色、亮度及 Windows 提供的效果。若其他 RGB 軟體取得控制權，需調整 Windows 中的控制優先順序。[Microsoft 使用說明](https://support.microsoft.com/en-us/windows/hardware/input-devices/control-dynamic-lighting-devices-in-windows)
 
 單純出現 COM 埠或一般 HID 裝置，不代表 Windows 動態光效已識別。應以設定頁出現燈條，並能實際改變 LED 顏色作為功能驗收。效果選項依 Windows 版本與相容應用程式而定；本機設定頁已實際看到「音效」及「純色」。
