@@ -1,100 +1,161 @@
-# ESP32 S3 USB 燈條與 Windows 動態光效
+# ESP32-S3 USB 燈條與 Windows 音樂動態光效
 
-使用 Waveshare ESP32-S3-DEV-KIT-NXRX N32R16 與 WS2812 燈條，經同一條 USB 線傳輸及供電。韌體提供 USB HID LampArray，基本燈效由 Windows 11「設定 → 個人化 → 動態光效」直接控制。YouTube 音量同步另由 [Windows 音樂同步 App](02-windows-music-sync/README.md) 在背景分析電腦播放音訊並送出燈色。燈具 HID 欄位依據 [USB HID Usage Tables 1.4 第 26 章](https://www.usb.org/sites/default/files/hut1_4.pdf)；Windows 相容性另參照 [Microsoft Dynamic Lighting 裝置規範](https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/dynamic-lighting-devices)。
+使用 Waveshare ESP32-S3 N32R16 與 WS2812，透過 USB HID LampArray 接受 Windows 11「動態光效」控制。搭配本專案的 **「音樂動態燈光設置」App**，可分析電腦播放的音訊，讓燈條隨 YouTube 等播放內容變化。
 
-目前實體原型採 **8 顆燈條直連**，先不使用 TPS2553 或 74AHCT125。`Config::UsePowerSwitch = false`，燈條由板上 5V 供電、GPIO4 送資料，GPIO9、GPIO10 不需接線。App 0.3.0.0 已依最新需求支援自訂 **1～64 顆、預設 8 顆**，仍以 USB 供電為設計條件；更換燈數須與韌體 `LampCount` 相同，並重新核對供電。現有 8 顆裝置本輪未重刷。已完成的實物驗收為 Windows 設定頁辨識與純色控制；使用者確認 **8 顆都能隨設定切換紅、綠、藍**。逐顆索引、DIN 訊號裕量、USB 耗電與睡眠／喚醒仍待量測或驗證。詳見 [自訂燈數與 USB 供電](docs/自訂燈數與USB供電.md)、[直連接線](docs/直連接線.md)、[驗證紀錄](docs/驗證紀錄.md) 與 [交接文件](handoff.md)。
+目前 App 版本為 **0.3.0.0**，支援自訂 **1～64 顆，預設 8 顆**。實體原型仍為 8 顆、GPIO4 直連及 USB 供電；新增燈數功能時沒有重刷 ESP32。以下狀態依 2026-10-21 的程式與驗證紀錄整理。
 
-最初 8 顆直連韌體編譯及 24/24 項 PC 協定與電流模型測試曾通過。2026-10-21 已經 CH343 **COM3** 燒錄，四段資料雜湊驗證成功；ROM 讀回 ESP32-S3 revision v0.2、32MB Octal Flash、16MB PSRAM。Windows LampArray API 與原生設定頁均找到 `ESP32-S3 USB Light Strip`；8 顆紅／綠／藍切換結果來自使用者實物觀察，詳見驗證紀錄。本輪自訂燈數版本的韌體預設 8 顆／LED 支路估算上限 50 mA，以及 64 顆／80 mA 設定均完成 Arduino 全量建置，0 warnings；App 的 148 項純程式及 6 項預覽檢查已通過。64 顆目前只有編譯與軟體驗證，尚未完成 64 顆實體燈條及 USB 供電驗證；本輪未燒錄。
-
-## 使用者需求與原型設定
-
-| 項目 | 設定 |
+| 項目 | 目前設定 |
 | --- | --- |
-| Windows 控制 | Windows 11 內建動態光效 |
-| LED 排列 | 一維燈條，由 DIN 端編號 0 起 |
-| 供電 | 同一條 USB 線，不使用外接電源 |
-| 開發板照片 | `圖片/61282_0.jpg`、`61283_0.jpg`、`61284_0.jpg` |
-| 燈條照片 | `圖片/61285.jpg`，可見 8 顆及入口 +5V / DIN / GND 標示 |
-| 原型燈數 | 8 顆，與照片可見顆數相符 |
-| 可自訂燈數 | App 0.3.0.0 支援 1～64 顆、預設 8；停止後可改並保存，須與韌體 LampCount 相同 |
-| 暫定間距 | 16.667 mm，對應每公尺 60 顆，須依實際燈條修改 |
-| 資料接腳 | GPIO4 |
-| 接線模式 | 直連，`UsePowerSwitch = false` |
-| 電源開關接腳 | 目前不使用 GPIO9、GPIO10 |
-| LED 支路軟體估算上限 | 預設 8 顆為 50 mA，包含每顆 1 mA 靜態電流假設；其他燈數須重新核算 |
-| 亮度額外上限 | RGB 每色最高對應 24/255，再依電流估算縮放 |
+| App | 音樂動態燈光設置 0.3.0.0 |
+| 開發方式 | C# 10、.NET 10、WinForms，x64 |
+| Windows | Windows 11；套件最低 23H2，執行時另檢查 LampArray 控制權 API；目前以 24H2 測試 |
+| 裝置 | 本專案 `ESP32-S3 USB Light Strip`，VID 303A／PID 1001 |
+| 燈數 | 1～64 顆；App 設定須與韌體回報相同 |
+| 原型硬體 | Waveshare ESP32-S3-DEV-KIT-NXRX N32R16、8 顆 WS2812 |
+| 供電／資料 | 同一條 USB 傳輸及供電，GPIO4 輸出燈條資料 |
+| Store | 已準備 MSIX 與圖示，完成本機開發註冊；尚未完成 WACK、Store 提交、認證及發布 |
 
-8 顆舊型 WS2812 全白全亮以每顆 60 mA 估算可能需 480 mA，尚未包含開發板。原型採低亮度；Windows 設為 100% 也不會解除韌體上限。估算依實際 WS2812 型號與量測修正。[LED 電源參考](https://learn.adafruit.com/adafruit-neopixel-uberguide/powering-neopixels)
+**64 顆目前只有編譯、程式與預覽驗證，尚未完成實體燈條及 USB 耗電驗證。** 增加燈數前請先閱讀[自訂燈數與 USB 供電](docs/自訂燈數與USB供電.md)。
+
+## App 畫面與功能
+
+![音樂動態燈光設置 0.3.0.0 主頁，停止狀態與8顆設定](docs/verification/2026-10-21/lamp-counts/0.3.0/packaged/count8-save.png)
+
+| 選項 | 功能 |
+| --- | --- |
+| 燈數 | 停止同步並完成清理後，可設定 1～64 顆；正常關閉後保存、下次還原 |
+| 變色依據 | 音量、聲頻的低／中／高頻能量分布、高低音比例 |
+| 色彩定義 | Windows 佈景主題輔色、彩虹、自訂 2～4 種顏色 |
+| 變化方式 | 呼吸、流動、單顆依序 |
+| 變化快慢 | 音樂節奏自動估測、手動曲風快／中／慢、自訂每秒 0.1～4 循環 |
+| 預覽 | 整條連續漸層，依設定燈數顯示色彩分布；1 顆顯示單色 |
+| 視窗 | 蒂芬妮藍與深藍配色、關於與版本分頁、通知區執行、明確關閉按鈕 |
+
+聲頻分析是粗頻帶能量分布，沒有進行 FFT、精確音高或樂器辨識。節奏為起音間隔估測，可能半拍／倍拍；資訊不足時使用慢速。「曲風快慢」是手動預設，不會自動辨識曲風。
+
+單顆依序以走完目前全部燈數為一循環，會按更新間隔限制速度，確保逐顆前進。約 30 fps 時，8 顆上限約每秒 3.75 循環、64 顆約每秒 0.47 循環，慢幀時更低。所有模式仍由音量控制明暗，暫停播放後漸暗。
+
+## 快速使用
+
+1. 接上已燒錄本專案韌體、接線完成的 ESP32-S3。現有原型使用 **8 顆**，App 燈數也請保留 8。
+2. 在「Windows 設定 → 個人化 → 動態光效」啟用裝置控制，確認出現 `ESP32-S3 USB Light Strip`。
+3. 開啟已安裝的「音樂動態燈光設置」。如需變更燈數，先按「停止」、等待清理完成，再修改「燈數」。
+4. 在 Windows「背景光源控制項」將本 App 排到前面；前景相容程式也可能影響控制權。App 內有「Windows 動態光效設定」連結。
+5. 播放 YouTube，按「開始同步」，再選擇變色依據、配色、變化方式與速度。**不必把 Windows 內建效果改成「音效」。**
+6. 暫停音樂後燈光會漸暗；按「停止」會停止分析與控制，Windows 可能恢復原先效果。「縮至通知區」繼續同步；「關閉程式」、視窗 X 或通知區關閉則清理資源並退出。
+
+需搭配支援 Windows 動態光效的硬體；目前 App 僅控制唯一符合本專案識別的裝置。預覽有變化不代表取得實體控制權，請同時查看「USB 燈條」狀態。
+
+音訊來源為**預設多媒體播放裝置的混音**，可能包含其他 App；YouTube 若指定至其他輸出，請改用預設輸出。程式只在記憶體分析，不開啟麥克風、不保存錄音、不上傳音訊。完整說明見 [App README](02-windows-music-sync/README.md) 與[隱私政策草稿](02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)。
+
+## 自訂燈數與 USB 供電
+
+App 的燈數設定不會改寫 ESP32，也不會自動偵測實際 WS2812 顆數。更換燈條時需依序完成：
+
+1. 確認實體燈數、接線及 USB 供電能力。
+2. 用相同燈數建置並燒錄韌體，讓 LampArray 回報正確數量。
+3. 停止 App 同步，將燈數設為相同值，再開始同步。
+
+例如裝置回報 8 顆、App 設為 64 顆時，會顯示數量不符並拒絕送色。裝置回報的是韌體設定，不能用較小宣告值規避實體燈條的耗電。
+
+| 韌體參數 | 預設與限制 |
+| --- | --- |
+| `CONFIG_LAMP_COUNT` | 預設 8，允許 1～64 |
+| `CONFIG_LED_BUDGET_MA` | 預設 50 mA，為 LED 支路的軟體估算預算 |
+| 靜態電流模型 | 每顆 1 mA；預算必須嚴格大於靜態總和 |
+| 額外亮度上限 | RGB 每通道最高 24/255，再按電流模型縮放 |
+| 原生 USB 宣告 | 100 mA，不代表整板及 USB hub 的實際總耗電 |
+
+保持 50 mA 預算時，**50～64 顆會被編譯檢查拒絕**。64 顆在此模型下至少需要 65 mA，必須明確指定 `-LedBudgetMa`；已完成的 64 顆／80 mA 建置只是軟體測試，不能視為 USB 供電足夠。
+
+軟體縮放無法取代實際電流量測或硬體限流。直連模式下全黑仍有靜態耗電；開發板、hub、UART 晶片與燈條合計負載也需核對。詳細建置範例與供電限制見[自訂燈數與 USB 供電](docs/自訂燈數與USB供電.md)。
 
 ## 硬體與接線
 
-目前使用 [直連接線說明](docs/直連接線.md) 與 [直連接線圖](docs/circuit-direct.svg)：板 5V → 燈條 +5V、共同 GND、GPIO4 → 建議串聯 330Ω → 第一顆 DIN。先使用短資料線與既定低亮度設定。省略電平轉換後，3.3V 能否可靠驅動取決於實際 LED 版本，低亮度限制不能解決邏輯門檻問題。[邏輯電平參考](https://learn.adafruit.com/adafruit-neopixel-uberguide/logic-level)
+| ESP32-S3 | WS2812 |
+| --- | --- |
+| 5V | +5V |
+| GND | GND，共地 |
+| GPIO4 | 建議串聯 330Ω 後接第一顆 DIN |
 
-原先包含 TPS2553 與 74AHCT125 的 [備選電路](docs/電路與供電.md) 及 [圖檔](docs/circuit.svg) 保留供日後需要時參考。只有組裝該電路後才可將 `UsePowerSwitch` 改為 true。
+目前 `UsePowerSwitch = false`，先不使用 TPS2553 或 74AHCT125，GPIO9／GPIO10 不需接線。省略電平轉換後，3.3V 資料訊號是否可靠取決於實際 LED 版本；限亮無法改善邏輯電平裕量。請配合[直連接線說明](docs/直連接線.md)與[接線圖](docs/circuit-direct.svg)。
 
-板上 Type-C 經 CH334 USB hub 分別連到 CH343 UART 與 ESP32-S3 原生 USB。CH343 用於燒錄和日誌，原生 USB 用於 HID LampArray，不需再飛線 USB D+/D−。[Waveshare FAQ](https://docs.waveshare.com/ESP32-S3-DEV-KIT-N8R8/FAQ)
+板上 Type-C 經 USB hub 分別連到 CH343 UART 與 ESP32-S3 原生 USB；UART 用於燒錄，原生 USB 提供 HID LampArray。GPIO19／20 保留給 USB。本案不使用有記憶體／電壓限制的其他接腳；板型與拓撲讀回見[驗證紀錄](docs/驗證紀錄.md)。
 
-GPIO19、20 保留給 USB。依系列原理圖，GPIO38 為板載 RGB；N32R16V 的 GPIO35–37 及 GPIO47、48 有記憶體／電壓限制，本案不使用。照片貼紙為 N32R16；本次實板已讀回 32MB Flash、16MB PSRAM 與 Octal Flash 設定。[Waveshare 系列資料](https://docs.waveshare.com/ESP32-S3-DEV-KIT-N8R8)
+開發板照片為[61282_0.jpg](圖片/61282_0.jpg)、[61283_0.jpg](圖片/61283_0.jpg)、[61284_0.jpg](圖片/61284_0.jpg)；8 顆燈條照片為[61285.jpg](圖片/61285.jpg)。包含 TPS2553 與 74AHCT125 的[備選電路](docs/電路與供電.md)及[圖檔](docs/circuit.svg)保留供日後組裝使用。
 
-## 韌體與建置
+## 韌體建置
 
-第一個 WS2812 程式保留在 `01-8_ws2812/`，主程式為 `01-8_ws2812/01-8_ws2812.ino`，預設 8 顆，可建置 1～64 顆設定。以本機既有 Arduino ESP32 core **3.1.1** 為建置基準，不需額外 LED 函式庫。USB HID 使用 Arduino-ESP32 的 TinyUSB 介面，WS2812 以硬體 RMT 傳送 GRB 資料。燈數與供電限制見 [自訂燈數與 USB 供電](docs/自訂燈數與USB供電.md)。
+第一個程式集中於 `01-8_ws2812/`，主程式為 [01-8_ws2812.ino](01-8_ws2812/01-8_ws2812.ino)。建置基準為 Arduino ESP32 core **3.1.1**，USB HID 使用 TinyUSB，WS2812 使用硬體 RMT，不需額外 LED 函式庫。
 
-韌體目前僅沿用 Microsoft `ArduinoHidForWindows` 的 LampArray **報告描述元**與 MIT 授權；協定解析、ESP32 USB 介面、RMT 與限亮由本專案實作。官方完整函式庫宣告支援 SAMD、使用不同 USB 介面，不能直接安裝後替換此 ESP32-S3 程式；可用性評估見 [交接文件](handoff.md)。
+在儲存庫根目錄執行，以下只建置、不燒錄：
 
-程式搬移時曾重新編譯並再次通過當時的 24/24 測試；未再次燒錄，先前裝置驗證紀錄仍對應當時上傳的映像。本輪 8 顆與 64 顆全量建置證據同樣不代表已更新實板。
+```powershell
+# 目前8顆原型，保留50mA預算。
+& .\scripts\build.ps1 -Cli 'C:\Program Files\Arduino CLI\arduino-cli.exe' `
+    -LampCount 8 -OutputDirectory '.\build\count-8'
 
-1. 依燈條以建置參數 `-LampCount` 指定燈數，間距／寬度可在 `01-8_ws2812/Config.h` 修改；未指定時保留8顆。增加燈數前重新核算電源，不能只改數字，詳見自訂燈數與USB供電文件。
-2. 在專案根目錄執行：
+# 16顆建置範例，仍維持50mA預算；使用前須確認實體與供電。
+& .\scripts\build.ps1 -Cli 'C:\Program Files\Arduino CLI\arduino-cli.exe' `
+    -LampCount 16 -OutputDirectory '.\build\count-16'
+```
 
-   ```powershell
-   .\scripts\build.ps1
-   ```
+每個輸出目錄含 `firmware-build-report.json`，記錄燈數、電流預算及產物雜湊。未指定燈數時保留 8 顆；`LampPitchUm`／`StripWidthUm` 可在 [Config.h](01-8_ws2812/Config.h) 依實際燈條修改。
 
-3. Arduino IDE 對應設定為：ESP32S3 Dev Module、USB Mode 選 USB-OTG (TinyUSB)、USB CDC On Boot 關閉、CPU 80 MHz、OPI Flash 32 MB、OPI PSRAM、32 MB 分割配置。記憶體選項依系列文件預設，確認實板後才燒錄。
-4. 燒錄時選有 `CH343` 名稱的 UART COM 埠；2026-10-21 本次為 COM3。重新連接或換電腦仍須重新辨識，不以其他 COM 埠猜測。原生 COM9 在這次燒錄後轉為 HID，因此不再列為 COM 埠。
-5. 建置結果位於 `build/`。`tests/run-tests.ps1` 執行 PC 上的協定與電流估算測試；測試不會寫入 ESP32。
+腳本使用 ESP32S3 Dev Module、USB-OTG (TinyUSB)、USB CDC On Boot 關閉、CPU 80 MHz、OPI Flash 32 MB、OPI PSRAM 與對應分割配置。燒錄前仍須核對實板；CH343 **COM3** 是先前驗證的埠號，換電腦或重新連接後應重新辨識。
 
-USB 保留 Arduino core 的開發用預設 VID/PID；若將來製作正式產品，須使用合法分配的識別碼。原型以晶片 MAC 產生穩定序號，不在檔案記錄實板 MAC。
+韌體沿用 Microsoft [ArduinoHidForWindows](https://github.com/microsoft/ArduinoHidForWindows) 的 LampArray **報告描述元**與 [MIT 授權](01-8_ws2812/LICENSE-Microsoft.txt)；協定解析、ESP32 USB、RMT 與限亮由本專案實作。YouTube 音樂同步由 Windows App 提供，沒有把完整 Microsoft Arduino 函式庫移植到 ESP32-S3。USB VID／PID 仍為開發識別，正式硬體產品需另行處理合法識別碼。
 
-## Windows 使用方式
+## App 建置、封裝與測試
 
-音樂同步App位於[02-windows-music-sync](02-windows-music-sync/README.md)，目前版本為 **0.3.0.0**，顯示名稱為「音樂動態燈光設置」。燈數可選 **1～64 顆、預設 8 顆**，僅在停止同步並完成清理後可修改，正常關閉後保存。只控制唯一符合本專案識別的裝置；App 設定與韌體回報的 `LampCount` 不符時會顯示兩個數值，且不送色。App 設定不會改寫現有韌體，現有實體仍為 8 顆。
+本機建置基準為 .NET SDK **10.0.402**。C# 語法固定為 10.0，執行階段使用 .NET 10；MSIX 自包含執行階段，一般使用者不需另裝 .NET。封裝另需 Windows SDK 的 MakePri／MakeAppx。
 
-介面採蒂芬妮藍搭配深藍底，預覽以整條無段式光條顯示目前設定燈數；燈效重用緩衝。可選音量、粗頻帶能量分布或高低音比例，搭配Windows輔色、彩虹或2～4種自訂色，以及呼吸／流動／單顆依序。速度可用音訊節奏估測、手動慢／中／快或自訂每秒0.1～4循環；節奏資訊不足時以每秒0.5循環慢速運行。曲風快慢是手動選擇，不是自動分類；單顆依序以走完目前全部燈數為一循環，依燈數與更新間隔限制速度以保留順序，約30fps時8顆上限約每秒3.75循環、64顆約每秒0.47循環，實際略低，慢幀時更低。「關閉程式」按鈕與視窗X及通知區退出共用資源清理流程。維持C#10／.NET10、WinForms與系統API，不新增執行時函式庫。
+在儲存庫根目錄執行：
 
-0.2.0.0先前Release建置0 warnings，115項整合檢查、四種正常退出路徑與六項UI選擇診斷通過，但退出測試當時未取得燈光控制權。其後使用者確認「**三種效果都有反應，暫停後漸暗**」；早期`IsAvailable=false`／`SentFrames=0`屬調整前歷史，不再代表功能現況。取得控制權後另發現停止／關閉會因LampArray原生呼叫與控制權回呼互等而卡住，原先退出檢查未涵蓋此情境。0.2.1.0針對原生呼叫的鎖定範圍及非同步停止／釋放修正，已重新通過115項檢查、四種退出路徑與有控制權時的停止／重新開始／退出；實際送出211幀且清理無錯誤，詳見[交接文件](handoff.md)；不能把0.2.0.0的效果成功當作退出問題也通過。0.1.2.0的YouTube播放／暫停實物驗收另保留歷史。[App與Store圖示](02-windows-music-sync/Packaging/Branding/README.md)已納入新版，WACK與Store認證仍待完成。
+```powershell
+# App建置及純程式檢查。
+dotnet build .\02-windows-music-sync\MusicSync.csproj -c Release -p:Platform=x64
+dotnet run --project .\02-windows-music-sync\tests\TestRunner.csproj -c Release
 
-接上已燒錄且接線完成的板子，開啟「設定 → 個人化 → 動態光效」，啟用相容裝置控制，檢查是否出現 `ESP32-S3 USB Light Strip`，再測固定顏色、亮度及 Windows 提供的效果。若其他 RGB 軟體取得控制權，需調整 Windows 中的控制優先順序。[Microsoft 使用說明](https://support.microsoft.com/en-us/windows/hardware/input-devices/control-dynamic-lighting-devices-in-windows)
+# 韌體PC協定／電流模型測試；需本機C++編譯工具，不會寫入ESP32。
+& .\tests\run-tests.ps1
 
-單純出現 COM 埠或一般 HID 裝置，不代表 Windows 動態光效已識別。應以設定頁出現燈條，並能實際改變 LED 顏色作為功能驗收。效果選項依 Windows 版本與相容應用程式而定；本機設定頁已實際看到「音效」及「純色」。
+# 產生開發用MSIX與layout。
+& .\02-windows-music-sync\scripts\build-package.ps1
+```
 
-本機2026-10-21先前檢查時，裝置本身也選了「音效」，其詳細設定為效果速度、方向與兩種色彩。使用者確認暫停YouTube時，燈條仍持續流動變色；這是自行運作的效果，不能據此認定已隨音樂節奏變化。其後使用者授權實作，[Windows音樂同步App](02-windows-music-sync/README.md)提供WASAPI播放音訊分析與LampArray控制：初版只有音量同步，0.2.0.0再加入粗頻帶與節奏估測，不是精確音高、FFT頻譜或曲風辨識。使用本App不必把Windows內建效果選成「音效」。設計歷史見[Windows音樂同步設計](docs/Windows音樂同步設計.md)，最新實測狀態見[交接文件](handoff.md)。[Microsoft內建效果說明](https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-devices-lights-winrt-windldefaulteffecttype)、[WASAPI loopback](https://learn.microsoft.com/en-us/windows/win32/coreaudio/loopback-recording)。
+已有 Developer Mode 的開發環境可依[封裝文件](02-windows-music-sync/Packaging/README.md)註冊產生的 layout，再以套件身分啟動。正在註冊使用的 layout 目錄必須保留；腳本不會自行啟用 Developer Mode 或變更機器憑證信任。未封裝 EXE 適合開發診斷，背景控制應使用封裝版。
 
-## 韌體行為
+App 使用 Windows WASAPI 與 LampArray API，沒有 WebView、Windows App SDK、NAudio 或新增音訊套件。分析與燈效重用緩衝，正常送色約 30 fps、靜音後降至 8 Hz；相同畫面不重送，預覽每 250 ms 更新，隱藏時不重繪。CPU／記憶體數據需依實際版本、音訊與控制權狀態量測。
 
-- 直連模式在 RMT 初始化後送全黑；未配置 USB、USB 暫停及 Windows 的 AutonomousMode 都維持全黑。燈條仍然接著 5V，這不是切斷電源。
-- Windows 關閉 AutonomousMode 並提交完整畫面後：先送全黑，再顯示限制亮度後的畫面。
-- 多顆更新及範圍更新先寫暫存畫面，收到 UpdateComplete 才提交，最多約 60 次實體更新／秒。
-- USB 暫停時送全黑；恢復後可恢復既有 Windows 畫面。拔除／重新枚舉則清除控制狀態。
-- RMT 傳送失敗時停止輸出並嘗試送黑，直連無法硬體斷電；先排除接線／負載問題，再重新連接 USB。若 RMT 本身故障，不能保證全黑命令送達。
+## 已驗證與待驗證
 
-備選的 `UsePowerSwitch = true` 才使用 GPIO9 電源門控、30ms 啟動等待及 GPIO10 /FAULT 鎖定；目前直連不具這些硬體功能。
+以下為已保存的驗證結果，這次 README 更新沒有重新測試硬體：
 
-USB 描述元暫設原生 USB 功能 100 mA，這不是整塊板子的耗電宣告或 USB 認證。CH334 hub、CH343、ESP32 與燈條合計電流，包含休眠電流，必須量測及核對 USB hub 描述元；軟體縮放也不是實際電流量測。
+| 範圍 | 結果與界線 |
+| --- | --- |
+| 8 顆實體原型 | 先前已燒錄，Windows 設定頁辨識成功；使用者確認 8 顆紅／綠／藍切換，以及舊版 App 三種效果、暫停漸暗 |
+| 0.3.0.0 程式與預覽 | 148 項純程式、6 項原生預覽檢查通過 |
+| 0.3.0.0 韌體 | 26 項 PC 協定／限流、8 項設定邊界檢查通過；8／50 mA 與 64／80 mA 完整建置均 0 warnings，未燒錄 |
+| 0.3.0.0 燈數比對 | 封裝 API 回報 8 顆；App 設為 1 或 64 顆均拒絕送色，0 幀；保存／重啟還原及停止／重啟通過 |
+| 0.3.0.0 退出 | 按鈕、啟動途中、通知區及 WM_CLOSE 四條路徑通過，程序退出且清理錯誤為空 |
+| 0.3.0.0 實體音樂送色 | 當次相符 8 顆測試仍等待 Windows 控制權、0 幀；沒有新增此版本的實體音樂驗收 |
+| USB／64 顆實體 | 電流、可用亮度、DIN 波形、電壓裕量、長時間負載、睡眠／喚醒及 USB 重插仍待驗證 |
+| Store | MakePri／MakeAppx 與本機開發註冊通過；WACK、正式 Store 身分、提交／認證／發布未完成 |
 
-## 實板驗收
+最新精簡證據：[0.3.0.0 驗證摘要](docs/verification/2026-10-21/lamp-counts/0.3.0/verification-summary.json)。舊版驗收、曾出現的退出阻塞及 0.2.1 修正後實際送色／清理證據，保留於 [handoff.md](handoff.md) 與[驗證目錄](docs/verification/README.md)。編譯、API 讀回與使用者實物觀察各自記錄，不互相取代。
 
-1. 確認實板型號、Flash／PSRAM、CH343 與原生 USB 拓撲，再燒錄。
-2. LED 未接時，先驗證 HID LampArray 可在 Windows 動態光效設定頁出現。
-3. 先接 1 顆低亮度測試紅／綠／藍與 GRB 順序，再依實際顆數重新建置。
-4. 量測整板靜態、開機、最大白色、熱插拔及 USB 暫停電流，並量測 DIN 波形與燈條端電壓。
-5. 測試睡眠／喚醒、USB 重插、關閉動態光效與切換效果，確認直連模式送黑及恢復。/FAULT 只適用日後接上電源開關的備選電路。
+## 專案目錄與文件
 
-沒有實板讀回與量測前，不將編譯或 PC 測試結果視為燈條可用亮度、USB 電氣合規或 Windows 相容性驗證。
+| 路徑 | 內容 |
+| --- | --- |
+| [01-8_ws2812](01-8_ws2812/) | ESP32-S3 韌體，預設 8 顆、可建置 1～64 顆 |
+| [02-windows-music-sync](02-windows-music-sync/README.md) | Windows App、操作與開發說明 |
+| [scripts](scripts/)／[tests](tests/) | 韌體建置、LampArray 診斷與 PC 測試 |
+| [docs](docs/) | 接線、供電、設計與驗證證據 |
+| [圖片](圖片/) | 使用者提供的開發板及燈條照片 |
+| [handoff.md](handoff.md) | 依日期保留的已驗證事項、歷史及待辦 |
+| [Store 封裝文件](02-windows-music-sync/Packaging/README.md) | MSIX、開發安裝、Store 提交準備 |
+| [App／Store 圖示](02-windows-music-sync/Packaging/Branding/README.md) | 可編輯原稿、Windows 與商品頁圖示 |
 
-## 版本控制與驗證證據
-
-私人 GitHub 儲存庫：[chiangyih/esp32-s3-windows-dynamic-lighting](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting)，分支 `main`。
-
-原始碼、測試、接線圖、硬體照片與交接文件納入 Git；精簡的建置、燒錄及 Windows LampArray 辨識證據保存在 [docs/verification](docs/verification/README.md)。本機 `build/` 的映像、執行檔與歷史完整封存保留在原處，由 `.gitignore` 排除。
+GitHub 儲存庫：[chiangyih/esp32-s3-windows-dynamic-lighting](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting)，分支 `main`。原始碼、照片與精簡證據納入 Git；本機 `build/`、App `artifacts/` 等產物由 `.gitignore` 排除，保留本機正在使用的註冊目錄。
