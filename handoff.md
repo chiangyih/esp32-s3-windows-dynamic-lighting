@@ -298,3 +298,9 @@ manifest 宣告 `com.microsoft.windows.lighting` AppExtension 與桌面 `runFull
 先完成 Windows 背景控制權，讀回 IsAvailable=true 且實際有 SentFrames，再請使用者確認 8 顆隨 YouTube 播放／暫停反應。其後測試 USB 重插、音訊輸出切換、App 停止／退出與競爭控制者。API 成功不取代實體 LED 觀察，亦不代表電流／訊號電氣合規。若 YouTube 指定到非預設播放端點，需改用預設端點；混音包含其他應用程式，不是 YouTube 專屬。
 
 新程式、文件與精簡驗證證據目前僅在本機，未新增 commit／push；保留原先尚未提交的文件與測試腳本變更。本輪新增 .gitignore 排除 Windows bin／obj／artifacts，但已註冊的 layout 仍需保留以供目前本機開發 App 執行。
+
+## 2026-10-21 Windows App 與累積文件 commit／push
+
+使用者授權「請自動commit/push」。已在 main 提交並正常推送至私人 `chiangyih/esp32-s3-windows-dynamic-lighting`，實作提交為 `60e756e9abd3a2699beccd581f1f79d47ac0290c`，共60檔，包含 C# App、MSIX腳本／資產、設計、交接、原生Windows控制證據及test-lamparray。bin／obj／artifacts與機密副檔名未納入；保留目前已註冊App使用的本機layout。
+
+推送後已核對 local HEAD、origin/main與git ls-remote的main完全相同，工作目錄乾淨；證據在 `docs/verification/2026-10-21/git-music-sync-push.json`。本節與該讀回紀錄另以文件提交同步，故未來最新HEAD請重新查Git，不把實作提交SHA視為永久最新值。未force push、未修改遠端歷史、未保存認證資料。此Git同步不改變實體燈條尚待控制權／YouTube觀察，以及WACK／Store送審未完成的狀態。
