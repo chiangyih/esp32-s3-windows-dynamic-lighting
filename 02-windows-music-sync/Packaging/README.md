@@ -1,6 +1,6 @@
 # MSIX 與 Microsoft Store 準備
 
-商品頁、runFullTrust 說明、認證測試步驟與素材準備狀態見 [StoreSubmission 索引](StoreSubmission/README.md)。使用者提供的正式身分已用於候選套件，本機註冊PFN相符，尚未後台讀回。三張1366×900真實截圖已備；隱私政策依使用者再次確認，內建離線閱讀、不建立外部網址。Partner Center要求政策網址，該欄位未完成，內建頁不能取代；WACK也尚未執行。候選資料不代表已上傳或認證。
+商品頁、runFullTrust 說明、認證測試步驟與素材準備狀態見 [StoreSubmission 索引](StoreSubmission/README.md)。使用者提供的正式身分已用於候選套件，本機註冊 PFN 相符，尚未後台讀回。三張 1366×900 真實截圖已備；使用者最新授權使用現有 GitHub 並自行改為 public，[政策頁](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md) 已備妥，App 同時保留離線閱讀。網址尚未填入 Partner Center；WACK 尚未執行。候選資料不代表已上傳或認證。
 
 本程式使用 C# **10.0 語言版本**與受支援的 **.NET 10** 執行階段。C# 10 不代表必須使用已停止支援的 .NET 6。桌面介面為 WinForms，不使用 Windows App SDK、WebView 或瀏覽器框架。MSIX 將 .NET runtime 一起封裝，使用者不需另裝 .NET；這增加磁碟大小，但避免依賴未宣告的外部執行階段。
 
@@ -95,11 +95,11 @@ Store 模式拒絕預設開發身份，並要求四項身分參數全部明確�
 2. 在已安裝的封裝版本測試：瀏覽器前景時音樂同步、暫停漸暗、各種依據／配色／動畫／速度組合、Windows輔色變更、設定還原、USB重插、音訊輸出裝置切換、控制權競爭、關閉App釋放裝置，以及沒有硬體時的訊息。`scripts/test-shutdown.ps1`可檢查四種退出路徑，執行前須沒有其他本App程序；腳本不強制終止現有程序。軟體退出檢查與實體燈條觀察分別記錄。
 3. 以實際版本執行 Windows App Certification Kit（WACK），另做無開發環境／無預裝 .NET 的乾淨機安裝測試。本輪目前非管理員，因此WACK未執行；MakeAppx通過不等於WACK通過。
 4. 量測閒置／播放時 CPU、記憶體與封裝大小，不以「原生 WinForms」當作低資源消耗已驗證。
-5. 準備真實 App 截圖、功能／硬體限制說明、客服資料與商店語系。`privacy-policy.zh-TW.md` 已作為內建政策來源，發行者 Tseng，在「隱私政策」分頁離線呈現。使用者要求不使用外部連結，因此尚未建立或填入 Partner Center 要求的政策網址；內建頁不能取代該網址，不傳輸音訊也不代表可豁免。[Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
+5. 真實 App 截圖、功能／硬體限制說明與繁中商品頁已備，公開且已啟用的 GitHub Issues 作為支援網址。`privacy-policy.zh-TW.md` 是內建政策來源，發行者 Tseng。公開 GitHub 政策頁已通過匿名存取及文字一致性檢查，接續須填入 Partner Center；不以 App 內建頁代替政策網址。[Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
 6. 為 `runFullTrust` 提供具體說明：桌面WASAPI loopback擷取播放混音，在記憶體分析音量、粗頻帶能量與節奏估測，透過Windows LampArray控制外接燈條；不讀取麥克風、不存音訊、不傳輸音訊。本機設定JSON只保存使用者的燈效選擇，不保存音訊內容。
-7. 完成 Partner Center 分級、發行市場與價格等真實宣告，再由使用者確認最終送出認證。套件 `Validated`、提交、認證與公開發布是不同狀態。
+7. 完成 Partner Center 分級、發行市場與價格等真實資料後，依使用者既有自動上架授權接續提交；若實際 IARC／法律聲明要求本人回答，須先取得該項真實回答，不能捏造。套件 `Validated`、提交、認證與公開發布是不同狀態。
 
-目前未上傳、送審、認證或發布。瀏覽器與node_repl工具在kernel assets初始化時發生路徑錯誤，無法操作Partner Center；使用者再次確認維持不建立外部政策網址，該Store必填資料仍未完成。沒有建立政策網站或公開儲存庫，也沒有填入假網址。
+目前未上傳、送審、認證或發布。政策公開存取的阻擋已解除，未另建網站或 Pages。瀏覽器與 node_repl 工具本輪重設後仍在 kernel assets 初始化時發生路徑錯誤，無法操作 Partner Center；因此政策網址、商品頁、套件與最終聲明尚未在後台儲存或提交。
 
 ## 官方參考
 

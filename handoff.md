@@ -472,3 +472,23 @@ WACK工具存在（10.0.26100.8249），本輪只檢查help，沒有執行reset�
 所需實測步驟、量測欄位、受限負載與恢復／停止界線記錄於 `docs/64顆USB實測.md`；證據在 `docs/verification/2026-10-21/usb64-readiness/`。待實際備妥64顆燈條與可量電壓／電流的設備後，先斷USB及分離燈條，以板子單獨確認／燒錄64韌體，再斷電接回測試。避免舊8顆韌體留64顆尾端未受控，也避免資料線驅動未供電燈條。GPIO4／5V／GND直連及既有保護暫不更動。
 
 新準備工具與文件依既有授權自動commit／push；README保留64顆尚未實測標示，Store狀態不因本輪前置檢查而改寫。
+
+## 2026-10-21 使用現有公開 GitHub 提供政策；Store 尚未上傳
+
+使用者最新要求「請自動上架，隱私政策請使用目前的 github」，取代先前維持不建立外部網址的偏好。首次檢查 GitHub 連接器回報 visibility=private，匿名存取儲存庫及政策為404；使用者接著明確回覆「已改為public」。重新以連接器及匿名 REST 讀回 visibility=public、private=false、default_branch=main。可見性由使用者變更，本輪沒有替使用者修改儲存庫權限。
+
+已驗證政策網址：
+https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md
+
+匿名 HTTP 回應200，HTML包含產品名稱及政策章節；raw.githubusercontent.com 同一份文件也回應200，正規化 CRLF／LF 後與 App 內建來源文字完全一致。來源 SHA-256 仍為 `244F3D392118376EFAA744DA7EB8FF8662C11172A2E1676FCBC7753690613CAE`；沒有修改政策內容、App 或候選 MSIX，不需重新編譯。網頁讀取工具曾保留舊404結果，本輪以不帶帳密的直接HTTP200及raw公開讀取交叉確認，不用連接器的私人存取權當匿名證據。沒有另外部署 Pages 或提交 Actions 工作流程。
+
+GitHub REST確認 has_issues=true，公開 Issues 頁匿名HTTP200；因此準備以下真實支援網址，未捏造email，也沒有建立或發送Issue：
+https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/issues
+
+已更新主要README、App／封裝說明、StoreSubmission索引、商品頁草稿、認證說明與partner-center-identity.json，填入政策與支援網址，標記政策URL可供提交但尚未儲存於Partner Center。舊拒絕偏好與首次準備證據保留為歷史，沒有回寫成使用者一直同意公開。面向使用者的0.3.1版本資訊精簡為新增離線政策，不放內部測試數或WACK狀態。
+
+本輪 cua_repl 及 node_repl／computer-use 均在程式執行前失敗：`failed to write kernel assets: 系統找不到指定的路徑。 (os error 3)`，兩種工具各重設及重試後仍相同。可用連接器沒有Partner Center操作能力，也沒有GitHub Pages管理能力；未擷取瀏覽器登入憑證或用其他UI自動化繞過。政策公開存取的阻擋已解除，但後台工具仍不能啟動；需恢復工具連線後，接續既有產品Store ID `9NKRN1KCR738`，不得建立重複產品。一般自動上架授權仍有效，不需再詢問是否要開始；需要本人聲明的實際IARC問題仍應依後台內容處理，不捏造年齡或同意。
+
+正式候選仍為 `02-windows-music-sync/artifacts/package-store-20261021-155702-548/Esp32MusicSync_0.3.1.0_x64_store.msix`，本輪重新核對58,198,227 bytes及SHA-256 `412629BE9587F16D6CB4D5D52742D715A99D60C13497FDC111189E35F0977CB9` 相符；三張Store截圖SHA亦與索引全部相符。僅文件及上架中繼資料變動，沒有重跑音訊或硬體測試；WACK仍未執行。最終已註冊layout仍須保留。
+
+**未讀回Partner Center、未儲存政策／支援網址或商品頁、未上傳套件、未完成IARC、未提交認證、未認證或發布。** 本輪證據在 `docs/verification/2026-10-21/store-github-policy/0.3.1/publication-status.json`，舊preparation-status.json是前次狀態，不應作最新政策偏好。未操作COM、未燒錄、實體仍8顆，64顆USB實測狀態不變。依既有授權自動commit／push；最新同步SHA以Git讀回為準。

@@ -11,6 +11,8 @@
 | [partner-center-identity.json](partner-center-identity.json) | 使用者提供的正式產品身分；尚未後台驗證，未記錄 SID |
 | [內建隱私政策](../privacy-policy.zh-TW.md) | 發行者 Tseng、實際資料處理與本機診斷；與 App 共用同一嵌入來源，離線閱讀 |
 
+Partner Center 政策網址：[公開隱私政策](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)。使用者已授權以本專案提供政策，並自行將儲存庫改為 public；本輪匿名存取確認 HTTP 200，原始文字與內建政策來源一致。網址已備妥，尚未寫入後台。
+
 ## 現有素材
 
 300×300商品頁圖示已備，1024×1024為設計原稿。0.3.1.0已透過正式身分套件AUMID擷取三張 **1366×900** 真實App畫面，目視確認通過，符合目前官方Desktop至少1366×768的尺寸；不是放大舊圖。0.3.0的820×786畫面仍保留為歷史，不作本次Store截圖。[Microsoft 截圖與圖示要求](https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/screenshots-and-images)
@@ -23,12 +25,12 @@
 - 候選MSIX 58,198,227 bytes；SHA-256 `412629BE9587F16D6CB4D5D52742D715A99D60C13497FDC111189E35F0977CB9`。
 - WACK未執行：目前非管理員；三頁清理通過不等於WACK通過。
 - 瀏覽器與node_repl工具因kernel assets初始化路徑錯誤，無法操作Partner Center，因此未上傳、送審、認證或發布。
-- 使用者再次確認「維持不建立外部網址」。內建政策已可離線閱讀，但Store要求的政策網址仍未完成；未建立政策網站或公開儲存庫，未填假網址。
+- 使用者最新授權取代先前不建立外部網址的偏好；公開 GitHub 政策已驗證可匿名閱讀，無需另建 Pages 或重建 MSIX。歷史拒絕與首次檢查仍保留於 handoff 及舊證據，不代表目前偏好。
 
 ## 仍需 Partner Center 或使用者提供
 
 1. 使用者已提供正式產品名稱、Package/Identity/Name、完整 Publisher（CN=...）、PublisherDisplayName、PFN及Store ID，本機註冊PFN相符；仍需後台讀回與Store套件驗證。
-2. 已依使用者要求內建政策、不使用外部連結，發行者為 Tseng，不捏造 email。Partner Center 另要求隱私政策網址，內建頁不能取代該網址，目前此欄位尚未完成；客服資料也不得捏造。[Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
+2. 將上方已驗證公開的政策網址填入 Partner Center，保留 App 內建離線政策；發行者為 Tseng。[GitHub Issues 支援頁](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/issues) 已啟用並經匿名 HTTP 200 檢查，可作支援網址，未捏造 email。網址可公開閱讀不等於已在後台儲存或已通過審查。[Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
 3. 發行市場、可見性、價格與實際產品分類；文案中的免費為候選，沒有替使用者作帳戶設定。
 4. 實際 IARC 問卷內容與必要的本人聲明／同意；沒有捏造年齡、同意或分級結果。
 5. 正式候選套件WACK、必要的硬體與乾淨環境驗證；符合尺寸的三張截圖已備。

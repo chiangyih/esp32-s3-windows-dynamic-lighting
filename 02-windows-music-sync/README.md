@@ -97,7 +97,7 @@ dotnet run --project .\02-windows-music-sync\tests\TestRunner.csproj -c Release
 
 MSIX manifest、圖示、封裝腳本、內建政策與提交待辦見 [封裝文件](Packaging/README.md)及[上架資料索引](Packaging/StoreSubmission/README.md)。正式身分由使用者提供，候選套件本機註冊PFN相符，但BackendVerified=false；`LocalDev.Esp32MusicSync`仍僅為開發測試身分。
 
-目前未上傳、送審、認證或發布。WACK因目前非管理員未執行；瀏覽器／node_repl工具因kernel assets初始化路徑錯誤無法操作Partner Center。使用者再次確認不建立外部政策網址，因此未建立政策網站或公開儲存庫。Store要求政策網址，內建頁不能取代，該資料仍未完成；沒有填入假網址。[Store政策10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
+目前未上傳、送審、認證或發布。使用者已授權使用現有 GitHub 並自行改為 public；[公開隱私政策](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md) 已經匿名 HTTP 200 與內容一致性檢查，App 仍可離線閱讀同一政策，無需重建套件。網址已備妥但尚未寫入 Partner Center；瀏覽器／node_repl 工具重設後仍在 kernel assets 初始化時發生路徑錯誤。WACK 因目前非管理員未執行。[Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
 
 最新實測狀態見 [handoff.md](../handoff.md)；前一輪設計文件中的「尚未實作」是當時歷史。
 

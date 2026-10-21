@@ -4,6 +4,8 @@
 
 目前 App 候選版本為 **0.3.1.0**，支援自訂 **1～64 顆，預設 8 顆**，新增內建離線「隱私政策」分頁。已依使用者提供的正式產品身分建置並本機註冊，尚未上傳 Microsoft Store。實體原型仍為 8 顆、GPIO4 直連及 USB 供電，沒有重刷 ESP32。以下狀態依 2026-10-21 的程式與驗證紀錄整理。
 
+[隱私政策（公開閱讀）](https://github.com/chiangyih/esp32-s3-windows-dynamic-lighting/blob/main/02-windows-music-sync/Packaging/privacy-policy.zh-TW.md)：與 App 內建離線政策共用同一份來源。
+
 | 項目 | 目前設定 |
 | --- | --- |
 | App | 音樂動態燈光設置 0.3.1.0 候選 |
@@ -147,7 +149,7 @@ App 使用 Windows WASAPI 與 LampArray API，沒有 WebView、Windows App SDK�
 
 0.3.1.0 上架準備見 [StoreSubmission 索引](02-windows-music-sync/Packaging/StoreSubmission/README.md)；[0.3.0.0 驗證摘要](docs/verification/2026-10-21/lamp-counts/0.3.0/verification-summary.json)與舊版實物驗收保留原版本。曾出現的退出阻塞及 0.2.1 修正後實際送色／清理證據，保留於 [handoff.md](handoff.md) 與[驗證目錄](docs/verification/README.md)。編譯、API 讀回與使用者實物觀察各自記錄，不互相取代。
 
-此次自動上架仍有未完成項目：瀏覽器與 node_repl 工具在 kernel assets 初始化時發生路徑錯誤，無法操作 Partner Center；另依使用者再次確認，維持不建立外部隱私政策網址。Store 政策要求該網址，App 內建頁不能取代，因此此必填資料仍未完成，沒有建立網站、公開儲存庫或填入假網址。[Microsoft Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
+使用者已授權使用現有 GitHub 提供政策，並自行將儲存庫改為 public。2026-10-21 匿名 HTTP 檢查確認上述政策頁及原始文字均回應 200，內容與 App 內建來源一致；不需另外建立 GitHub Pages，也沒有修改 App／MSIX。政策網址已備妥，尚未填入 Partner Center。瀏覽器與 node_repl 工具重設後仍在 kernel assets 初始化時發生路徑錯誤，因此目前未上傳、送審、認證或發布。[Microsoft Store 政策 10.5.1](https://learn.microsoft.com/en-us/windows/apps/publish/store-policies#105-personal-information)
 
 ## 專案目錄與文件
 
