@@ -1,0 +1,23 @@
+[
+  {
+    "Address": "COM4",
+    "Protocol": "serial",
+    "ProtocolLabel": "Serial Port",
+    "Vid": null,
+    "Pid": null
+  },
+  {
+    "Address": "COM6",
+    "Protocol": "serial",
+    "ProtocolLabel": "Serial Port",
+    "Vid": null,
+    "Pid": null
+  },
+  {
+    "Address": "COM3",
+    "Protocol": "serial",
+    "ProtocolLabel": "Serial Port (USB)",
+    "Vid": "0x1A86",
+    "Pid": "0x55D3"
+  }
+]

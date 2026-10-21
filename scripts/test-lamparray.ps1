@@ -1,14 +1,24 @@
 #requires -Version 5.1
 <#
-Windows PowerShell 5.1 / Windows 11 LampArray test for this project's 8 LEDs.
+Windows PowerShell 5.1 / Windows 11 LampArray test for this project's 1..64 LEDs.
 Default: enumerate the exact target and inspect properties; no colour writes.
   powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File .\scripts\test-lamparray.ps1
 Explicit colour sequence (a visible foreground window is required):
   powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -File .\scripts\test-lamparray.ps1 -RunSequence
+Read-only inspection of a firmware-configured 64-lamp device:
+  powershell.exe -NoProfile -STA -File .\scripts\test-lamparray.ps1 -ExpectedLampCount 64
+Explicit 64-lamp end-index or held-black tests (only after physical setup checks):
+  powershell.exe -NoProfile -STA -File .\scripts\test-lamparray.ps1 -ExpectedLampCount 64 -RunSequence -TestPattern FirstLast
+  powershell.exe -NoProfile -STA -File .\scripts\test-lamparray.ps1 -ExpectedLampCount 64 -RunSequence -TestPattern Black -ColorHoldMilliseconds 10000
 
 Only Windows.Devices.Lights is used. No COM ports, raw HID, registry writes,
 global lighting settings, IsEnabled setters, or BrightnessLevel setters.
-Do not change foreground focus during the approximately 15.5-second sequence.
+Keep the helper window in the foreground. Closing it aborts host writes, but
+does not disconnect 5V. A final black frame is sent only while control is held.
+The default RGB/sequence timing remains compatible for 8 lamps; above 8 lamps,
+the default per-lamp hold is 100ms. Explicit holds are bounded and reported.
+Host colour values are subject to the installed firmware's limits. This tool
+does not measure current, USB voltage, physical lamp count or output brightness.
 Original USB instance IDs, MAC values, and serials are never printed.
 
 Official references:
@@ -20,6 +30,14 @@ https://learn.microsoft.com/en-us/uwp/api/windows.devices.lights.lamparray.isava
 [CmdletBinding()]
 param(
     [switch]$RunSequence,
+    [ValidateRange(1, 64)]
+    [int]$ExpectedLampCount = 8,
+    [ValidateSet('RgbAndSequential', 'FirstLast', 'Sequential', 'Black', 'White')]
+    [string]$TestPattern = 'RgbAndSequential',
+    [ValidateRange(100, 30000)]
+    [int]$ColorHoldMilliseconds = 3000,
+    [ValidateRange(100, 1000)]
+    [int]$LampHoldMilliseconds = 700,
     [ValidateRange(1, 5)]
     [int]$AsyncTimeoutSeconds = 4,
     [ValidateRange(1, 12)]
@@ -28,11 +46,25 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $taskClock = [System.Diagnostics.Stopwatch]::StartNew()
-$taskMaximumMs = 29000
 $taskExpectedName = 'ESP32-S3 USB Light Strip'
 $taskExpectedVendor = 0x303A
 $taskExpectedProduct = 0x1001
-$taskExpectedCount = 8
+$taskExpectedCount = $ExpectedLampCount
+$taskLampHoldMs = if ($PSBoundParameters.ContainsKey('LampHoldMilliseconds') -or $ExpectedLampCount -le 8) {
+    $LampHoldMilliseconds
+} else { 100 }
+$taskPatternHoldMs = switch ($TestPattern) {
+    'RgbAndSequential' { 3 * $ColorHoldMilliseconds + $taskExpectedCount * $taskLampHoldMs }
+    'FirstLast' { [Math]::Min(2, $taskExpectedCount) * $ColorHoldMilliseconds }
+    'Sequential' { $taskExpectedCount * $taskLampHoldMs }
+    default { $ColorHoldMilliseconds }
+}
+# Setup/WinRT operations, foreground wait, pattern, initial black and cleanup
+# each have budget. Even maximum explicit holds cannot create an unbounded run.
+$taskMaximumMs = if ($RunSequence) {
+    [int][Math]::Max(29000, 21400 + $WaitForForegroundSeconds * 1000 + $taskPatternHoldMs)
+} else { 29000 }
+$taskIndices = [int[]](0..($taskExpectedCount - 1))
 $taskStage = 'Initialization'
 $taskLamp = $null
 $taskColorType = $null
@@ -43,12 +75,18 @@ $taskSteps = New-Object 'System.Collections.Generic.List[object]'
 $taskReport = [ordered]@{
     ObservedAtUtc = [DateTime]::UtcNow.ToString('o')
     Mode = $(if ($RunSequence) { 'RunSequence' } else { 'InspectOnly' })
+    TestPattern = $(if ($RunSequence) { $TestPattern } else { 'NoneReadOnly' })
+    ExpectedLampCount = $taskExpectedCount
+    ActualLampCount = $null
+    ColorHoldMilliseconds = $ColorHoldMilliseconds
+    LampHoldMilliseconds = $taskLampHoldMs
+    OverallDeadlineMilliseconds = $taskMaximumMs
     Status = 'NotStarted'
     Target = [pscustomobject]@{
         Name = $taskExpectedName
         VendorId = '0x303A'
         ProductId = '0x1001'
-        LampCount = 8
+        LampCount = $taskExpectedCount
     }
     MatchCount = 0
     Properties = $null
@@ -73,6 +111,10 @@ $taskReport = [ordered]@{
     Error = $null
     ElapsedMs = 0
     PhysicalLedResult = 'Pending human observation; API success does not verify light output.'
+    PhysicalLampCountVerified = $false
+    UsbCurrentMeasured = $false
+    UsbVoltageMeasured = $false
+    ElectricalVerification = 'Pending independent meter measurements; firmware limits and real current are not read by LampArray.'
 }
 
 function Get-TaskSafeError {
@@ -144,9 +186,9 @@ function New-TaskColor {
 
 function New-TaskFrame {
     param([byte]$Red, [byte]$Green, [byte]$Blue)
-    $taskTypedColors = [Array]::CreateInstance($script:taskColorType, 8)
+    $taskTypedColors = [Array]::CreateInstance($script:taskColorType, $script:taskExpectedCount)
     $taskFillColor = New-TaskColor $Red $Green $Blue
-    for ($taskFillIndex = 0; $taskFillIndex -lt 8; ++$taskFillIndex) {
+    for ($taskFillIndex = 0; $taskFillIndex -lt $script:taskExpectedCount; ++$taskFillIndex) {
         $taskTypedColors.SetValue($taskFillColor, $taskFillIndex)
     }
     # Avoid PowerShell's normal pipeline conversion into an Object[] array.
@@ -167,8 +209,10 @@ function Test-TaskControlAvailable {
     $taskConnected = ($null -ne $script:taskLamp -and [bool]$script:taskLamp.IsConnected)
     $taskEnabled = ($null -ne $script:taskLamp -and [bool]$script:taskLamp.IsEnabled)
     $taskAvailable = ($null -ne $script:taskLamp -and [bool]$script:taskLamp.IsAvailable)
+    $taskCountMatched = ($null -ne $script:taskLamp -and
+        [int]$script:taskLamp.LampCount -eq $script:taskExpectedCount)
     $taskAllConditions = ($taskWindowVisible -and $taskForegroundMatched -and
-        $taskConnected -and $taskEnabled -and $taskAvailable)
+        $taskConnected -and $taskEnabled -and $taskAvailable -and $taskCountMatched)
     if ($script:taskStage -eq 'AwaitForegroundAvailability') {
         $taskWaitDiagnostics = $script:taskReport.ControlWait
         $taskWaitDiagnostics.SampleCount++
@@ -193,6 +237,8 @@ function Test-TaskControlAvailable {
             'LampArrayDisconnected'
         } elseif (-not $taskEnabled) {
             'LampArrayDisabled'
+        } elseif (-not $taskCountMatched) {
+            'LampCountMismatch'
         } elseif (-not $taskAvailable) {
             'WindowsControlUnavailable'
         } else {
@@ -224,18 +270,18 @@ function Wait-TaskHold {
 function Send-TaskFrame {
     param([string]$Label, [System.Array]$Colors, [int]$HoldMs)
     Assert-TaskControl
-    [int[]]$taskIndices = 0..7
-    if ($Colors.Length -ne 8) {
-        throw [System.ArgumentException]::new('Exactly eight colours are required.')
+    if ($Colors.Length -ne $script:taskExpectedCount) {
+        throw [System.ArgumentException]::new('Frame length must match the configured lamp count.')
     }
     $script:taskLabel.Text = $Label + "`r`nObserve the strip; keep this window active."
     [System.Windows.Forms.Application]::DoEvents()
     Assert-TaskControl
-    $script:taskLamp.SetColorsForIndices($Colors, $taskIndices)
+    $script:taskLamp.SetColorsForIndices($Colors, $script:taskIndices)
     $script:taskSequenceStarted = $true
     $script:taskSteps.Add([pscustomobject]@{
         Stage = $Label
-        Api = 'SetColorsForIndices(Color[8], Int32[8])'
+        Api = ('SetColorsForIndices(Color[{0}], Int32[{0}])' -f $script:taskExpectedCount)
+        LampCount = $script:taskExpectedCount
         AcceptedAtMs = $script:taskClock.ElapsedMilliseconds
         IsAvailableAtCall = $true
         HoldMs = $HoldMs
@@ -274,6 +320,7 @@ try {
     }
     $taskStage = 'ValidateProperties'
     $taskReport.Properties = Get-TaskLampProperties $taskLamp
+    $taskReport.ActualLampCount = $taskReport.Properties.LampCount
     if ([int]$taskLamp.HardwareVendorId -ne $taskExpectedVendor -or
         [int]$taskLamp.HardwareProductId -ne $taskExpectedProduct -or
         [int]$taskLamp.LampCount -ne $taskExpectedCount) {
@@ -334,20 +381,34 @@ namespace LampArrayTest {
             AcceptedAtMs = $taskClock.ElapsedMilliseconds; IsAvailableAtCall = $true; HoldMs = 400
         })
         Wait-TaskHold 400
-        $taskStage = 'Red64'
-        $taskFrame = New-TaskFrame 64 0 0
-        Send-TaskFrame 'All red 64/255' $taskFrame 3000
-        $taskStage = 'Green64'
-        $taskFrame = New-TaskFrame 0 64 0
-        Send-TaskFrame 'All green 64/255' $taskFrame 3000
-        $taskStage = 'Blue64'
-        $taskFrame = New-TaskFrame 0 0 64
-        Send-TaskFrame 'All blue 64/255' $taskFrame 3000
-        for ($taskIndex = 0; $taskIndex -lt 8; ++$taskIndex) {
-            $taskStage = 'SingleLamp' + $taskIndex
-            $taskFrame = New-TaskFrame 0 0 0
-            $taskFrame[$taskIndex] = New-TaskColor 48 48 48
-            Send-TaskFrame ('Single lamp index ' + $taskIndex + ' - white 48/255') $taskFrame 700
+        if ($TestPattern -eq 'RgbAndSequential') {
+            $taskStage = 'Red64'
+            Send-TaskFrame 'All red input 64/255; firmware-limited' (New-TaskFrame 64 0 0) $ColorHoldMilliseconds
+            $taskStage = 'Green64'
+            Send-TaskFrame 'All green input 64/255; firmware-limited' (New-TaskFrame 0 64 0) $ColorHoldMilliseconds
+            $taskStage = 'Blue64'
+            Send-TaskFrame 'All blue input 64/255; firmware-limited' (New-TaskFrame 0 0 64) $ColorHoldMilliseconds
+        }
+        if ($TestPattern -eq 'RgbAndSequential' -or $TestPattern -eq 'Sequential') {
+            for ($taskIndex = 0; $taskIndex -lt $taskExpectedCount; ++$taskIndex) {
+                $taskStage = 'SingleLamp' + $taskIndex
+                $taskFrame = New-TaskFrame 0 0 0
+                $taskFrame[$taskIndex] = New-TaskColor 48 48 48
+                Send-TaskFrame ('Single lamp index ' + $taskIndex + ' - white input 48/255; firmware-limited') $taskFrame $taskLampHoldMs
+            }
+        } elseif ($TestPattern -eq 'FirstLast') {
+            foreach ($taskIndex in @(@(0, ($taskExpectedCount - 1)) | Select-Object -Unique)) {
+                $taskStage = 'EndIndex' + $taskIndex
+                $taskFrame = New-TaskFrame 0 0 0
+                $taskFrame[$taskIndex] = New-TaskColor 48 48 48
+                Send-TaskFrame ('End index ' + $taskIndex + ' - white input 48/255; firmware-limited') $taskFrame $ColorHoldMilliseconds
+            }
+        } elseif ($TestPattern -eq 'Black') {
+            $taskStage = 'HeldBlack'
+            Send-TaskFrame 'All black; 5V remains connected, measure idle current separately' (New-TaskFrame 0 0 0) $ColorHoldMilliseconds
+        } elseif ($TestPattern -eq 'White') {
+            $taskStage = 'HeldWhite'
+            Send-TaskFrame 'All white input 64/255; firmware-limited, not unrestricted white' (New-TaskFrame 64 64 64) $ColorHoldMilliseconds
         }
         $taskReport.Status = 'SequenceCallsAcceptedVisualVerificationPending'
     }

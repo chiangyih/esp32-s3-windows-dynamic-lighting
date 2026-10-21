@@ -1,0 +1,68 @@
+{
+  "ObservedAtUtc": "2026-10-21T08:16:13.1158609Z",
+  "Mode": "InspectOnly",
+  "TestPattern": "NoneReadOnly",
+  "ExpectedLampCount": 64,
+  "ActualLampCount": 8,
+  "ColorHoldMilliseconds": 3000,
+  "LampHoldMilliseconds": 100,
+  "OverallDeadlineMilliseconds": 29000,
+  "Status": "Stopped",
+  "Target": {
+    "Name": "ESP32-S3 USB Light Strip",
+    "VendorId": "0x303A",
+    "ProductId": "0x1001",
+    "LampCount": 64
+  },
+  "MatchCount": 1,
+  "Properties": {
+    "VendorId": "0x303A",
+    "ProductId": "0x1001",
+    "LampCount": 8,
+    "Kind": "Peripheral",
+    "IsConnected": true,
+    "IsEnabled": true,
+    "IsAvailable": false,
+    "BrightnessLevel": 1,
+    "MinUpdateIntervalMs": 16.667
+  },
+  "FinalProperties": {
+    "VendorId": "0x303A",
+    "ProductId": "0x1001",
+    "LampCount": 8,
+    "Kind": "Peripheral",
+    "IsConnected": true,
+    "IsEnabled": true,
+    "IsAvailable": false,
+    "BrightnessLevel": 1,
+    "MinUpdateIntervalMs": 16.667
+  },
+  "ControlWait": {
+    "Requested": false,
+    "SampleCount": 0,
+    "WindowVisibleAtLeastOnce": false,
+    "LastWindowVisible": false,
+    "ForegroundMatchedAtLeastOnce": false,
+    "LastForegroundMatched": false,
+    "IsAvailableAtLeastOnce": false,
+    "LastIsAvailable": null,
+    "LastIsConnected": null,
+    "LastIsEnabled": null,
+    "AllConditionsMatchedAtLeastOnce": false,
+    "LastBlockingCondition": "NotRequested"
+  },
+  "Steps": [],
+  "CleanupBlack": "NotNeededNoColourWrites",
+  "CleanupError": null,
+  "Error": {
+    "Stage": "ValidateProperties",
+    "Type": "System.InvalidOperationException",
+    "HResult": "0x80131509"
+  },
+  "ElapsedMs": 855,
+  "PhysicalLedResult": "Pending human observation; API success does not verify light output.",
+  "PhysicalLampCountVerified": false,
+  "UsbCurrentMeasured": false,
+  "UsbVoltageMeasured": false,
+  "ElectricalVerification": "Pending independent meter measurements; firmware limits and real current are not read by LampArray."
+}

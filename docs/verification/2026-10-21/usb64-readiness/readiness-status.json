@@ -1,0 +1,29 @@
+{
+  "ObservedAtUtc": "2026-10-21T08:16:21.8929938+00:00",
+  "Status": "AwaitingPhysical64LampSetupAndMeasurement",
+  "UserReportedPhysicalLampCount": 8,
+  "FirmwareReportedLampCount": 8,
+  "Physical64LampCountVerified": false,
+  "Port": "COM3",
+  "UsbBridge": "CH343",
+  "BridgeVidPid": "1A86:55D3",
+  "ParentHubVidPid": "1A86:8091",
+  "UpstreamHubVidPid": "05E3:0610",
+  "RootHub": "ROOT_HUB30",
+  "SourceSupplyDetails": "User reports USB power; rated current and hub self/bus power not established",
+  "MeasurementInstrument": "Not provided",
+  "MeasuredUsbVoltageV": null,
+  "MeasuredUsbCurrentMa": null,
+  "FirmwareUploadedThisRun": false,
+  "ComPortOpened": false,
+  "LampColorsWritten": false,
+  "GlobalLightingPolicyChanged": false,
+  "Current8ConfigurationRetained": true,
+  "Software64Build": "Existing 64/80 mA artifact Config source and hashes checked; not flashed",
+  "ElectricalTestResult": "Not performed",
+  "Functional64LampTestResult": "Not performed",
+  "BlockingRequirements": [
+    "Physical 64-lamp strip connected after firmware and wiring preparation",
+    "Voltage/current readings from an identified meter or instrument"
+  ]
+}

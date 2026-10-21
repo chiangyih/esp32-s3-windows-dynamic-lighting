@@ -456,3 +456,19 @@ Edge視窗標題顯示Partner Center概觀已開啟，但cua_repl與node_repl均
 WACK工具存在（10.0.26100.8249），本輪只檢查help，沒有執行reset／test；目前執行環境非管理員，未提升權限或改Windows設定。沒有新乾淨機／USB電氣或64顆實體驗證。**本輪未上傳套件、未儲存商品頁、未完成IARC、未提交認證、未認證或發布**；MakeAppx與本機開發註冊不等於以上任何Store狀態。
 
 精簡證據在 `docs/verification/2026-10-21/store-preparation/0.3.1/`，其中preparation-status.json明列政策URL與工具兩個阻擋條件。正式產品後台狀態仍待live readback，不能因使用者提供Store ID或本機PFN匹配就標為Validated。最終已註冊layout必須保留；此輪沒有重刷ESP32、操作COM或改Windows動態光效優先順序。依既有授權自動commit／push，實際同步SHA以完成後讀回為準。
+
+## 2026-10-21 64顆USB實測要求與前置檢查；實物仍為8顆
+
+使用者要求完成64顆USB實體測試。先詢問實體與量測設備後，使用者明確回覆「目前仍是8顆」、「目前僅由usb供電」。因此64顆實物不存在於本輪已確認配置中；量測設備型號、USB供電額定值及電壓／電流讀值亦未提供。**本輪64顆實體功能與電流／電壓測試均未執行，不能標為通過。** 原有8顆韌體、App偏好與接線未改，沒有燒錄或操作COM。
+
+新鮮唯讀讀回：Arduino CLI／CIM找到CH343 COM3（VID1A86／PID55D3）；COM4／COM6為藍牙序列，不當作ESP32燒錄埠。Windows找到一個啟用中的ESP32-S3 USB Light Strip、VID303A／PID1001。Parent查詢得到CH343→板上1A86:8091 Hub→上游05E3:0610 Hub→ROOT_HUB30；僅是拓撲，不代表Hub供電模式、額定電流或實際耗電已確認。
+
+測試工具唯讀檢查以ExpectedLampCount=8成功，Firmware ActualLampCount=8、IsConnected／IsEnabled=true；以ExpectedLampCount=64時在ValidateProperties數量驗證階段停止，兩次Steps均空、沒有色彩寫入。ActualLampCount來自LampArray韌體屬性，不是WS2812實體自動偵測。工具的PhysicalLampCountVerified／UsbCurrentMeasured／UsbVoltageMeasured仍false；量測數值保留null。
+
+已將 `scripts/test-lamparray.ps1` 的固定8顆改為可選1～64顆、預設8，增加FirstLast／Sequential／Black／White與RGB逐顆測試模式。維持唯一裝置識別、數量與控制權檢查、前景條件、有界保持時間及取得控制權時的黑幀清理，不調Windows亮度或全域政策。PowerShell解析及11項純資料／參數檢查通過；本輪只執行上述InspectOnly，不執行RunSequence。API成功也不會自動標為實物或電流通過。
+
+既有64／80mA及8／50mA編譯產物與Config來源雜湊重新核對相符，沒有重編或燒錄。64／80模型扣64mA靜態後只有16mA動態，全條受限白色約各色1/255、估算79.06mA；不是64顆全亮、整板USB耗電或電氣合規證據。韌體沒有電壓／電流感測器，USB宣告不能當量測值。
+
+所需實測步驟、量測欄位、受限負載與恢復／停止界線記錄於 `docs/64顆USB實測.md`；證據在 `docs/verification/2026-10-21/usb64-readiness/`。待實際備妥64顆燈條與可量電壓／電流的設備後，先斷USB及分離燈條，以板子單獨確認／燒錄64韌體，再斷電接回測試。避免舊8顆韌體留64顆尾端未受控，也避免資料線驅動未供電燈條。GPIO4／5V／GND直連及既有保護暫不更動。
+
+新準備工具與文件依既有授權自動commit／push；README保留64顆尚未實測標示，Store狀態不因本輪前置檢查而改寫。
