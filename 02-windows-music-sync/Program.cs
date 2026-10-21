@@ -5,13 +5,14 @@ namespace MusicSync;
 
 internal static class Program
 {
+    internal const string DisplayName = "音樂動態燈光設置";
     [STAThread]
     private static void Main(string[] args)
     {
         using var singleInstance = new Mutex(true, @"Local\Esp32MusicSync", out var firstInstance);
         if (!firstInstance)
         {
-            MessageBox.Show("音樂同步已在執行。請從工作列或通知區開啟既有視窗。", "ESP32 音樂同步");
+            MessageBox.Show("程式已在執行。請從工作列或通知區開啟既有視窗。", DisplayName);
             return;
         }
         Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);

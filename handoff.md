@@ -386,3 +386,11 @@ SyncEngine.StopAsync／DisposeAsync共用背景清理工作；停止不再在UI�
 測試後已重新開啟正常0.2.1版（PID32620為當時啟動讀回，未帶report／exercise參數），沿用使用者已保存的靈敏度20dB、亮度65%等偏好，避免日常持續收集診斷。使用者三種實體效果／暫停漸暗的確認仍明列為0.2.0目視來源；0.2.1本輪為已取得控制權的實際送色與生命週期驗證，沒有另行要求重複實物回報。
 
 完整新證據在 `docs/verification/2026-10-21/music-effects/0.2.1/`，0.2.0缺陷與首次測試保留為歷史。沒有重刷ESP32、改接線或調高韌體限亮；唯獨先前卡住的已核對0.2.0測試程序曾被終止，修正版測試均為正常退出。依使用者既有授權自動commit／push，最新Git狀態以完成後讀回為準。
+
+## 2026-10-21 0.2.2.0 顯示名稱更改
+
+依使用者要求，視窗標題及介面主標題統一改為「音樂動態燈光設置」，同步更新通知區、重複啟動提示、EXE Title／Product與MSIX顯示名稱，內部Package Identity／程式檔名不變。僅更名及版本遞增，未改音訊、燈效、清理邏輯、韌體或接線；既有偏好可延續。
+
+0.2.2.0已重新建置、MakePri／MakeAppx正常驗證及開發註冊。實際啟動讀回MainWindowTitle、EXE ProductName及manifest三處顯示名稱皆為新名稱；截圖確認主標題完整。短時診斷正常結束，FormDisposed=true、清理錯誤陣列為空；ExitCode欄位未取得數值，不宣稱退出碼0。首次標題讀取早於視窗建立而為空，等待視窗出現後重新讀回正確，沒有視為程式標題錯誤。
+
+目前註冊來源為 `02-windows-music-sync/artifacts/package-development-20261021-150146-915/layout`，須保留。unsigned MSIX 58,189,966 bytes，SHA-256 `C13BE997324B7A04A6B0B9D9773879F12C07DCAF9100632C844C28586C3BCF10`。本次為低影響文字修改，未重跑音訊／燈效全套測試；Store送審狀態不變。新名稱版本已重新開啟供檢視，未自動開始同步。證據見 `docs/verification/2026-10-21/name/0.2.2/`；依既有授權自動commit／push。

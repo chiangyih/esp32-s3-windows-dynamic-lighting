@@ -100,7 +100,7 @@ foreach ($case in $cases) {
             Start-Sleep -Milliseconds 1000
             $process.Refresh()
             if ($process.HasExited) { throw 'The app exited before WM_CLOSE was requested.' }
-            if ($process.MainWindowTitle -ne 'ESP32 音樂同步') {
+            if ($process.MainWindowTitle -ne '音樂動態燈光設置') {
                 throw 'The current main window is not the app form (a dropdown or dialog may be active); refusing to close a different window.'
             }
             if (-not $process.CloseMainWindow()) { throw 'WM_CLOSE could not be requested for the app window.' }

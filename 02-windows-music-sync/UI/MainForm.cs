@@ -68,7 +68,7 @@ internal sealed partial class MainForm : Form
     public MainForm(LaunchOptions options)
     {
         _options = options;
-        Text = "ESP32 音樂同步";
+        Text = Program.DisplayName;
         AutoScaleMode = AutoScaleMode.Dpi;
         Font = _bodyFont;
         BackColor = UiTheme.Background;
@@ -105,7 +105,7 @@ internal sealed partial class MainForm : Form
         var image = new PictureBox { Image = _headerImage, SizeMode = PictureBoxSizeMode.CenterImage, Dock = DockStyle.Fill, Margin = new Padding(0, 0, 14, 0), AccessibleName = "音樂同步圖示" };
         header.Controls.Add(image, 0, 0);
         header.SetRowSpan(image, 2);
-        header.Controls.Add(Label("ESP32 音樂同步", _headingFont, UiTheme.Accent, UiTheme.Background), 1, 0);
+        header.Controls.Add(Label(Program.DisplayName, _headingFont, UiTheme.Accent, UiTheme.Background), 1, 0);
         header.Controls.Add(Label("電腦播放音訊 · 8 顆 LED", _smallFont, UiTheme.Muted, UiTheme.Background), 1, 1);
         _content.Controls.Add(header, 0, 0);
 
@@ -199,7 +199,7 @@ internal sealed partial class MainForm : Form
         _gain.ValueChanged += (_, _) => { _engine.GainDb = _gain.Value; _gainValue.Text = $"{_gain.Value:+0;-0;0} dB"; };
         _brightness.ValueChanged += (_, _) => { _engine.Brightness = _brightness.Value / 100.0; _brightnessValue.Text = $"{_brightness.Value}%"; };
         _tray.Icon = Icon;
-        _tray.Text = "ESP32 音樂同步";
+        _tray.Text = Program.DisplayName;
         _trayMenu.Items.Add("開啟視窗", null, (_, _) => RestoreWindow());
         _trayMenu.Items.Add("停止同步", null, async (_, _) => await StopSyncAsync());
         _trayExit.Click += (_, _) => RequestClose("tray");
