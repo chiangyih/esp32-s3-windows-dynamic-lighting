@@ -1,0 +1,58 @@
+[
+  {
+    "Status": "OK",
+    "Class": "HIDClass",
+    "Name": "USB 輸入裝置",
+    "DeviceType": "VID_303A&PID_1001",
+    "BusDescription": "ESP32-S3 USB Light Strip",
+    "CompatibleIds": [
+      "USB\\COMPAT_VID_303A&Class_03&SubClass_00&Prot_00",
+      "USB\\COMPAT_VID_303A&Class_03&SubClass_00",
+      "USB\\COMPAT_VID_303A&Class_03",
+      "USB\\Class_03&SubClass_00&Prot_00",
+      "USB\\Class_03&SubClass_00",
+      "USB\\Class_03"
+    ],
+    "HardwareIds": [
+      "USB\\VID_303A&PID_1001&REV_0100",
+      "USB\\VID_303A&PID_1001"
+    ],
+    "ProblemCode": 0
+  },
+  {
+    "Status": "OK",
+    "Class": "HIDClass",
+    "Name": "HID-compliant device",
+    "DeviceType": "VID_303A&PID_1001",
+    "BusDescription": null,
+    "CompatibleIds": [],
+    "HardwareIds": [
+      "HID\\VID_303A&PID_1001&REV_0100",
+      "HID\\VID_303A&PID_1001",
+      "HID\\VID_303A&UP:0059_U:0001",
+      "HID_DEVICE_UP:0059_U:0001",
+      "HID_DEVICE"
+    ],
+    "ProblemCode": 0
+  },
+  {
+    "Status": "OK",
+    "Class": "Ports",
+    "Name": "USB-Enhanced-SERIAL CH343 (COM3)",
+    "DeviceType": "VID_1A86&PID_55D3",
+    "BusDescription": "USB Single Serial",
+    "CompatibleIds": [
+      "USB\\COMPAT_VID_1A86&Class_02&SubClass_02&Prot_01",
+      "USB\\COMPAT_VID_1A86&Class_02&SubClass_02",
+      "USB\\COMPAT_VID_1A86&Class_02",
+      "USB\\Class_02&SubClass_02&Prot_01",
+      "USB\\Class_02&SubClass_02",
+      "USB\\Class_02"
+    ],
+    "HardwareIds": [
+      "USB\\VID_1A86&PID_55D3&REV_0445",
+      "USB\\VID_1A86&PID_55D3"
+    ],
+    "ProblemCode": 0
+  }
+]

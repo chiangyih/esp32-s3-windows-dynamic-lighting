@@ -1,0 +1,5 @@
+# Preserve original source and verification bytes, including Windows CRLF.
+* -text whitespace=cr-at-eol
+*.jpg binary
+*.jpeg binary
+*.png binary

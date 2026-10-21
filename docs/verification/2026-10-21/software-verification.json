@@ -1,0 +1,102 @@
+{
+  "Date": "2026-10-21",
+  "Timezone": "Asia/Taipei",
+  "Mode": "Direct GPIO4; UsePowerSwitch=false",
+  "Core": "esp32:esp32 3.1.1",
+  "HostTests": "24/24 PASS",
+  "FirmwareBuild": "PASS",
+  "HardwareTested": false,
+  "PreviousBaseline": "build/archive/20261021-switched-baseline/verification.json",
+  "Files": [
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\Config.h",
+      "SHA256": "E4D4DB609D148C1ECFDC326D4CDE3B7ECAC3DC58AA07FE61927F414796379DE2",
+      "Bytes": 1649
+    },
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\FrameLimiter.h",
+      "SHA256": "4D22D828E626BBB481B5581932D70C935CAFD390859278C7B9D9C687E59F5BDB",
+      "Bytes": 1292
+    },
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\LampArrayHid.cpp",
+      "SHA256": "89FD58954EFFB7C75E168EA2293A57FBEFC1899D8F25561ECA9457A8D53B622C",
+      "Bytes": 2895
+    },
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\LampArrayHid.h",
+      "SHA256": "2F341EBD9AC02578616806DE0B84E6F0740A75A0E5C9EF6347558D9913F50658",
+      "Bytes": 1314
+    },
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\LampArrayProtocol.h",
+      "SHA256": "EC9A95390EA3484F8B792EED0EE1468AAF48C5F6DD8642B83A03A9F9241CE300",
+      "Bytes": 8269
+    },
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\LampArrayReportDescriptor.h",
+      "SHA256": "AD78845AD235E9D3DD4DBE163CE00CC8BFF5E9B973A25B93E4638AA0452FC460",
+      "Bytes": 13081
+    },
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\LICENSE-Microsoft.txt",
+      "SHA256": "C2CFCCB812FE482101A8F04597DFC5A9991A6B2748266C47AC91B6A5AAE15383",
+      "Bytes": 1141
+    },
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\WindowsDynamicLighting.ino",
+      "SHA256": "4AF21F1F7644EEBDC6C417B136945CAAD0F4C4087C12E147FE356076559B83AD",
+      "Bytes": 6149
+    },
+    {
+      "Path": "firmware\\WindowsDynamicLighting\\Ws2812Rmt.h",
+      "SHA256": "263EAF53048E2BB498CA5910C546CABC6B8806959F6980F33A596A8EDF19AF47",
+      "Bytes": 1339
+    },
+    {
+      "Path": "tests\\protocol_tests.cpp",
+      "SHA256": "DED3239910F97D6FB83189F0045652098C0389E63B87A11DF8CC7C809371B630",
+      "Bytes": 26340
+    },
+    {
+      "Path": "tests\\run-tests.ps1",
+      "SHA256": "795CA04E9EC33887AEDFC00ED146BB5978BAA21352E29B6556BE7F604EBDE44B",
+      "Bytes": 2818
+    },
+    {
+      "Path": "scripts\\build.ps1",
+      "SHA256": "938691EF60D0635A31538B06FC15D5E215249B36E49D77686BBBF5560FD277C3",
+      "Bytes": 757
+    },
+    {
+      "Path": "build\\WindowsDynamicLighting.ino.bin",
+      "SHA256": "07E982D874ACB52631F5478038E648253A70F6FBA272789390EF45B8C9398157",
+      "Bytes": 376112
+    },
+    {
+      "Path": "build\\WindowsDynamicLighting.ino.bootloader.bin",
+      "SHA256": "7087872BC4354203EA297399285C259C44BBBC572EBE0F696DB44379260126D9",
+      "Bytes": 18928
+    },
+    {
+      "Path": "build\\WindowsDynamicLighting.ino.partitions.bin",
+      "SHA256": "79F32D2653156A80A7A246AFC9120B22399C3AC68C7C64812D50249189892C82",
+      "Bytes": 3072
+    },
+    {
+      "Path": "build\\WindowsDynamicLighting.ino.merged.bin",
+      "SHA256": "2BEE313E6F86EB9DCFDAFCAE93F2ADB0C7B2CFA801D14A90A117598A396AAE49",
+      "Bytes": 33554432
+    },
+    {
+      "Path": "build\\firmware-build.log",
+      "SHA256": "14383E451A2F97F3173F1F273E97C7AA9C8AE824A0B8482922E9A78D94F713DE",
+      "Bytes": 392
+    },
+    {
+      "Path": "build\\host-tests.log",
+      "SHA256": "E2DA06CF73B6ECFA0504D58C457315741DD164A2E69755D596D6399391987D36",
+      "Bytes": 1151
+    }
+  ]
+}

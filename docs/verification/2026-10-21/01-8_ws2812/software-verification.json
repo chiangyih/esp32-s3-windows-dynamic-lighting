@@ -1,0 +1,111 @@
+{
+  "Date": "2026-10-21",
+  "Timezone": "Asia/Taipei",
+  "Sketch": "01-8_ws2812/01-8_ws2812.ino",
+  "Mode": "Direct GPIO4; UsePowerSwitch=false",
+  "Core": "esp32:esp32 3.1.1",
+  "HostTests": "24/24 PASS",
+  "FirmwareBuild": "PASS",
+  "HardwareTested": false,
+  "LatestBuildUploaded": false,
+  "FirmwareSourcesMatchPrevious": true,
+  "PreviousSoftwareSnapshot": "docs/verification/2026-10-21/software-verification.json",
+  "PreviousHardwareResult": "docs/verification/2026-10-21/device-upload/result.json",
+  "Files": [
+    {
+      "Path": "01-8_ws2812\\01-8_ws2812.ino",
+      "SHA256": "4AF21F1F7644EEBDC6C417B136945CAAD0F4C4087C12E147FE356076559B83AD",
+      "Bytes": 6149
+    },
+    {
+      "Path": "01-8_ws2812\\Config.h",
+      "SHA256": "E4D4DB609D148C1ECFDC326D4CDE3B7ECAC3DC58AA07FE61927F414796379DE2",
+      "Bytes": 1649
+    },
+    {
+      "Path": "01-8_ws2812\\FrameLimiter.h",
+      "SHA256": "4D22D828E626BBB481B5581932D70C935CAFD390859278C7B9D9C687E59F5BDB",
+      "Bytes": 1292
+    },
+    {
+      "Path": "01-8_ws2812\\LampArrayHid.cpp",
+      "SHA256": "89FD58954EFFB7C75E168EA2293A57FBEFC1899D8F25561ECA9457A8D53B622C",
+      "Bytes": 2895
+    },
+    {
+      "Path": "01-8_ws2812\\LampArrayHid.h",
+      "SHA256": "2F341EBD9AC02578616806DE0B84E6F0740A75A0E5C9EF6347558D9913F50658",
+      "Bytes": 1314
+    },
+    {
+      "Path": "01-8_ws2812\\LampArrayProtocol.h",
+      "SHA256": "EC9A95390EA3484F8B792EED0EE1468AAF48C5F6DD8642B83A03A9F9241CE300",
+      "Bytes": 8269
+    },
+    {
+      "Path": "01-8_ws2812\\LampArrayReportDescriptor.h",
+      "SHA256": "AD78845AD235E9D3DD4DBE163CE00CC8BFF5E9B973A25B93E4638AA0452FC460",
+      "Bytes": 13081
+    },
+    {
+      "Path": "01-8_ws2812\\LICENSE-Microsoft.txt",
+      "SHA256": "C2CFCCB812FE482101A8F04597DFC5A9991A6B2748266C47AC91B6A5AAE15383",
+      "Bytes": 1141
+    },
+    {
+      "Path": "01-8_ws2812\\Ws2812Rmt.h",
+      "SHA256": "263EAF53048E2BB498CA5910C546CABC6B8806959F6980F33A596A8EDF19AF47",
+      "Bytes": 1339
+    },
+    {
+      "Path": "tests\\protocol_tests.cpp",
+      "SHA256": "703677EA3F5F4818B434A96B110B46D00CE83B92609055CA76BF926BED1A0810",
+      "Bytes": 26300
+    },
+    {
+      "Path": "tests\\run-tests.ps1",
+      "SHA256": "795CA04E9EC33887AEDFC00ED146BB5978BAA21352E29B6556BE7F604EBDE44B",
+      "Bytes": 2818
+    },
+    {
+      "Path": "scripts\\build.ps1",
+      "SHA256": "C579E9F8CAA2C11471009BCE703E609B3C63747C83BBCF62BE68A8910E36F2FE",
+      "Bytes": 737
+    },
+    {
+      "Path": "scripts\\inspect-lamparray.ps1",
+      "SHA256": "F7C510D3717C944B91D7BE5DDDA228EF43A3BCC1260C7957CD3057A30166E7CE",
+      "Bytes": 7095
+    },
+    {
+      "Path": "build\\01-8_ws2812.ino.bin",
+      "SHA256": "2AFF8C9688BFE43697EDB5BF0CBE7ECA02CD082E694E1B4FC53B2033824C4A32",
+      "Bytes": 376112
+    },
+    {
+      "Path": "build\\01-8_ws2812.ino.bootloader.bin",
+      "SHA256": "7087872BC4354203EA297399285C259C44BBBC572EBE0F696DB44379260126D9",
+      "Bytes": 18928
+    },
+    {
+      "Path": "build\\01-8_ws2812.ino.partitions.bin",
+      "SHA256": "79F32D2653156A80A7A246AFC9120B22399C3AC68C7C64812D50249189892C82",
+      "Bytes": 3072
+    },
+    {
+      "Path": "build\\01-8_ws2812.ino.merged.bin",
+      "SHA256": "E31F4BF2AE45CE3E61C195C45E3DDE43DFEE75418B833E951FA288411EA65A8D",
+      "Bytes": 33554432
+    },
+    {
+      "Path": "build\\01-8_ws2812-build.log",
+      "SHA256": "14383E451A2F97F3173F1F273E97C7AA9C8AE824A0B8482922E9A78D94F713DE",
+      "Bytes": 392
+    },
+    {
+      "Path": "build\\01-8_ws2812-host-tests.log",
+      "SHA256": "E2DA06CF73B6ECFA0504D58C457315741DD164A2E69755D596D6399391987D36",
+      "Bytes": 1151
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "Address": "COM4",
+    "Protocol": "serial",
+    "VID": null,
+    "PID": null
+  },
+  {
+    "Address": "COM6",
+    "Protocol": "serial",
+    "VID": null,
+    "PID": null
+  },
+  {
+    "Address": "COM3",
+    "Protocol": "serial",
+    "VID": "0x1A86",
+    "PID": "0x55D3"
+  }
+]

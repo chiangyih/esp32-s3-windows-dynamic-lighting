@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1800" viewBox="0 0 1600 1800" role="img" aria-labelledby="title desc">
+  <title id="title">ESP32-S3 USB Windows 動態光效 8 顆燈條功能接線圖</title>
+  <desc id="desc">同一 USB 供電與 HID 資料。GPIO9 控制 TPS2553 電源，GPIO10 讀取故障；GPIO4 經 74AHCT125 與 330 歐姆送往 WS2812。所有接地共接，100 微法拉電容在電源開關後端。</desc>
+  <defs>
+    <style>
+      text{font-family:'Microsoft JhengHei','Noto Sans CJK TC',Arial,sans-serif;fill:#17263d}
+      .title{font-size:34px;font-weight:700}.sub{font-size:23px;fill:#516279}
+      .h{font-size:27px;font-weight:700}.b{font-size:22px}.s{font-size:20px}.xs{font-size:18px}
+      .mono{font-family:Consolas,'Noto Sans CJK TC',monospace;font-size:22px}
+      .panel{fill:#fff;stroke:#d7e0eb;stroke-width:2}.chip{fill:#f2f6fb;stroke:#526780;stroke-width:2}
+      .pwr{fill:none;stroke:#d34f38;stroke-width:4}.sig{fill:none;stroke:#2474ba;stroke-width:3.5}
+      .gnd{fill:none;stroke:#45576d;stroke-width:3}.net{fill:#d34f38}.dot{fill:#2474ba}
+      .res{fill:#fff;stroke:#526780;stroke-width:2.5}.cap{stroke:#526780;stroke-width:3}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#2474ba"/></marker>
+    <g id="ground"><path d="M0 0v12m-17 0h34m-12 7h24m-17 7h10" class="gnd"/></g>
+  </defs>
+  <rect width="1600" height="1800" fill="#edf2f7"/>
+  <text x="60" y="62" class="title">ESP32-S3 × WS2812 USB 燈條功能接線圖</text>
+  <text x="60" y="101" class="sub">Windows 11 HID LampArray · 第一版 8 顆 · 同線 USB 供電 · 非 PCB 佈線圖</text>
+
+  <rect x="40" y="130" width="1520" height="225" rx="18" class="panel"/>
+  <text x="65" y="171" class="h">1　USB 與共用電源</text>
+  <rect x="75" y="202" width="245" height="88" rx="10" class="chip"/>
+  <text x="105" y="238" class="b">Windows 11 電腦</text><text x="105" y="270" class="s">USB 資料 ＋ 5V</text>
+  <path d="M320 245H490" class="sig" marker-end="url(#arrow)"/>
+  <text x="351" y="224" class="s">USB-C 線</text>
+  <rect x="500" y="195" width="650" height="110" rx="10" class="chip"/>
+  <text x="525" y="231" class="b">Waveshare ESP32-S3-DEV-KIT-NXRX</text>
+  <text x="525" y="266" class="s">CH334 → CH343 燒錄介面 ＋ S3 原生 USB HID</text>
+  <text x="1190" y="223" class="b" fill="#d34f38">板 5V → 下圖 IN</text>
+  <text x="1190" y="256" class="b">板 GND → 全部共地</text>
+  <text x="1190" y="289" class="s">GPIO19 / 20 保留 USB</text>
+  <text x="75" y="331" class="s">板 3.3V 僅接 /FAULT 上拉；燈條與緩衝器由 LED5V 供電。</text>
+
+  <rect x="40" y="380" width="1520" height="620" rx="18" class="panel"/>
+  <text x="65" y="423" class="h">2　TPS2553 DBV 燈條電源開關</text>
+  <text x="65" y="459" class="s">限定 DBV 六腳 SOT-23，腳位依頂視圖；不要套用 DRV WSON 腳位。</text>
+  <rect x="650" y="505" width="380" height="355" rx="12" class="chip"/>
+  <text x="722" y="545" class="h">TPS2553 DBV</text>
+  <text x="680" y="590" class="mono">1 IN</text><text x="680" y="650" class="mono">5 ILIM</text>
+  <text x="680" y="710" class="mono">3 EN</text><text x="680" y="790" class="mono">4 /FAULT</text>
+  <text x="890" y="590" class="mono">6 OUT</text><text x="785" y="838" class="mono">2 GND</text>
+  <text x="82" y="577" class="b">板 5V</text><path d="M180 583H650" class="pwr"/>
+  <path d="M560 583v60h90" class="pwr"/><circle cx="560" cy="583" r="5" class="net"/>
+  <text x="282" y="625" class="s">ILIM 直接接 IN</text>
+  <path d="M245 583v35m-16 0h32m-32 12h32m-16 0v35" class="cap"/>
+  <circle cx="245" cy="583" r="5" class="net"/><use href="#ground" x="245" y="665"/>
+  <text x="83" y="649" class="s">C1 0.1µF</text><text x="83" y="679" class="xs">IN 去耦，靠近 IC</text>
+  <text x="82" y="718" class="b">GPIO9</text><path d="M190 705H650" class="sig"/>
+  <path d="M390 705v20" class="gnd"/><rect x="378" y="725" width="24" height="55" class="res"/>
+  <path d="M390 780v20" class="gnd"/><use href="#ground" x="390" y="800"/>
+  <circle cx="390" cy="705" r="5" class="dot"/><text x="430" y="753" class="s">R1 100kΩ 下拉</text>
+  <text x="82" y="876" class="b">GPIO10</text><path d="M200 868H580V782H650" class="sig"/>
+  <path d="M260 868v-80" class="sig"/><rect x="248" y="740" width="24" height="48" class="res"/>
+  <path d="M260 740v-25" class="sig"/><text x="82" y="752" class="s">板 3.3V</text>
+  <path d="M178 746H220V715H260" class="sig"/><text x="82" y="803" class="s">R2 10kΩ 上拉</text>
+  <text x="82" y="833" class="xs">/FAULT 不接 5V 上拉</text><circle cx="260" cy="868" r="5" class="dot"/>
+  <path d="M840 860v30" class="gnd"/><use href="#ground" x="840" y="890"/>
+  <path d="M1030 583H1470" class="pwr"/>
+  <text x="1160" y="553" class="h" fill="#d34f38">LED5V</text>
+  <path d="M1140 583v79m-18 0h36m-36 14h36m-18 0v70" class="cap"/>
+  <text x="1092" y="651" class="s">＋</text><circle cx="1140" cy="583" r="5" class="net"/>
+  <use href="#ground" x="1140" y="746"/><text x="1070" y="807" class="s">C2 100µF / ≥10V</text>
+  <path d="M1390 583v79m-18 0h36m-36 14h36m-18 0v70" class="cap"/>
+  <circle cx="1390" cy="583" r="5" class="net"/><use href="#ground" x="1390" y="746"/>
+  <text x="1315" y="807" class="s">C3 0.1µF</text>
+  <text x="1070" y="851" class="s">C2、C3 在開關後端</text>
+  <text x="1070" y="883" class="s">供電至下圖緩衝器與燈條</text>
+  <rect x="65" y="933" width="1470" height="45" rx="8" fill="#fff3df"/>
+  <text x="82" y="963" class="s">ILIM → IN 為 75mA 典型限流，並非精準最大值；不代表開發板 USB 總電流受限於 75mA。</text>
+
+  <rect x="40" y="1025" width="1520" height="480" rx="18" class="panel"/>
+  <text x="65" y="1069" class="h">3　74AHCT125 DIP14 與燈條資料</text>
+  <rect x="560" y="1165" width="370" height="170" rx="12" class="chip"/>
+  <text x="594" y="1205" class="h">74AHCT125 DIP14</text>
+  <text x="585" y="1250" class="mono">2 1A</text><text x="817" y="1250" class="mono">3 1Y</text>
+  <text x="585" y="1302" class="mono">1 /1OE</text><text x="795" y="1302" class="mono">7 GND</text>
+  <path d="M745 1165v-40" class="pwr"/><text x="640" y="1119" class="b">LED5V → 14 VCC</text>
+  <path d="M180 1242H560" class="sig"/><text x="82" y="1251" class="b">GPIO4</text>
+  <circle cx="325" cy="1242" r="5" class="dot"/><path d="M325 1242v25" class="gnd"/>
+  <rect x="313" y="1267" width="24" height="48" class="res"/><path d="M325 1315v12" class="gnd"/>
+  <use href="#ground" x="325" y="1327"/><text x="82" y="1313" class="s">R3 10kΩ 下拉</text>
+  <path d="M560 1293H485v52" class="gnd"/><use href="#ground" x="485" y="1345"/>
+  <path d="M855 1335v15" class="gnd"/><use href="#ground" x="855" y="1350"/>
+  <path d="M930 1242h80" class="sig"/><rect x="1010" y="1229" width="75" height="26" class="res"/>
+  <path d="M1085 1242H1190" class="sig" marker-end="url(#arrow)"/>
+  <text x="972" y="1212" class="s">R4 330Ω</text><text x="963" y="1291" class="xs">靠近第一顆 DIN</text>
+  <rect x="1200" y="1180" width="300" height="155" rx="12" fill="#fff7ed" stroke="#d34f38" stroke-width="2"/>
+  <text x="1227" y="1218" class="h">WS2812 × 8</text><text x="1227" y="1255" class="b">DIN → DOUT → …</text>
+  <text x="1227" y="1292" class="s">5V 接 LED5V</text><text x="1227" y="1320" class="s">GND 接共同 GND</text>
+  <path d="M1345 1180v-48" class="pwr"/><text x="1250" y="1119" class="b">LED5V</text>
+  <path d="M1345 1335v15" class="gnd"/><use href="#ground" x="1345" y="1350"/>
+  <text x="65" y="1390" class="s">C4 0.1µF：直接跨接 74AHCT125 pin 14 ↔ pin 7，靠近 IC，電源來自 LED5V。</text>
+
+  <rect x="40" y="1430" width="1520" height="325" rx="18" class="panel"/>
+  <text x="65" y="1474" class="h">未用通道與原型限制</text>
+  <text x="65" y="1517" class="b">74AHCT125：輸入 5 / 9 / 12 → GND；/OE 4 / 10 / 13 → LED5V；輸出 6 / 8 / 11 → 不接。</text>
+  <text x="65" y="1558" class="b">8 顆燈；單通道上限 24/255；LED 支路估算上限 50mA；與整塊板子的 USB 電流不同。</text>
+  <text x="65" y="1599" class="b">上電 / suspend / 未掛載關閉 EN；Windows 接管且送出完整畫面後，開電 → 30ms → 黑 → 畫面。</text>
+  <text x="65" y="1640" class="b">/FAULT 觸發後關閉並鎖定，排除原因後重新連接 USB；DIN 在斷電時維持低。</text>
+  <text x="65" y="1681" class="s">資料來源：TI TPS2553 §6 / §9.5、SN74AHCT125、Waveshare 官方原理圖。完整連結見同目錄電路與供電.md。</text>
+  <text x="65" y="1722" class="s">需實板確認 USB 預算、總電流、電壓、浪湧與 suspend 耗電；本圖不表示已完成 USB 電氣合規測試。</text>
+</svg>

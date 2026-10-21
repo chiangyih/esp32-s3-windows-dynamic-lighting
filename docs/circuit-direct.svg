@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1100" viewBox="0 0 1600 1100" role="img" aria-labelledby="title desc">
+  <title id="title">ESP32 S3 直連八顆 WS2812 燈條</title>
+  <desc id="desc">Windows電腦經同一條USB供電與傳輸HID資料。板上5V直接接燈條加5V，GPIO4經建議330歐姆串聯電阻接DIN，GND共接。無電平轉換或電源開關。</desc>
+  <defs>
+    <style>
+      text{font-family:'Microsoft JhengHei','Noto Sans CJK TC',Arial,sans-serif;fill:#17263d}
+      .title{font-size:36px;font-weight:700}.sub{font-size:24px;fill:#516279}
+      .h{font-size:28px;font-weight:700}.b{font-size:24px}.s{font-size:21px}.xs{font-size:19px}
+      .panel{fill:white;stroke:#d5e0eb;stroke-width:2}.chip{fill:#f2f6fb;stroke:#526780;stroke-width:2}
+      .pwr{fill:none;stroke:#d34f38;stroke-width:6}.sig{fill:none;stroke:#2474ba;stroke-width:5}
+      .gnd{fill:none;stroke:#45576d;stroke-width:6}.res{fill:white;stroke:#526780;stroke-width:3}
+    </style>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#2474ba"/></marker>
+  </defs>
+  <rect width="1600" height="1100" fill="#edf2f7"/>
+  <text x="60" y="64" class="title">ESP32-S3 直連 WS2812 燈條</text>
+  <text x="60" y="106" class="sub">Windows 11 原生動態光效 · 8 顆原型 · 同一條 USB 供電與傳輸資料</text>
+
+  <rect x="40" y="140" width="1520" height="660" rx="18" class="panel"/>
+  <text x="65" y="185" class="h">三條接線</text>
+  <text x="65" y="222" class="s">功能接線圖，排針位置不代表實板方位；接線以板上與燈條印刷標示為準。</text>
+
+  <rect x="95" y="255" width="360" height="86" rx="12" class="chip"/>
+  <text x="144" y="291" class="h">Windows 11 電腦</text>
+  <text x="144" y="321" class="s">USB：HID 資料 ＋ 5V 供電</text>
+  <path d="M275 341v54" class="sig" marker-end="url(#arrow)"/>
+  <text x="315" y="380" class="s">USB-C</text>
+
+  <rect x="95" y="410" width="470" height="315" rx="14" class="chip"/>
+  <text x="125" y="452" class="h">Waveshare ESP32-S3</text>
+  <text x="125" y="487" class="s">DEV-KIT-NXRX · N32R16</text>
+  <text x="125" y="543" class="b">5V 排針</text>
+  <text x="125" y="609" class="b">GPIO4</text>
+  <text x="125" y="675" class="b">GND 排針</text>
+  <text x="385" y="543" class="b">USB 5V</text>
+  <text x="385" y="609" class="b">3.3V 訊號</text>
+  <text x="385" y="675" class="b">共地</text>
+
+  <path d="M565 535H1165" class="pwr"/>
+  <text x="735" y="508" class="b" fill="#d34f38">直接供電</text>
+  <path d="M565 601H815" class="sig"/>
+  <rect x="815" y="584" width="100" height="34" rx="2" class="res"/>
+  <path d="M915 601H1150" class="sig" marker-end="url(#arrow)"/>
+  <text x="780" y="574" class="b">建議 330Ω</text>
+  <text x="735" y="650" class="s">電阻靠近第一顆 DIN</text>
+  <path d="M565 667H1165" class="gnd"/>
+
+  <rect x="1165" y="410" width="335" height="315" rx="14" fill="#fff7ed" stroke="#d34f38" stroke-width="2"/>
+  <text x="1195" y="452" class="h">8 顆 WS2812 燈條</text>
+  <text x="1195" y="487" class="s">由照片標示的入口接入</text>
+  <text x="1195" y="543" class="b">+5V</text>
+  <text x="1195" y="609" class="b">DIN → 各顆 LED</text>
+  <text x="1195" y="675" class="b">GND</text>
+  <circle cx="565" cy="535" r="5.5" fill="#d34f38"/><circle cx="1165" cy="535" r="5.5" fill="#d34f38"/>
+  <circle cx="565" cy="601" r="5.5" fill="#2474ba"/><circle cx="565" cy="667" r="5.5" fill="#45576d"/><circle cx="1165" cy="667" r="5.5" fill="#45576d"/>
+
+  <text x="65" y="770" class="s">GPIO9 / GPIO10 不接；GPIO19 / GPIO20 保留給原生 USB；不要把燈條 +5V 接到板 3.3V。</text>
+
+  <rect x="40" y="825" width="1520" height="235" rx="18" class="panel"/>
+  <text x="65" y="870" class="h">直連模式的測試條件</text>
+  <text x="65" y="912" class="b">資料線先約 10–20cm 作工程起點；8 顆燈、單通道上限 24/255、LED 電流估算上限 50mA。</text>
+  <text x="65" y="950" class="s">無 TPS2553、無 74AHCT125。低亮度不會提高資料電壓；3.3V DIN 是否可靠取決於燈珠版本。</text>
+  <text x="65" y="988" class="s">停用 / suspend 時送黑，仍有靜態電流；無硬體限流。沿用現有去耦，不直接在 USB 5V 加大電容。</text>
+  <text x="65" y="1026" class="xs">照片可確認 8 顆與 +5V / DIN / GND；版本與幾何尺寸待確認。詳細說明及官方來源：同目錄直連接線.md。</text>
+</svg>
