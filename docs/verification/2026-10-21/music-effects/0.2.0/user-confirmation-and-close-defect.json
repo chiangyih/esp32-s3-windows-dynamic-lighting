@@ -1,0 +1,23 @@
+{
+  "RecordedAtUtc": "2026-10-21T06:51:36.1247237+00:00",
+  "Version": "0.2.0.0",
+  "EvidenceSource": "User reply after setting Windows background lighting priority",
+  "UserStatement": "三種效果都有反應，暫停後漸暗",
+  "PhysicalModes": [
+    "Breathing",
+    "Flow",
+    "Sequential"
+  ],
+  "PhysicalObservation": "Passed by user observation; not instrument measurement",
+  "ApiObservationAfterUserReply": "Own app labels showed acquired control; no completed exit report because later Stop/close deadlocked",
+  "SubsequentFailure": "Native LampArray send held managed gate while AvailabilityChanged callback waited same gate. UI StopSync blocked on gate. Managed stack captured; no raw audio or full memory dump.",
+  "NormalCloseAttempts": "Two external WM_CLOSE attempts did not exit. Explicit close-button message entered closing while prior UI StopSync remained blocked.",
+  "Recovery": {
+    "TargetProcessName": "Esp32MusicSync",
+    "TargetPid": 19376,
+    "OnlyVerifiedLaunchedTestProcessTerminated": true,
+    "UnsavedPreferences": "Normal close handler already wrote local preferences; packaged GainDb20 read back",
+    "NewFixedVersion": "0.2.1.0",
+    "FixedVersionValidation": "Pending"
+  }
+}

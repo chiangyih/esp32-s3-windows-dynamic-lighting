@@ -1,0 +1,42 @@
+{
+  "ObservedAtUtc": "2026-10-21T06:57:44.0347057+00:00",
+  "Version": "0.2.1.0",
+  "Registered": true,
+  "ReleaseBuildWarnings": 0,
+  "ReleaseBuildErrors": 0,
+  "TotalUnitChecks": 115,
+  "NormalCloseCases": 4,
+  "ActiveSilentStopRestartAndClose": "Passed, control true;2submittedblackframes;no errors",
+  "ActiveAudioStopRestartAndClose": {
+    "Status": "Passed",
+    "HasControlDuringPlayback": true,
+    "SentFrames": 211,
+    "MaxRms": 0.45364587323111666,
+    "MaxTempoBpm": 120,
+    "GeneratedSignal": "10second100Hzcarrier,120BPM100msbursts,amplitude0.04,inmemoryonly",
+    "VolumeChanged": false,
+    "FinalRms": 0,
+    "FinalLevel": 0,
+    "StopRestartPassed": true,
+    "ShutdownElapsedMilliseconds": 125.1471,
+    "OriginalPidGone": true,
+    "WorkerCleanupErrors": 0,
+    "UiCleanupErrors": 0,
+    "LastHasControl": false,
+    "LastHasControlNote": "Control available throughsecond12;unavailable13-15. No policybypass. Actual stop/restart occurredwhilecontrolavailable."
+  },
+  "PhysicalModes": {
+    "Source": "User0.2.0observation",
+    "Statement": "三種效果都有反應，暫停後漸暗",
+    "NoNewPhysicalObservationClaimFor021": true
+  },
+  "Old020Deadlock": "Preserved under0.2.0evidence;onlyverifiedoldPIDterminated",
+  "CurrentNormalApp": {
+    "Version": "0.2.1.0",
+    "ProcessId": 32620,
+    "AutoStart": true,
+    "ReportOrExerciseFlags": false
+  },
+  "Wack": "NotRun",
+  "StoreCertified": false
+}

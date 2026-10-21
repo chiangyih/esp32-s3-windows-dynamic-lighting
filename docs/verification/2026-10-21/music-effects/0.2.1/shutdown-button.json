@@ -1,0 +1,130 @@
+{
+  "ObservedAtUtc": "2026-10-21T06:53:31.197742+00:00",
+  "Version": "0.2.1",
+  "Runtime": ".NET 10.0.13",
+  "LanguageVersion": "C# 10.0",
+  "PackageIdentity": false,
+  "DurationSeconds": 4.1310095,
+  "AudioPackets": 10,
+  "MaximumRms": 0,
+  "AudioDevice": "\u5587\u53ED (High Definition Audio Device)",
+  "AudioStatus": "\u6B63\u5728\u64F7\u53D6\u96FB\u8166\u64AD\u653E\u97F3\u8A0A\uFF1A\u5587\u53ED (High Definition Audio Device)",
+  "ConnectedCount": 1,
+  "LightingStatus": "\u958B\u767C\u7248\u5C1A\u7121\u5957\u4EF6\u8EAB\u5206\uFF1B\u8ACB\u4FDD\u6301\u8996\u7A97\u5728\u524D\u666F\uFF0C\u80CC\u666F\u540C\u6B65\u8ACB\u5B89\u88DD MSIX\u3002",
+  "EverHadLightingControl": false,
+  "SentFrames": 0,
+  "BlackFramesSent": 0,
+  "CpuMilliseconds": 2171.875,
+  "CpuPercentOfOneCore": 52.569102092264174,
+  "CpuPercentOfMachine": 13.1422739325566,
+  "SteadyStateSeconds": 0,
+  "SteadyCpuPercentOfOneCore": null,
+  "PeakWorkingSetBytes": 97775616,
+  "PeakPrivateBytes": 24182784,
+  "Threads": 22,
+  "StartError": null,
+  "Samples": [
+    {
+      "Second": 1,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 2,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 3,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 4,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    }
+  ],
+  "PhysicalLedObservation": "API results do not replace physical observation.",
+  "AudioStored": false,
+  "Theme": "Tiffany blue / graphite",
+  "CloseRequestedBy": "button",
+  "EffectSettings": {
+    "Signal": 0,
+    "Palette": 1,
+    "Animation": 1,
+    "Speed": 0,
+    "StyleCyclesPerSecond": 0.75,
+    "CustomCyclesPerSecond": 1,
+    "ThemeColor": {
+      "R": 0,
+      "G": 120,
+      "B": 212
+    },
+    "CustomColorCount": 2,
+    "Color1": {
+      "R": 129,
+      "G": 216,
+      "B": 208
+    },
+    "Color2": {
+      "R": 133,
+      "G": 115,
+      "B": 230
+    },
+    "Color3": {
+      "R": 248,
+      "G": 178,
+      "B": 102
+    },
+    "Color4": {
+      "R": 240,
+      "G": 128,
+      "B": 168
+    }
+  },
+  "EffectControlChecks": [],
+  "SettingsLoaded": true,
+  "PreferenceSaveSucceeded": null,
+  "LifecycleExerciseRequested": false,
+  "StopRestartPassed": false,
+  "LifecycleStopSnapshot": null,
+  "LifecycleError": null,
+  "Shutdown": {
+    "IsDisposed": true,
+    "AudioWorkerRunning": false,
+    "RenderWorkerRunning": false,
+    "LightingDiscoveryRunning": false,
+    "CleanupErrors": [],
+    "CleanupWorkerRunning": false
+  },
+  "FormDisposed": true,
+  "UiComponentsDisposed": true,
+  "OwnedFontsDisposed": true,
+  "UiCleanupErrors": [],
+  "ShutdownElapsedMilliseconds": 201.071
+}

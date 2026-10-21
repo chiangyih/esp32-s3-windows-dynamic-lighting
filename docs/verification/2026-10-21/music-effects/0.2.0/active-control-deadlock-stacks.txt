@@ -1,0 +1,94 @@
+Thread (0x732C):
+  [Native Frames]
+  System.Private.CoreLib.il!System.Threading.Monitor.Enter_Slowpath(class System.Object)
+  System.Private.CoreLib.il!System.Threading.Monitor.Enter(class System.Object,bool&)
+  Esp32MusicSync!MusicSync.Lighting.LampArrayController.Stop()
+  Esp32MusicSync!MusicSync.Core.SyncEngine.Cleanup(class System.Action,class System.String)
+  Esp32MusicSync!MusicSync.Core.SyncEngine.Stop()
+  Esp32MusicSync!MusicSync.UI.MainForm.StopSync()
+  Esp32MusicSync!MusicSync.UI.MainForm.<WireEvents>b__84_1(class System.Object,class System.EventArgs)
+  System.Windows.Forms.il!System.Windows.Forms.Button.OnClick(class System.EventArgs)
+  System.Windows.Forms.il!System.Windows.Forms.Button.OnMouseUp(class System.Windows.Forms.MouseEventArgs)
+  Esp32MusicSync!MusicSync.UI.ActionButton.OnMouseUp(class System.Windows.Forms.MouseEventArgs)
+  System.Windows.Forms.il!System.Windows.Forms.Control.WmMouseUp(value class System.Windows.Forms.Message&,value class System.Windows.Forms.MouseButtons,int32)
+  System.Windows.Forms.il!System.Windows.Forms.Control.WndProc(value class System.Windows.Forms.Message&)
+  System.Windows.Forms.il!System.Windows.Forms.Button.WndProc(value class System.Windows.Forms.Message&)
+  System.Windows.Forms.il!System.Windows.Forms.NativeWindow.Callback(value class Windows.Win32.Foundation.HWND,unsigned int32,value class Windows.Win32.Foundation.WPARAM,value class Windows.Win32.Foundation.LPARAM)
+  ?!?
+  System.Windows.Forms.il!System.Windows.Forms.Application+LightThreadContext.FPushMessageLoop(value class Microsoft.Office.msoloop)
+  System.Windows.Forms.il!System.Windows.Forms.Application+LightThreadContext.RunMessageLoop(value class Microsoft.Office.msoloop,bool)
+  System.Windows.Forms.il!System.Windows.Forms.Application+ThreadContext.RunMessageLoopInner(value class Microsoft.Office.msoloop,class System.Windows.Forms.ApplicationContext)
+  System.Windows.Forms.il!System.Windows.Forms.Application.Run(class System.Windows.Forms.Form)
+  Esp32MusicSync!MusicSync.Program.Main(class System.String[])
+
+Thread (0x5E50):
+  [Native Frames]
+  ?!?
+  Microsoft.Win32.SystemEvents.il!Microsoft.Win32.SystemEvents.WindowThreadProc()
+  System.Private.CoreLib.il!System.Threading.Thread.StartCallback()
+
+Thread (0xCF0):
+  [Native Frames]
+  System.Private.CoreLib.il!System.Threading.WaitHandle.WaitOneNoCheck(int32,bool,class System.Object,value class WaitHandleWaitSourceMap)
+  System.Private.CoreLib.il!System.Threading.TimerQueue.TimerThread()
+  System.Private.CoreLib.il!System.Threading.Thread.StartCallback()
+
+Thread (0x6E64):
+  [Native Frames]
+  System.Private.CoreLib.il!System.Threading.WaitHandle.WaitOneNoCheck(int32,bool,class System.Object,value class WaitHandleWaitSourceMap)
+  System.Private.CoreLib.il!System.Threading.PortableThreadPool+GateThread.GateThreadStart()
+  System.Private.CoreLib.il!System.Threading.Thread.StartCallback()
+
+Thread (0x880):
+  [Native Frames]
+  System.Private.CoreLib.il!System.Threading.Monitor.Enter_Slowpath(class System.Object)
+  System.Private.CoreLib.il!System.Threading.Monitor.Enter(class System.Object,bool&)
+  Esp32MusicSync!MusicSync.Lighting.LampArrayController.OnAvailabilityChanged(class Windows.Devices.Lights.LampArray,class System.Object)
+  Microsoft.Windows.SDK.NET!WinRT._EventSource_global__Windows_Foundation_TypedEventHandler_global__Windows_Devices_Lights_LampArray__object_+EventState.<GetEventInvoke>b__1_0(class Windows.Devices.Lights.LampArray,class System.Object)
+  Microsoft.Windows.SDK.NET!WinRT.GenericTypeInstantiations.Windows_Foundation_TypedEventHandler_2_Windows_Devices_Lights_LampArray__object.Do_Abi_Invoke(int,int,int)
+
+Thread (0x5BBC):
+  [Native Frames]
+  System.Private.CoreLib.il!System.Threading.LowLevelLifoSemaphore.WaitForSignal(int32)
+  System.Private.CoreLib.il!System.Threading.LowLevelLifoSemaphore.Wait(int32,bool)
+  System.Private.CoreLib.il!System.Threading.PortableThreadPool+WorkerThread.WorkerThreadStart()
+  System.Private.CoreLib.il!System.Threading.Thread.StartCallback()
+
+Thread (0x4AA0):
+  [Native Frames]
+  Esp32MusicSync!MusicSync.Lighting.LampArrayController.TrySendFrame(value class System.ReadOnlySpan`1<value class MusicSync.Lighting.LedColor>)
+  Esp32MusicSync!MusicSync.Core.SyncEngine+<RenderAsync>d__86.MoveNext()
+  System.Private.CoreLib.il!System.Threading.ExecutionContext.RunInternal(class System.Threading.ExecutionContext,class System.Threading.ContextCallback,class System.Object)
+  System.Private.CoreLib.il!System.Threading.Tasks.Sources.ManualResetValueTaskSourceCore`1[System.Boolean].SignalCompletion()
+  System.Private.CoreLib.il!System.Threading.TimerQueue.FireNextTimers()
+  System.Private.CoreLib.il!System.Threading.ThreadPoolWorkQueue.Dispatch()
+  System.Private.CoreLib.il!System.Threading.PortableThreadPool+WorkerThread.WorkerThreadStart()
+  System.Private.CoreLib.il!System.Threading.Thread.StartCallback()
+
+Thread (0x62C4):
+  [Native Frames]
+  System.Private.CoreLib.il!System.Threading.LowLevelLifoSemaphore.WaitForSignal(int32)
+  System.Private.CoreLib.il!System.Threading.LowLevelLifoSemaphore.Wait(int32,bool)
+  System.Private.CoreLib.il!System.Threading.PortableThreadPool+WorkerThread.WorkerThreadStart()
+  System.Private.CoreLib.il!System.Threading.Thread.StartCallback()
+
+Thread (0x87FC):
+  [Native Frames]
+  System.Private.CoreLib.il!System.Threading.Monitor.Enter_Slowpath(class System.Object)
+  System.Private.CoreLib.il!System.Threading.Monitor.Enter(class System.Object,bool&)
+  Esp32MusicSync!MusicSync.Lighting.LampArrayController.Dispose()
+  Esp32MusicSync!MusicSync.Core.SyncEngine.Cleanup(class System.Action,class System.String)
+  Esp32MusicSync!MusicSync.Core.SyncEngine.Dispose()
+  Esp32MusicSync!MusicSync.UI.MainForm.<OnFormClosing>b__94_0()
+  System.Private.CoreLib.il!System.Threading.ExecutionContext.RunFromThreadPoolDispatchLoop(class System.Threading.Thread,class System.Threading.ExecutionContext,class System.Threading.ContextCallback,class System.Object)
+  System.Private.CoreLib.il!System.Threading.Tasks.Task.ExecuteWithThreadLocal(class System.Threading.Tasks.Task&,class System.Threading.Thread)
+  System.Private.CoreLib.il!System.Threading.ThreadPoolWorkQueue.Dispatch()
+  System.Private.CoreLib.il!System.Threading.PortableThreadPool+WorkerThread.WorkerThreadStart()
+  System.Private.CoreLib.il!System.Threading.Thread.StartCallback()
+
+Thread (0x603C):
+  [Native Frames]
+  System.Private.CoreLib.il!System.Threading.LowLevelLifoSemaphore.WaitForSignal(int32)
+  System.Private.CoreLib.il!System.Threading.LowLevelLifoSemaphore.Wait(int32,bool)
+  System.Private.CoreLib.il!System.Threading.PortableThreadPool+WorkerThread.WorkerThreadStart()
+  System.Private.CoreLib.il!System.Threading.Thread.StartCallback()

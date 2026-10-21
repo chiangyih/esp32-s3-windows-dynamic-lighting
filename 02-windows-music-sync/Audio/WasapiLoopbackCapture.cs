@@ -1,10 +1,11 @@
 using System.Diagnostics;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 
 namespace MusicSync.Audio;
 
 /// <summary>
-/// Captures only the default multimedia render endpoint's mixed playback levels.
+/// Captures the default multimedia render endpoint's mixed playback features.
 /// Raw audio is measured in the WASAPI buffer and is never copied, saved, or uploaded.
 /// </summary>
 public sealed class WasapiLoopbackCapture : IDisposable
@@ -15,16 +16,15 @@ public sealed class WasapiLoopbackCapture : IDisposable
     private string _lastDeviceName = "Windows 預設播放裝置";
     private string? _lastStatus;
     private bool _disposed;
+    private readonly ConcurrentQueue<string> _cleanupErrors = new();
 
     public event Action<AudioSnapshot>? SampleAvailable;
     public event Action<string>? StatusChanged;
 
     public string LastDeviceName => Volatile.Read(ref _lastDeviceName);
+    public string[] CleanupErrors => _cleanupErrors.ToArray();
 
-    public bool IsRunning
-    {
-        get { lock (_gate) return _worker?.IsAlive == true; }
-    }
+    public bool IsRunning => Volatile.Read(ref _worker)?.IsAlive == true;
 
     public void Start()
     {
@@ -36,9 +36,25 @@ public sealed class WasapiLoopbackCapture : IDisposable
 
             _cancellation?.Dispose();
             _cancellation = new CancellationTokenSource();
-            var cancellation = _cancellation.Token;
+            var source = _cancellation;
+            var cancellation = source.Token;
             _lastStatus = null;
-            _worker = new Thread(() => CaptureWorker(cancellation))
+            _worker = new Thread(() =>
+            {
+                try { CaptureWorker(cancellation); }
+                finally
+                {
+                    lock (_gate)
+                    {
+                        if (ReferenceEquals(_cancellation, source))
+                        {
+                            _worker = null;
+                            _cancellation = null;
+                        }
+                        source.Dispose();
+                    }
+                }
+            })
             {
                 IsBackground = true,
                 Name = "MusicSync WASAPI loopback"
@@ -58,17 +74,9 @@ public sealed class WasapiLoopbackCapture : IDisposable
         }
 
         // Native audio drivers can occasionally stall in a COM call. Never hold the UI indefinitely.
-        if (worker is not null && worker != Thread.CurrentThread && worker.Join(3000))
+        if (worker is not null && worker != Thread.CurrentThread && !worker.Join(3000))
         {
-            lock (_gate)
-            {
-                if (ReferenceEquals(_worker, worker))
-                {
-                    _worker = null;
-                    _cancellation?.Dispose();
-                    _cancellation = null;
-                }
-            }
+            _cleanupErrors.Enqueue("AudioWorker: stop exceeded 3000 ms; process exit releases remaining native resources.");
         }
     }
 
@@ -80,8 +88,13 @@ public sealed class WasapiLoopbackCapture : IDisposable
                 return;
             _disposed = true;
         }
-        Stop();
-        GC.SuppressFinalize(this);
+        try { Stop(); }
+        finally
+        {
+            SampleAvailable = null;
+            StatusChanged = null;
+            GC.SuppressFinalize(this);
+        }
     }
 
     private void CaptureWorker(CancellationToken cancellation)
@@ -127,8 +140,8 @@ public sealed class WasapiLoopbackCapture : IDisposable
             finally
             {
                 if (registered && enumerator is not null)
-                    enumerator.UnregisterEndpointNotificationCallback(notification);
-                WasapiNative.Release(enumerator);
+                    Cleanup(() => enumerator.UnregisterEndpointNotificationCallback(notification), "EndpointNotification");
+                Cleanup(() => WasapiNative.Release(enumerator), "DeviceEnumerator");
                 GC.KeepAlive(notification);
                 PublishSample(0, 0);
             }
@@ -174,8 +187,7 @@ public sealed class WasapiLoopbackCapture : IDisposable
             var lastPacket = lastPublish;
             var publishInterval = Stopwatch.Frequency / 30;
             var silenceInterval = Stopwatch.Frequency / 8;
-            double squareSum = 0;
-            double peak = 0;
+            var features = new AudioFeatureAnalyzer(format);
             long sampleCount = 0;
 
             while (!cancellation.IsCancellationRequested)
@@ -194,18 +206,21 @@ public sealed class WasapiLoopbackCapture : IDisposable
                     try
                     {
                         lastPacket = Stopwatch.GetTimestamp();
+                        if ((flags & 0x00000001) != 0) // AUDCLNT_BUFFERFLAGS_DATA_DISCONTINUITY
+                        {
+                            features.Reset();
+                            sampleCount = 0;
+                        }
                         if ((flags & WasapiNative.Silent) != 0 || data == IntPtr.Zero)
                         {
+                            features.AddSilence(checked((int)frames));
                             sampleCount += (long)frames * format.Channels;
                         }
                         else
                         {
                             var bytes = checked((int)frames * format.BlockAlign);
-                            var statistics = PcmSampleDecoder.Analyze(
-                                new ReadOnlySpan<byte>((void*)data, bytes), checked((int)frames), format);
-                            squareSum += statistics.SquareSum;
-                            sampleCount += statistics.SampleCount;
-                            peak = Math.Max(peak, statistics.Peak);
+                            features.AddAudio(new ReadOnlySpan<byte>((void*)data, bytes), checked((int)frames));
+                            sampleCount += (long)frames * format.Channels;
                         }
                     }
                     finally
@@ -218,18 +233,15 @@ public sealed class WasapiLoopbackCapture : IDisposable
                 var now = Stopwatch.GetTimestamp();
                 if (sampleCount > 0 && now - lastPublish >= publishInterval)
                 {
-                    PublishSample(Math.Sqrt(squareSum / sampleCount), peak);
-                    squareSum = 0;
-                    peak = 0;
+                    SampleAvailable?.Invoke(features.TakeSnapshot(now));
                     sampleCount = 0;
                     lastPublish = now;
                 }
                 else if (now - lastPacket >= silenceInterval && now - lastPublish >= silenceInterval)
                 {
                     // Some render endpoints stop raising events altogether when playback is paused.
+                    features.Reset();
                     PublishSample(0, 0);
-                    squareSum = 0;
-                    peak = 0;
                     sampleCount = 0;
                     lastPublish = now;
                 }
@@ -238,16 +250,16 @@ public sealed class WasapiLoopbackCapture : IDisposable
         finally
         {
             if (started && audioClient is not null)
-                audioClient.Stop();
-            WasapiNative.Release(captureClient);
-            WasapiNative.Release(audioClient);
-            WasapiNative.Release(endpoint);
+                Cleanup(() => audioClient.Stop(), "AudioClient.Stop");
+            Cleanup(() => WasapiNative.Release(captureClient), "CaptureClient");
+            Cleanup(() => WasapiNative.Release(audioClient), "AudioClient");
+            Cleanup(() => WasapiNative.Release(endpoint), "AudioEndpoint");
             if (formatPointer != IntPtr.Zero)
-                Marshal.FreeCoTaskMem(formatPointer);
+                Cleanup(() => Marshal.FreeCoTaskMem(formatPointer), "MixFormat");
         }
     }
 
-    private static string ReadFriendlyName(IMMDevice endpoint)
+    private string ReadFriendlyName(IMMDevice endpoint)
     {
         IPropertyStore? store = null;
         var value = default(PropVariant);
@@ -266,9 +278,15 @@ public sealed class WasapiLoopbackCapture : IDisposable
         }
         finally
         {
-            WasapiNative.PropVariantClear(ref value);
-            WasapiNative.Release(store);
+            Cleanup(() => WasapiNative.PropVariantClear(ref value), "FriendlyNameValue");
+            Cleanup(() => WasapiNative.Release(store), "PropertyStore");
         }
+    }
+
+    private void Cleanup(Action action, string stage)
+    {
+        try { action(); }
+        catch (Exception e) { _cleanupErrors.Enqueue($"{stage}: {e.GetType().Name} 0x{e.HResult:X8}"); }
     }
 
     private void PublishSample(double rms, double peak) =>

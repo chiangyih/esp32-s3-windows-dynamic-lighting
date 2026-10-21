@@ -58,7 +58,8 @@ internal static class PcmSampleDecoder
     /// Measures the interleaved channels independently, avoiding cancellation between stereo channels.
     /// WAVEFORMATEXTENSIBLE integer valid bits are left aligned in their sample containers.
     /// </summary>
-    public static AudioBlockStatistics Analyze(ReadOnlySpan<byte> audio, int frames, WaveFormatInfo format)
+    public static AudioBlockStatistics Analyze(ReadOnlySpan<byte> audio, int frames, WaveFormatInfo format,
+        AudioFeatureAnalyzer? features = null)
     {
         if (frames < 0 || (long)frames * format.BlockAlign > audio.Length)
             throw new ArgumentException("音訊封包長度與格式不符。", nameof(audio));
@@ -94,7 +95,9 @@ internal static class PcmSampleDecoder
                 value = Math.Clamp(value, -1.0, 1.0);
                 squareSum += value * value;
                 peak = Math.Max(peak, Math.Abs(value));
+                features?.AddSample(value, channel);
             }
+            features?.FinishFrame();
         }
 
         return new AudioBlockStatistics(squareSum, (long)frames * format.Channels, peak);

@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Collections.Concurrent;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using Windows.Devices.Enumeration;
@@ -10,8 +11,8 @@ namespace MusicSync.Lighting;
 
 /// <summary>
 /// Controls only this project's unique eight-lamp device through Windows lighting arbitration.
-/// Events may be raised on a worker thread. This class never changes global lighting settings,
-/// IsEnabled, or BrightnessLevel, and never opens a raw HID handle.
+/// The state gate protects managed fields only: no Windows lighting calls or event accessors
+/// may run while it is held, because those calls can synchronously dispatch native callbacks.
 /// </summary>
 public sealed class LampArrayController : IDisposable
 {
@@ -21,7 +22,7 @@ public sealed class LampArrayController : IDisposable
     private const int TargetProductId = 0x1001;
     private readonly object _gate = new();
     private readonly SemaphoreSlim _refreshGate = new(1, 1);
-    private readonly Dictionary<string, DeviceInformation> _devices = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> _devices = new(StringComparer.Ordinal);
     private readonly LampColor[] _colors = new LampColor[TargetLampCount];
     private readonly LedColor[] _lastColors = new LedColor[TargetLampCount];
     private readonly int[] _indices = { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -41,8 +42,17 @@ public sealed class LampArrayController : IDisposable
     private bool _availabilitySubscribed;
     private int _connectedCount;
     private int _generation;
+    private int _sendInProgress;
+    private int _refreshQueued;
+    private int _controlRevision;
+    private int _deviceRevision;
     private long _lastSentTicks;
     private long _minimumIntervalTicks;
+    private CancellationTokenSource? _discoveryCancellation;
+    private readonly List<CancellationTokenSource> _retiredCancellations = new();
+    private readonly ConcurrentQueue<string> _cleanupErrors = new();
+    private int _refreshOperations;
+    private bool _refreshGateDisposed;
 
     public LampArrayController()
     {
@@ -54,128 +64,173 @@ public sealed class LampArrayController : IDisposable
     }
 
     public event Action<string>? StatusChanged;
-
     public bool HasPackageIdentity { get; }
-    // SDK metadata marks these APIs as 26100. Runtime feature detection also covers earlier
-    // Windows builds to which Microsoft has delivered the dynamic-lighting APIs.
     [SupportedOSPlatformGuard("windows10.0.26100.0")]
     public bool SupportsControlAvailability => _supportsControlAvailability;
-    public string Status { get { lock (_gate) return _status; } }
-    public bool IsAvailable { get { lock (_gate) return _available; } }
-    public int ConnectedCount { get { lock (_gate) return _connectedCount; } }
-    public string DeviceSummary { get { lock (_gate) return _deviceSummary; } }
+    public string Status => Volatile.Read(ref _status);
+    public bool IsAvailable => Volatile.Read(ref _available);
+    public int ConnectedCount => Volatile.Read(ref _connectedCount);
+    public string DeviceSummary => Volatile.Read(ref _deviceSummary);
+    public bool IsDiscoveryRunning => Volatile.Read(ref _started) ||
+        Volatile.Read(ref _refreshOperations) > 0 || Volatile.Read(ref _sendInProgress) != 0;
+    public string[] CleanupErrors => _cleanupErrors.ToArray();
 
     public async Task StartAsync()
     {
         Task enumeration;
         int generation;
-        try
+        CancellationToken cancellation;
+        lock (_gate)
         {
-            lock (_gate)
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_started) return;
+            if (!SupportsControlAvailability)
             {
-                ObjectDisposedException.ThrowIf(_disposed, this);
-                if (_started) return;
-                if (!SupportsControlAvailability)
-                    throw new PlatformNotSupportedException();
-                _started = true;
-                _enumerated = false;
-                generation = ++_generation;
-                _devices.Clear();
-                _enumerationFinished = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
-                enumeration = _enumerationFinished.Task;
-                _refreshTimer = new System.Threading.Timer(OnRefreshTimer, generation, Timeout.Infinite, Timeout.Infinite);
-                _watcher = DeviceInformation.CreateWatcher(LampArray.GetDeviceSelector());
-                _watcher.Added += OnAdded;
-                _watcher.Updated += OnUpdated;
-                _watcher.Removed += OnRemoved;
-                _watcher.EnumerationCompleted += OnEnumerationCompleted;
-                _watcher.Start();
+                PublishUnsupportedStatus();
+                return;
             }
-        }
-        catch (ObjectDisposedException) { throw; }
-        catch (PlatformNotSupportedException)
-        {
-            Stop();
-            PublishStatus("此 Windows 版本缺少 LampArray 控制權 API；請更新 Windows 11 後重試。為避免誤控，已停止送色。");
-            return;
-        }
-        catch (Exception ex)
-        {
-            Stop();
-            PublishStatus($"無法啟動燈條搜尋（0x{ex.HResult:X8}）。");
-            return;
+            _started = true;
+            _enumerated = false;
+            generation = ++_generation;
+            _discoveryCancellation = new CancellationTokenSource();
+            cancellation = _discoveryCancellation.Token;
+            _devices.Clear();
+            _enumerationFinished = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
+            enumeration = _enumerationFinished.Task;
+            _refreshQueued = 0;
+            _refreshTimer = new System.Threading.Timer(OnRefreshTimer, generation, Timeout.Infinite, Timeout.Infinite);
+            // Keep the cancellation source alive until watcher setup and the startup await finish.
+            Interlocked.Increment(ref _refreshOperations);
         }
 
-        PublishStatus("正在搜尋 ESP32-S3 的 8 顆燈條…");
+        DeviceWatcher? setupWatcher = null;
         try
         {
-            await enumeration.WaitAsync(TimeSpan.FromSeconds(8)).ConfigureAwait(false);
-            await RefreshDevicesAsync(generation).ConfigureAwait(false);
+            setupWatcher = DeviceInformation.CreateWatcher(LampArray.GetDeviceSelector());
+            setupWatcher.Added += OnAdded;
+            setupWatcher.Updated += OnUpdated;
+            setupWatcher.Removed += OnRemoved;
+            setupWatcher.EnumerationCompleted += OnEnumerationCompleted;
+            bool current;
+            lock (_gate)
+            {
+                current = _started && generation == _generation && !_disposed;
+                if (current) _watcher = setupWatcher;
+            }
+            if (!current)
+            {
+                ReleaseWatcher(setupWatcher);
+                return;
+            }
+            setupWatcher.Start();
+            if (!IsCurrentGeneration(generation))
+            {
+                // Stop may have raced the native Start call after the managed watcher was detached.
+                ReleaseWatcher(setupWatcher);
+                return;
+            }
+            PublishStatus("正在搜尋 ESP32-S3 的 8 顆燈條…");
+            await enumeration.WaitAsync(TimeSpan.FromSeconds(8), cancellation).ConfigureAwait(false);
+            await RefreshDevicesAsync(generation, cancellation).ConfigureAwait(false);
         }
         catch (OperationCanceledException) { }
         catch (Exception ex)
         {
             if (IsCurrentGeneration(generation))
+            {
+                Stop();
                 PublishStatus($"燈條搜尋失敗（0x{ex.HResult:X8}），可停止後重試。");
+            }
+            // Also covers a partial native event-subscription setup that failed before the
+            // watcher reference was committed to managed state. Removing twice is harmless.
+            if (setupWatcher is not null) ReleaseWatcher(setupWatcher);
+        }
+        finally
+        {
+            Interlocked.Decrement(ref _refreshOperations);
+            TryDisposeCoordination();
         }
     }
 
-    /// <summary>
-    /// Returns true only when a frame was submitted to Windows. Identical frames, unavailable
-    /// devices, and calls faster than MinUpdateInterval are skipped without allocating a frame.
-    /// A successful call is not proof of physical light output.
-    /// </summary>
+    // Called only for the runtime feature check; no callbacks or native objects are involved.
+    private void PublishUnsupportedStatus() =>
+        Volatile.Write(ref _status, "此 Windows 版本缺少 LampArray 控制權 API；請更新 Windows 11 後重試。為避免誤控，已停止送色。");
+
+    /// <summary>Submits a frame without holding the managed state gate across native I/O.</summary>
     public bool TrySendFrame(ReadOnlySpan<LedColor> colors)
     {
         if (colors.Length != TargetLampCount)
             throw new ArgumentException("每個畫面必須包含 8 顆燈。", nameof(colors));
-
+        // One render worker normally calls this method. A concurrent call skips rather than
+        // waiting; the reusable native colour buffer remains owned until its call returns.
+        if (Interlocked.CompareExchange(ref _sendInProgress, 1, 0) != 0) return false;
+        LampArray? lamp = null;
+        int generation = 0;
         string? changedStatus = null;
-        bool submitted = false;
         bool refresh = false;
-        lock (_gate)
+        bool submitted = false;
+        try
         {
-            if (!_started || _lamp is null) return false;
-            try
+            long now = Stopwatch.GetTimestamp();
+            lock (_gate)
             {
-                string status = ReadControlStatus(_lamp, out bool canSend);
-                _available = canSend;
-                if (!canSend)
-                {
-                    _forceSend = true;
-                    if (_status != status) _status = changedStatus = status;
-                }
-                else
-                {
-                    if (_status != status) _status = changedStatus = status;
-                    long now = Stopwatch.GetTimestamp();
-                    bool due = _lastSentTicks == 0 || now - _lastSentTicks >= _minimumIntervalTicks;
-                    if (due && (_forceSend || !colors.SequenceEqual(_lastColors)))
-                    {
-                        for (int i = 0; i < TargetLampCount; i++)
-                        {
-                            LedColor color = colors[i];
-                            _colors[i] = LampColor.FromArgb(255, color.R, color.G, color.B);
-                        }
-                        _lamp.SetColorsForIndices(_colors, _indices);
-                        colors.CopyTo(_lastColors);
-                        _lastSentTicks = now;
-                        _forceSend = false;
-                        submitted = true;
-                    }
-                }
+                if (!_started || _lamp is null) return false;
+                lamp = _lamp;
+                generation = _generation;
+                bool due = _lastSentTicks == 0 || now - _lastSentTicks >= _minimumIntervalTicks;
+                if (!due || (!_forceSend && colors.SequenceEqual(_lastColors))) return false;
             }
-            catch (Exception ex)
+
+            int controlRevision = Volatile.Read(ref _controlRevision);
+            string status = ReadControlStatus(lamp, out bool canSend);
+            lock (_gate)
             {
-                _available = false;
-                _forceSend = true;
-                string status = $"燈條暫時無法更新（0x{ex.HResult:X8}），正在重新搜尋。";
+                if (!IsSelectedLocked(lamp, generation)) return false;
+                _available = canSend;
                 if (_status != status) _status = changedStatus = status;
-                refresh = true;
+                if (!canSend) _forceSend = true;
+            }
+            if (!canSend) return false;
+
+            for (int i = 0; i < TargetLampCount; i++)
+            {
+                LedColor color = colors[i];
+                _colors[i] = LampColor.FromArgb(255, color.R, color.G, color.B);
+            }
+            // A control callback can arrive inline here. It must not wait on _gate or perform
+            // another native lighting operation; OnAvailabilityChanged only queues a refresh.
+            lamp.SetColorsForIndices(_colors, _indices);
+            submitted = true;
+            lock (_gate)
+            {
+                if (IsSelectedLocked(lamp, generation))
+                {
+                    colors.CopyTo(_lastColors);
+                    _lastSentTicks = now;
+                    _forceSend = Volatile.Read(ref _controlRevision) != controlRevision;
+                }
             }
         }
-        if (changedStatus is not null) StatusChanged?.Invoke(changedStatus);
-        if (refresh) QueueRefresh();
+        catch (Exception ex)
+        {
+            lock (_gate)
+            {
+                if (lamp is not null && IsSelectedLocked(lamp, generation))
+                {
+                    _available = false;
+                    _forceSend = true;
+                    string status = $"燈條暫時無法更新（0x{ex.HResult:X8}），正在重新搜尋。";
+                    if (_status != status) _status = changedStatus = status;
+                    refresh = true;
+                }
+            }
+        }
+        finally
+        {
+            Volatile.Write(ref _sendInProgress, 0);
+            if (changedStatus is not null) StatusChanged?.Invoke(changedStatus);
+            if (refresh) QueueRefresh();
+        }
         return submitted;
     }
 
@@ -183,50 +238,63 @@ public sealed class LampArrayController : IDisposable
     {
         DeviceWatcher? watcher;
         System.Threading.Timer? timer;
+        CancellationTokenSource? cancellation;
+        SelectedLamp released;
+        int stoppedGeneration;
         lock (_gate)
         {
             if (!_started) return;
             _started = false;
-            ++_generation;
+            stoppedGeneration = ++_generation;
             _enumerationFinished?.TrySetCanceled();
             _enumerationFinished = null;
             watcher = _watcher;
             _watcher = null;
             timer = _refreshTimer;
             _refreshTimer = null;
-            if (_lamp is not null)
-            {
-                try
-                {
-                    if (SupportsControlAvailability && _lamp.IsConnected && _lamp.IsEnabled && _lamp.IsAvailable)
-                    {
-                        for (int i = 0; i < _colors.Length; i++) _colors[i] = LampColor.FromArgb(255, 0, 0, 0);
-                        _lamp.SetColorsForIndices(_colors, _indices);
-                    }
-                }
-                catch (Exception) { /* Shutdown must also work after device removal or lost access. */ }
-            }
-            ReleaseSelectedLampLocked();
+            _refreshQueued = 0;
+            cancellation = _discoveryCancellation;
+            _discoveryCancellation = null;
+            released = DetachSelectedLampLocked();
             _devices.Clear();
             _connectedCount = 0;
             _deviceSummary = "已停止控制燈條";
             _enumerated = false;
         }
-        timer?.Dispose();
-        if (watcher is not null)
+        if (cancellation is not null)
         {
-            watcher.Added -= OnAdded;
-            watcher.Updated -= OnUpdated;
-            watcher.Removed -= OnRemoved;
-            watcher.EnumerationCompleted -= OnEnumerationCompleted;
+            Cleanup(cancellation.Cancel, "Discovery.Cancel");
+            // Retire only after Cancel returns; a finishing refresh must not dispose the
+            // source while this thread is about to request cancellation.
+            lock (_gate) _retiredCancellations.Add(cancellation);
+        }
+        if (timer is not null) Cleanup(timer.Dispose, "RefreshTimer.Dispose");
+        // Native calls are deliberately outside _gate. A black frame uses its own buffer,
+        // and skips if a render call still owns the old projection; it never waits for it.
+        if (released.Lamp is not null && Interlocked.CompareExchange(ref _sendInProgress, 1, 0) == 0)
+        {
             try
             {
-                if (watcher.Status is DeviceWatcherStatus.Started or DeviceWatcherStatus.EnumerationCompleted)
-                    watcher.Stop();
+                try
+                {
+                    ReadControlStatus(released.Lamp, out bool canSend);
+                    if (canSend)
+                    {
+                        var black = new LampColor[TargetLampCount];
+                        for (int i = 0; i < black.Length; i++) black[i] = LampColor.FromArgb(255, 0, 0, 0);
+                        released.Lamp.SetColorsForIndices(black, _indices);
+                    }
+                }
+                catch (Exception) { /* Device removal or lost arbitration also permits shutdown. */ }
             }
-            catch (Exception) { }
+            finally { Volatile.Write(ref _sendInProgress, 0); }
         }
-        PublishStatus("已停止；Windows 可能恢復原先設定的燈效。");
+        ReleaseLampSubscription(released);
+        if (watcher is not null) ReleaseWatcher(watcher);
+        TryDisposeCoordination();
+        bool stillStopped;
+        lock (_gate) stillStopped = !_started && _generation == stoppedGeneration;
+        if (stillStopped) PublishStatus("已停止；Windows 可能恢復原先設定的燈效。");
     }
 
     public void Dispose()
@@ -236,39 +304,66 @@ public sealed class LampArrayController : IDisposable
             if (_disposed) return;
             _disposed = true;
         }
-        Stop();
-        // A pending WinRT discovery can still be completing. Leave this small managed semaphore
-        // alive rather than disposing it under an in-flight callback.
+        try { Stop(); }
+        finally
+        {
+            StatusChanged = null;
+            TryDisposeCoordination();
+        }
     }
 
     private void OnAdded(DeviceWatcher sender, DeviceInformation device)
     {
+        // DeviceInformation itself is a WinRT projection: copy its fields before entering _gate.
+        string id = device.Id;
+        string name = device.Name;
         lock (_gate)
         {
-            if (!_started || sender != _watcher) return;
-            _devices[device.Id] = device;
+            if (!_started || !ReferenceEquals(sender, _watcher)) return;
+            _devices[id] = name;
+            ++_deviceRevision;
         }
         QueueRefresh();
     }
 
     private void OnUpdated(DeviceWatcher sender, DeviceInformationUpdate update)
     {
+        // The HID product name/identity is stable during this enumeration. Re-open and inspect
+        // LampArray after property changes rather than mutating a WinRT object under the gate.
         lock (_gate)
         {
-            if (!_started || sender != _watcher) return;
-            if (_devices.TryGetValue(update.Id, out DeviceInformation? device)) device.Update(update);
+            if (!_started || !ReferenceEquals(sender, _watcher)) return;
+            ++_deviceRevision;
         }
         QueueRefresh();
     }
 
     private void OnRemoved(DeviceWatcher sender, DeviceInformationUpdate update)
     {
+        string id = update.Id;
+        SelectedLamp released = default;
         lock (_gate)
         {
-            if (!_started || sender != _watcher) return;
-            _devices.Remove(update.Id);
-            if (_selectedId == update.Id) ReleaseSelectedLampLocked();
+            if (!_started || !ReferenceEquals(sender, _watcher)) return;
+            _devices.Remove(id);
+            ++_deviceRevision;
+            if (_selectedId == id)
+            {
+                released = DetachSelectedLampLocked();
+                if (released.Lamp is not null) Interlocked.Increment(ref _refreshOperations);
+            }
         }
+        // Watcher callbacks also return without performing native unsubscribe work.
+        if (released.Lamp is not null)
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                try { ReleaseLampSubscription(released); }
+                finally
+                {
+                    Interlocked.Decrement(ref _refreshOperations);
+                    TryDisposeCoordination();
+                }
+            });
         QueueRefresh();
     }
 
@@ -276,7 +371,7 @@ public sealed class LampArrayController : IDisposable
     {
         lock (_gate)
         {
-            if (!_started || sender != _watcher) return;
+            if (!_started || !ReferenceEquals(sender, _watcher)) return;
             _enumerated = true;
             _enumerationFinished?.TrySetResult(true);
         }
@@ -285,16 +380,29 @@ public sealed class LampArrayController : IDisposable
 
     private void QueueRefresh()
     {
-        lock (_gate)
+        if (!Volatile.Read(ref _started) || !Volatile.Read(ref _enumerated)) return;
+        if (Interlocked.CompareExchange(ref _refreshQueued, 1, 0) != 0) return;
+        var timer = Volatile.Read(ref _refreshTimer);
+        try
         {
-            if (_started && _enumerated) _refreshTimer?.Change(150, Timeout.Infinite);
+            if (timer is null || !timer.Change(150, Timeout.Infinite))
+                Volatile.Write(ref _refreshQueued, 0);
         }
+        catch (ObjectDisposedException) { Volatile.Write(ref _refreshQueued, 0); }
     }
 
     private async void OnRefreshTimer(object? state)
     {
         int generation = (int)state!;
-        try { await RefreshDevicesAsync(generation).ConfigureAwait(false); }
+        CancellationToken cancellation;
+        lock (_gate)
+        {
+            if (!_started || _disposed || generation != _generation || _discoveryCancellation is null) return;
+            Volatile.Write(ref _refreshQueued, 0);
+            cancellation = _discoveryCancellation.Token;
+        }
+        try { await RefreshDevicesAsync(generation, cancellation).ConfigureAwait(false); }
+        catch (OperationCanceledException) { }
         catch (Exception ex)
         {
             if (IsCurrentGeneration(generation))
@@ -302,32 +410,47 @@ public sealed class LampArrayController : IDisposable
         }
     }
 
-    private async Task RefreshDevicesAsync(int generation)
+    private async Task RefreshDevicesAsync(int generation, CancellationToken cancellation)
     {
-        await _refreshGate.WaitAsync().ConfigureAwait(false);
+        lock (_gate)
+        {
+            if (!_started || _disposed || generation != _generation) return;
+            Interlocked.Increment(ref _refreshOperations);
+        }
+        bool acquired = false;
+        bool refreshAgain = false;
+        SelectedLamp retired = default;
+        SelectedLamp uncommitted = default;
         try
         {
-            DeviceInformation[] candidates;
+            await _refreshGate.WaitAsync(cancellation).ConfigureAwait(false);
+            acquired = true;
+            KeyValuePair<string, string>[] candidates;
             LampArray? selected;
             string? selectedId;
+            bool selectedSubscribed;
+            int deviceRevision;
             lock (_gate)
             {
                 if (!_started || generation != _generation) return;
-                candidates = _devices.Values.Where(d => string.Equals(d.Name, TargetName, StringComparison.OrdinalIgnoreCase)).ToArray();
+                candidates = _devices.Where(d => string.Equals(d.Value, TargetName, StringComparison.OrdinalIgnoreCase)).ToArray();
                 selected = _lamp;
                 selectedId = _selectedId;
+                selectedSubscribed = _availabilitySubscribed;
+                deviceRevision = _deviceRevision;
             }
 
             LampArray? uniqueLamp = null;
             string? uniqueId = null;
             int matched = 0;
             bool couldNotInspect = false;
-            foreach (DeviceInformation candidate in candidates)
+            foreach (var candidate in candidates)
             {
                 LampArray? candidateLamp;
                 try
                 {
-                    candidateLamp = candidate.Id == selectedId ? selected : await LampArray.FromIdAsync(candidate.Id);
+                    candidateLamp = candidate.Key == selectedId ? selected :
+                        await LampArray.FromIdAsync(candidate.Key).AsTask(cancellation).ConfigureAwait(false);
                     if (candidateLamp is null)
                     {
                         couldNotInspect = true;
@@ -338,6 +461,7 @@ public sealed class LampArrayController : IDisposable
                         candidateLamp.LampCount != TargetLampCount || !candidateLamp.IsConnected)
                         continue;
                 }
+                catch (OperationCanceledException) { throw; }
                 catch (Exception)
                 {
                     couldNotInspect = true;
@@ -345,69 +469,98 @@ public sealed class LampArrayController : IDisposable
                 }
                 matched++;
                 uniqueLamp = candidateLamp;
-                uniqueId = candidate.Id;
+                uniqueId = candidate.Key;
             }
 
             string status;
+            bool available = false;
+            long minimumTicks = 1;
+            bool newSubscription = false;
+            bool selectUnique = matched == 1 && !couldNotInspect;
+            if (selectUnique)
+            {
+                // All native property and event operations finish before committing managed state.
+                minimumTicks = Math.Max(1, (long)Math.Ceiling(uniqueLamp!.MinUpdateInterval.TotalSeconds * Stopwatch.Frequency));
+                status = ReadControlStatus(uniqueLamp, out available);
+                if (!ReferenceEquals(uniqueLamp, selected) || !selectedSubscribed)
+                {
+                    if (SupportsControlAvailability)
+                    {
+                        uniqueLamp.AvailabilityChanged += OnAvailabilityChanged;
+                        newSubscription = true;
+                        uncommitted = new SelectedLamp(uniqueLamp, true);
+                    }
+                }
+            }
+            else
+            {
+                status = matched > 1
+                    ? "請只連接一個 ESP32-S3 8 燈裝置，避免控制錯誤燈條。"
+                    : couldNotInspect
+                        ? "無法確認全部同名裝置；請檢查連線與 Windows 動態光效設定。"
+                        : "找不到 ESP32-S3 的 8 顆燈條，請檢查 USB 資料線。";
+            }
+
             lock (_gate)
             {
-                if (!_started || generation != _generation) return;
-                _connectedCount = matched;
-                // Do not select a device if another same-name candidate could not be inspected:
-                // its identity is unknown and it might be a second matching prototype.
-                if (matched != 1 || couldNotInspect)
+                if (!_started || _disposed || generation != _generation) return;
+                // A remove/re-add of the same HID ID must not reinstall the retired
+                // projection or reuse a subscription that removal has already detached.
+                if (deviceRevision != _deviceRevision)
                 {
-                    ReleaseSelectedLampLocked();
+                    refreshAgain = true;
+                    return;
+                }
+                // An unplug that occurred during native inspection invalidates the candidate.
+                if (selectUnique && (uniqueId is null || !_devices.ContainsKey(uniqueId))) return;
+                _connectedCount = matched;
+                if (!selectUnique)
+                {
+                    retired = DetachSelectedLampLocked();
                     _deviceSummary = matched > 1 ? $"偵測到 {matched} 個符合的 8 燈裝置" : "未連接唯一可確認的 8 燈裝置";
-                    status = matched > 1
-                        ? "請只連接一個 ESP32-S3 8 燈裝置，避免控制錯誤燈條。"
-                        : couldNotInspect
-                            ? "無法確認全部同名裝置；請檢查連線與 Windows 動態光效設定。"
-                            : "找不到 ESP32-S3 的 8 顆燈條，請檢查 USB 資料線。";
                 }
                 else
                 {
-                    if (_lamp != uniqueLamp)
+                    if (!ReferenceEquals(_lamp, uniqueLamp))
                     {
-                        ReleaseSelectedLampLocked();
-                        LampArray activeLamp = uniqueLamp!;
-                        _lamp = activeLamp;
+                        retired = DetachSelectedLampLocked();
+                        _lamp = uniqueLamp;
                         _selectedId = uniqueId;
-                        if (SupportsControlAvailability)
-                        {
-                            activeLamp.AvailabilityChanged += OnAvailabilityChanged;
-                            _availabilitySubscribed = true;
-                        }
-                        _minimumIntervalTicks = Math.Max(1, (long)Math.Ceiling(activeLamp.MinUpdateInterval.TotalSeconds * Stopwatch.Frequency));
+                        _availabilitySubscribed = newSubscription;
                         _lastSentTicks = 0;
                         _forceSend = true;
                     }
+                    else if (newSubscription) _availabilitySubscribed = true;
+                    _minimumIntervalTicks = minimumTicks;
+                    _available = available;
                     _deviceSummary = $"{TargetName} · 8 顆 · VID 303A / PID 1001";
-                    status = ReadControlStatus(_lamp!, out _available);
+                    uncommitted = default;
                 }
                 _status = status;
             }
             StatusChanged?.Invoke(status);
         }
-        finally { _refreshGate.Release(); }
+        finally
+        {
+            ReleaseLampSubscription(retired);
+            ReleaseLampSubscription(uncommitted);
+            if (acquired) _refreshGate.Release();
+            Interlocked.Decrement(ref _refreshOperations);
+            TryDisposeCoordination();
+            if (refreshAgain) QueueRefresh();
+        }
     }
 
     private void OnAvailabilityChanged(LampArray sender, object args)
     {
-        string? status = null;
-        lock (_gate)
-        {
-            if (!_started || sender != _lamp) return;
-            _forceSend = true;
-            _lastSentTicks = 0;
-            try { _status = status = ReadControlStatus(sender, out _available); }
-            catch (Exception)
-            {
-                _available = false;
-                _status = status = "燈條控制權已改變，正在重新確認。";
-            }
-        }
-        if (status is not null) StatusChanged?.Invoke(status);
+        // This callback may run synchronously inside SetColors/native property access. It must
+        // neither acquire a managed gate nor call LampArray, subscribe, or notify UI listeners.
+        if (!Volatile.Read(ref _started) || !ReferenceEquals(sender, Volatile.Read(ref _lamp))) return;
+        Interlocked.Increment(ref _controlRevision);
+        Volatile.Write(ref _forceSend, true);
+        Interlocked.Exchange(ref _lastSentTicks, 0);
+        Volatile.Write(ref _available, false);
+        QueueRefresh();
     }
 
     private string ReadControlStatus(LampArray lamp, out bool canSend)
@@ -427,21 +580,38 @@ public sealed class LampArrayController : IDisposable
             : "已取得前景控制權；背景同步請使用 MSIX 安裝版。";
     }
 
-    private void ReleaseSelectedLampLocked()
+    // Only managed state mutation; callers release the returned native subscription outside _gate.
+    private SelectedLamp DetachSelectedLampLocked()
     {
-        if (_lamp is not null && _availabilitySubscribed && SupportsControlAvailability)
-        {
-            try { _lamp.AvailabilityChanged -= OnAvailabilityChanged; }
-            catch (Exception) { }
-        }
-        // LampArray has no public Close/Dispose API. Detach events and release the projection;
-        // the Windows runtime releases its reference, and the OS retains lighting arbitration.
+        var released = new SelectedLamp(_lamp, _availabilitySubscribed);
         _lamp = null;
         _availabilitySubscribed = false;
         _selectedId = null;
         _available = false;
         _forceSend = true;
         _lastSentTicks = 0;
+        return released;
+    }
+
+    private void ReleaseLampSubscription(SelectedLamp released)
+    {
+        if (released.Lamp is not null && released.Subscribed && SupportsControlAvailability)
+            Cleanup(() => released.Lamp.AvailabilityChanged -= OnAvailabilityChanged, "Lamp.AvailabilityChanged");
+        // LampArray has no public Close/Dispose API. Once callbacks and workers release their
+        // projection references the runtime/OS owns the remaining lighting arbitration.
+    }
+
+    private void ReleaseWatcher(DeviceWatcher watcher)
+    {
+        Cleanup(() => watcher.Added -= OnAdded, "Watcher.Added");
+        Cleanup(() => watcher.Updated -= OnUpdated, "Watcher.Updated");
+        Cleanup(() => watcher.Removed -= OnRemoved, "Watcher.Removed");
+        Cleanup(() => watcher.EnumerationCompleted -= OnEnumerationCompleted, "Watcher.EnumerationCompleted");
+        Cleanup(() =>
+        {
+            if (watcher.Status is DeviceWatcherStatus.Started or DeviceWatcherStatus.EnumerationCompleted)
+                watcher.Stop();
+        }, "Watcher.Stop");
     }
 
     private void PublishStatus(string status)
@@ -456,8 +626,35 @@ public sealed class LampArrayController : IDisposable
 
     private bool IsCurrentGeneration(int generation)
     {
-        lock (_gate) return _started && generation == _generation;
+        lock (_gate) return _started && !_disposed && generation == _generation;
     }
+
+    private bool IsSelectedLocked(LampArray lamp, int generation) =>
+        _started && generation == _generation && ReferenceEquals(lamp, _lamp);
+
+    private void TryDisposeCoordination()
+    {
+        CancellationTokenSource[] retired;
+        bool disposeSemaphore;
+        lock (_gate)
+        {
+            if (Volatile.Read(ref _refreshOperations) != 0) return;
+            retired = _retiredCancellations.ToArray();
+            _retiredCancellations.Clear();
+            disposeSemaphore = _disposed && !_refreshGateDisposed;
+            if (disposeSemaphore) _refreshGateDisposed = true;
+        }
+        foreach (var cancellation in retired) Cleanup(cancellation.Dispose, "DiscoveryCancellation.Dispose");
+        if (disposeSemaphore) Cleanup(_refreshGate.Dispose, "RefreshGate.Dispose");
+    }
+
+    private void Cleanup(Action action, string stage)
+    {
+        try { action(); }
+        catch (Exception e) { _cleanupErrors.Enqueue($"{stage}: {e.GetType().Name} 0x{e.HResult:X8}"); }
+    }
+
+    private readonly record struct SelectedLamp(LampArray? Lamp, bool Subscribed);
 
     [DllImport("kernel32.dll", ExactSpelling = true)]
     private static extern int GetCurrentPackageFullName(ref uint packageFullNameLength, IntPtr packageFullName);

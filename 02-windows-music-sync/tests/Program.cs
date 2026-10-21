@@ -49,7 +49,10 @@ var allocated = GC.GetAllocatedBytesForCurrentThread() - allocationStart;
 Check(allocated == 0, $"Frame generation performs no managed allocation ({allocated} bytes)");
 
 var audioCount = AudioChecks.Run();
-var report = new { ObservedAtUtc = DateTimeOffset.UtcNow, Status = "Passed", CoreCheckCount = checks.Count, AudioCheckCount = audioCount, Checks = checks };
+var featureCount = FeatureChecks.Run();
+var effectCount = EffectChecks.Run();
+var report = new { ObservedAtUtc = DateTimeOffset.UtcNow, Status = "Passed", CoreCheckCount = checks.Count,
+    AudioCheckCount = audioCount, FeatureCheckCount = featureCount, EffectCheckCount = effectCount, Checks = checks };
 var json = JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true });
 Console.WriteLine(json);
 if (args.Length > 0)

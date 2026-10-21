@@ -1,0 +1,80 @@
+{
+  "ObservedAtUtc": "2026-10-21T06:31:00.1279397+00:00",
+  "Version": "0.2.0",
+  "Runtime": ".NET 10.0.13",
+  "LanguageVersion": "C# 10.0",
+  "PackageIdentity": false,
+  "DurationSeconds": 0.8543353,
+  "AudioPackets": 0,
+  "MaximumRms": 0,
+  "AudioDevice": "\u5587\u53ED (High Definition Audio Device)",
+  "AudioStatus": "\u6B63\u5728\u64F7\u53D6\u96FB\u8166\u64AD\u653E\u97F3\u8A0A\uFF1A\u5587\u53ED (High Definition Audio Device)",
+  "ConnectedCount": 1,
+  "LightingStatus": "\u958B\u767C\u7248\u5C1A\u7121\u5957\u4EF6\u8EAB\u5206\uFF1B\u8ACB\u4FDD\u6301\u8996\u7A97\u5728\u524D\u666F\uFF0C\u80CC\u666F\u540C\u6B65\u8ACB\u5B89\u88DD MSIX\u3002",
+  "EverHadLightingControl": false,
+  "SentFrames": 0,
+  "BlackFramesSent": 0,
+  "CpuMilliseconds": 1000,
+  "CpuPercentOfOneCore": 116.96970788686971,
+  "CpuPercentOfMachine": 29.242409869336726,
+  "SteadyStateSeconds": 0,
+  "SteadyCpuPercentOfOneCore": null,
+  "PeakWorkingSetBytes": 0,
+  "PeakPrivateBytes": 0,
+  "Threads": 22,
+  "StartError": null,
+  "Samples": [],
+  "PhysicalLedObservation": "API results do not replace physical observation.",
+  "AudioStored": false,
+  "Theme": "Tiffany blue / graphite",
+  "CloseRequestedBy": "window",
+  "EffectSettings": {
+    "Signal": 0,
+    "Palette": 1,
+    "Animation": 1,
+    "Speed": 0,
+    "StyleCyclesPerSecond": 0.75,
+    "CustomCyclesPerSecond": 1,
+    "ThemeColor": {
+      "R": 0,
+      "G": 120,
+      "B": 212
+    },
+    "CustomColorCount": 2,
+    "Color1": {
+      "R": 129,
+      "G": 216,
+      "B": 208
+    },
+    "Color2": {
+      "R": 133,
+      "G": 115,
+      "B": 230
+    },
+    "Color3": {
+      "R": 248,
+      "G": 178,
+      "B": 102
+    },
+    "Color4": {
+      "R": 240,
+      "G": 128,
+      "B": 168
+    }
+  },
+  "EffectControlChecks": [],
+  "SettingsLoaded": true,
+  "PreferenceSaveSucceeded": true,
+  "Shutdown": {
+    "IsDisposed": true,
+    "AudioWorkerRunning": false,
+    "RenderWorkerRunning": false,
+    "LightingDiscoveryRunning": false,
+    "CleanupErrors": []
+  },
+  "FormDisposed": true,
+  "UiComponentsDisposed": true,
+  "OwnedFontsDisposed": true,
+  "UiCleanupErrors": [],
+  "ShutdownElapsedMilliseconds": 124.9505
+}

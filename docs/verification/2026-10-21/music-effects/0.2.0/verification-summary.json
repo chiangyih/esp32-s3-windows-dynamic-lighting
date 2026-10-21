@@ -1,0 +1,36 @@
+{
+  "ObservedAtUtc": "2026-10-21T06:39:33.2103135+00:00",
+  "Version": "0.2.0.0",
+  "ReleaseBuild": {
+    "Status": "Passed",
+    "Warnings": 0,
+    "Errors": 0
+  },
+  "CoreChecks": 17,
+  "AudioFormatChecks": 26,
+  "AudioFeatureChecks": 17,
+  "EffectChecks": 55,
+  "TotalChecks": 115,
+  "NormalCloseCases": 4,
+  "PackagedUiSelectionCases": 6,
+  "PackageIdentity": true,
+  "RegisteredVersion": "0.2.0.0",
+  "AudioTest": {
+    "TestSignal": "Existing six-second440Hz generated signal; volume unchanged",
+    "MaxRms": 0.698561724308806,
+    "FinalRms": 0,
+    "FinalLevel": 0,
+    "BandsMeasured": true,
+    "First16SecondWindow": "Caught audio and bands; last Level0.01 because close too close to tone end. Preserved, not counted as fade pass.",
+    "Final25SecondWindow": "Passed audio and full fade to0"
+  },
+  "BackgroundLighting": {
+    "ConnectedCount": 1,
+    "EverHadControl": false,
+    "SentFrames": 0,
+    "PhysicalNewModes": "Pending user observation; historical0.1.2 physical acceptance retained separately"
+  },
+  "Cleanup": "All four normal routes and packaged runs disposed workers/UI; original PIDs absent",
+  "Store": "WACK and certification not performed",
+  "FirmwareChanged": false
+}

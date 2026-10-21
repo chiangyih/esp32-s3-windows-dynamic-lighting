@@ -1,0 +1,292 @@
+{
+  "ObservedAtUtc": "2026-10-21T06:55:09.6375421+00:00",
+  "Version": "0.2.1.0",
+  "Runtime": ".NET 10.0.13",
+  "LanguageVersion": "C# 10.0",
+  "PackageIdentity": true,
+  "DurationSeconds": 12.066201,
+  "AudioPackets": 41,
+  "MaximumRms": 0,
+  "AudioDevice": "\u5587\u53ED (High Definition Audio Device)",
+  "AudioStatus": "\u6B63\u5728\u64F7\u53D6\u96FB\u8166\u64AD\u653E\u97F3\u8A0A\uFF1A\u5587\u53ED (High Definition Audio Device)",
+  "ConnectedCount": 1,
+  "LightingStatus": "\u5DF2\u53D6\u5F97 8 \u9846\u71C8\u7684\u63A7\u5236\u6B0A\u3002",
+  "EverHadLightingControl": true,
+  "SentFrames": 2,
+  "BlackFramesSent": 2,
+  "CpuMilliseconds": 3171.875,
+  "CpuPercentOfOneCore": 26.286245287847386,
+  "CpuPercentOfMachine": 6.571561049659714,
+  "SteadyStateSeconds": 6.956484800000001,
+  "SteadyCpuPercentOfOneCore": 2.695321775276059,
+  "PeakWorkingSetBytes": 100601856,
+  "PeakPrivateBytes": 26066944,
+  "Threads": 24,
+  "StartError": null,
+  "Samples": [
+    {
+      "Second": 1,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": false,
+      "SentFrames": 0
+    },
+    {
+      "Second": 2,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 1
+    },
+    {
+      "Second": 3,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 1
+    },
+    {
+      "Second": 4,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    },
+    {
+      "Second": 5,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    },
+    {
+      "Second": 6,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    },
+    {
+      "Second": 7,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    },
+    {
+      "Second": 8,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    },
+    {
+      "Second": 9,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    },
+    {
+      "Second": 10,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    },
+    {
+      "Second": 11,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    },
+    {
+      "Second": 12,
+      "Rms": 0,
+      "Level": 0,
+      "BassRms": 0,
+      "MidRms": 0,
+      "TrebleRms": 0,
+      "TempoBpm": 0,
+      "HasControl": true,
+      "SentFrames": 2
+    }
+  ],
+  "PhysicalLedObservation": "API results do not replace physical observation.",
+  "AudioStored": false,
+  "Theme": "Tiffany blue / graphite",
+  "CloseRequestedBy": "button",
+  "EffectSettings": {
+    "Signal": 2,
+    "Palette": 2,
+    "Animation": 0,
+    "Speed": 1,
+    "StyleCyclesPerSecond": 1.5,
+    "CustomCyclesPerSecond": 4,
+    "ThemeColor": {
+      "R": 0,
+      "G": 120,
+      "B": 212
+    },
+    "CustomColorCount": 4,
+    "Color1": {
+      "R": 129,
+      "G": 216,
+      "B": 208
+    },
+    "Color2": {
+      "R": 133,
+      "G": 115,
+      "B": 230
+    },
+    "Color3": {
+      "R": 248,
+      "G": 178,
+      "B": 102
+    },
+    "Color4": {
+      "R": 240,
+      "G": 128,
+      "B": 168
+    }
+  },
+  "EffectControlChecks": [
+    {
+      "Step": 0,
+      "Signal": "Volume",
+      "Palette": "WindowsTheme",
+      "Animation": "Flow",
+      "Speed": "Custom",
+      "CustomColorCount": 2,
+      "Passed": true,
+      "CustomColorEditingEnabled": false,
+      "CustomSpeedVisible": true
+    },
+    {
+      "Step": 1,
+      "Signal": "Frequency",
+      "Palette": "Rainbow",
+      "Animation": "Sequential",
+      "Speed": "Beat",
+      "CustomColorCount": 3,
+      "Passed": true,
+      "CustomColorEditingEnabled": false,
+      "CustomSpeedVisible": false
+    },
+    {
+      "Step": 2,
+      "Signal": "BassTreble",
+      "Palette": "Custom",
+      "Animation": "Breathing",
+      "Speed": "Style",
+      "CustomColorCount": 4,
+      "Passed": true,
+      "CustomColorEditingEnabled": true,
+      "CustomSpeedVisible": false
+    },
+    {
+      "Step": 3,
+      "Signal": "Volume",
+      "Palette": "WindowsTheme",
+      "Animation": "Flow",
+      "Speed": "Custom",
+      "CustomColorCount": 2,
+      "Passed": true,
+      "CustomColorEditingEnabled": false,
+      "CustomSpeedVisible": true
+    },
+    {
+      "Step": 4,
+      "Signal": "Frequency",
+      "Palette": "Rainbow",
+      "Animation": "Sequential",
+      "Speed": "Beat",
+      "CustomColorCount": 3,
+      "Passed": true,
+      "CustomColorEditingEnabled": false,
+      "CustomSpeedVisible": false
+    },
+    {
+      "Step": 5,
+      "Signal": "BassTreble",
+      "Palette": "Custom",
+      "Animation": "Breathing",
+      "Speed": "Style",
+      "CustomColorCount": 4,
+      "Passed": true,
+      "CustomColorEditingEnabled": true,
+      "CustomSpeedVisible": false
+    }
+  ],
+  "SettingsLoaded": true,
+  "PreferenceSaveSucceeded": null,
+  "LifecycleExerciseRequested": true,
+  "StopRestartPassed": true,
+  "LifecycleStopSnapshot": {
+    "IsDisposed": false,
+    "AudioWorkerRunning": false,
+    "RenderWorkerRunning": false,
+    "LightingDiscoveryRunning": false,
+    "CleanupErrors": [],
+    "CleanupWorkerRunning": false
+  },
+  "LifecycleError": null,
+  "Shutdown": {
+    "IsDisposed": true,
+    "AudioWorkerRunning": false,
+    "RenderWorkerRunning": false,
+    "LightingDiscoveryRunning": false,
+    "CleanupErrors": [],
+    "CleanupWorkerRunning": false
+  },
+  "FormDisposed": true,
+  "UiComponentsDisposed": true,
+  "OwnedFontsDisposed": true,
+  "UiCleanupErrors": [],
+  "ShutdownElapsedMilliseconds": 200.9505
+}

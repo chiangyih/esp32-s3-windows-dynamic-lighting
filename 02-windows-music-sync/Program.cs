@@ -18,7 +18,13 @@ internal static class Program
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         var options = LaunchOptions.Parse(args);
-        Application.Run(new MainForm(options));
+        using var form = new MainForm(options);
+        try { Application.Run(form); }
+        finally
+        {
+            form.Dispose();
+            form.SaveExitReport();
+        }
     }
 }
 
@@ -28,6 +34,11 @@ internal sealed class LaunchOptions
     public int DiagnosticSeconds { get; private set; }
     public string? ReportPath { get; private set; }
     public string? ScreenshotPath { get; private set; }
+    public bool CloseViaButton { get; private set; }
+    public bool CloseViaTray { get; private set; }
+    public int CloseAfterMilliseconds { get; private set; }
+    public bool ExerciseEffects { get; private set; }
+    public bool ExerciseLifecycle { get; private set; }
 
     public static LaunchOptions Parse(string[] args)
     {
@@ -37,6 +48,17 @@ internal sealed class LaunchOptions
             switch (args[i])
             {
                 case "--autostart": result.AutoStart = true; break;
+                case "--close-via-button": result.CloseViaButton = true; break;
+                case "--close-via-tray": result.CloseViaTray = true; break;
+                case "--exercise-effects": result.ExerciseEffects = true; break;
+                case "--exercise-lifecycle": result.ExerciseLifecycle = true; break;
+                case "--close-after-ms" when i + 1 < args.Length:
+                    if (int.TryParse(args[++i], out var closeMs))
+                    {
+                        result.CloseAfterMilliseconds = Math.Clamp(closeMs, 50, 60000);
+                        result.AutoStart = true;
+                    }
+                    break;
                 case "--diagnose" when i + 1 < args.Length:
                     if (int.TryParse(args[++i], out var seconds))
                     {

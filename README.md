@@ -58,13 +58,15 @@ USB 保留 Arduino core 的開發用預設 VID/PID；若將來製作正式產品
 
 ## Windows 使用方式
 
-音樂同步App已新增至[02-windows-music-sync](02-windows-music-sync/README.md)。2026-10-21，使用者設定背景控制優先順序後確認：8顆燈會隨YouTube音樂變化，暫停後漸暗。此為0.1.2.0的使用者實物驗收；0.1.3.0另更新[App與Store圖示](02-windows-music-sync/Packaging/Branding/README.md)。
+音樂同步App位於[02-windows-music-sync](02-windows-music-sync/README.md)，目前來源修正版為 **0.2.1.0**。介面採蒂芬妮藍搭配深藍底，預覽改為整條無段式光條；可選音量、粗頻帶能量分布或高低音比例，搭配Windows輔色、彩虹或2～4種自訂色，以及呼吸／流動／單顆依序。速度可用音訊節奏估測、手動慢／中／快或自訂每秒0.1～4循環；節奏資訊不足時以每秒0.5循環慢速運行。曲風快慢是手動選擇，不是自動分類；單顆依序會依更新間隔限制速度以保留順序。新增「關閉程式」按鈕，與視窗X及通知區退出共用資源清理流程。維持C#10／.NET10、WinForms與系統API，不新增執行時函式庫。
+
+0.2.0.0先前Release建置0 warnings，115項整合檢查、四種正常退出路徑與六項UI選擇診斷通過，但退出測試當時未取得燈光控制權。其後使用者確認「**三種效果都有反應，暫停後漸暗**」；早期`IsAvailable=false`／`SentFrames=0`屬調整前歷史，不再代表功能現況。取得控制權後另發現停止／關閉會因LampArray原生呼叫與控制權回呼互等而卡住，原先退出檢查未涵蓋此情境。0.2.1.0針對原生呼叫的鎖定範圍及非同步停止／釋放修正，已重新通過115項檢查、四種退出路徑與有控制權時的停止／重新開始／退出；實際送出211幀且清理無錯誤，詳見[交接文件](handoff.md)；不能把0.2.0.0的效果成功當作退出問題也通過。0.1.2.0的YouTube播放／暫停實物驗收另保留歷史。[App與Store圖示](02-windows-music-sync/Packaging/Branding/README.md)已納入新版，WACK與Store認證仍待完成。
 
 接上已燒錄且接線完成的板子，開啟「設定 → 個人化 → 動態光效」，啟用相容裝置控制，檢查是否出現 `ESP32-S3 USB Light Strip`，再測固定顏色、亮度及 Windows 提供的效果。若其他 RGB 軟體取得控制權，需調整 Windows 中的控制優先順序。[Microsoft 使用說明](https://support.microsoft.com/en-us/windows/hardware/input-devices/control-dynamic-lighting-devices-in-windows)
 
 單純出現 COM 埠或一般 HID 裝置，不代表 Windows 動態光效已識別。應以設定頁出現燈條，並能實際改變 LED 顏色作為功能驗收。效果選項依 Windows 版本與相容應用程式而定；本機設定頁已實際看到「音效」及「純色」。
 
-本機 2026-10-21 再次檢查時，裝置本身也選了「音效」，其詳細設定為效果速度、方向與兩種色彩。使用者確認暫停 YouTube 時，燈條仍持續流動變色；這是自行運作的效果，不能據此認定已隨音樂節奏變化。其後使用者授權實作，[Windows 音樂同步 App](02-windows-music-sync/README.md) 現在提供 WASAPI 播放音訊分析與 LampArray 控制；初版以音量驅動 8 格燈條，不含節拍辨識。設計歷史見 [Windows 音樂同步設計](docs/Windows音樂同步設計.md)，最新實測狀態見 [交接文件](handoff.md)。[Microsoft 內建效果說明](https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-devices-lights-winrt-windldefaulteffecttype)、[WASAPI loopback](https://learn.microsoft.com/en-us/windows/win32/coreaudio/loopback-recording)。
+本機2026-10-21先前檢查時，裝置本身也選了「音效」，其詳細設定為效果速度、方向與兩種色彩。使用者確認暫停YouTube時，燈條仍持續流動變色；這是自行運作的效果，不能據此認定已隨音樂節奏變化。其後使用者授權實作，[Windows音樂同步App](02-windows-music-sync/README.md)提供WASAPI播放音訊分析與LampArray控制：初版只有音量同步，0.2.0.0再加入粗頻帶與節奏估測，不是精確音高、FFT頻譜或曲風辨識。使用本App不必把Windows內建效果選成「音效」。設計歷史見[Windows音樂同步設計](docs/Windows音樂同步設計.md)，最新實測狀態見[交接文件](handoff.md)。[Microsoft內建效果說明](https://learn.microsoft.com/en-us/windows-hardware/customize/desktop/unattend/microsoft-windows-devices-lights-winrt-windldefaulteffecttype)、[WASAPI loopback](https://learn.microsoft.com/en-us/windows/win32/coreaudio/loopback-recording)。
 
 ## 韌體行為
 

@@ -7,7 +7,7 @@ param(
     [string]$DisplayName = 'ESP32 音樂同步',
     [string]$PublisherDisplayName = 'ESP32 Music Sync Development',
     [ValidatePattern('^\d+\.\d+\.\d+\.\d+$')]
-    [string]$Version = '0.1.3.0',
+    [string]$Version = '0.2.1.0',
     [string]$OutputRoot,
     [string]$WindowsSdkBin
 )
